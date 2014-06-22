@@ -1,0 +1,23 @@
+{
+  "name": "alaris",
+  "description": "Alaris blog engine",
+  "version": "0.0.1",
+  "author": {
+    "name": "Symunona",
+    "email": "symunona@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/symunona/alaris"
+  },
+  "main": "./app.js",
+  "dependencies": {
+    "jade": "1.1.5",
+    "mysql-activerecord": "0.8.3",
+    "less-middleware": "0.1.15",
+    "moment": "2.5.1",
+    "when": "2.8.0",
+    "express": "3.3.4",
+  },
+  "readmeFilename": "README.md"
+}

@@ -1,0 +1,266 @@
+@import 'bootstrap.less';
+
+@fadedcolor: #777;
+@headercolor: 255;
+
+body {	
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #019678;
+  background: #777;
+  
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+
+.control{
+	a{
+		text-decoration: none;
+		color: grey;
+		&:hover{
+			color: black;
+			cursor: pointer;
+		}
+	}
+	span{
+		color: grey;
+		margin-left: 10px;
+	}
+}
+
+h1, h2, h3{
+	color: #000;
+}
+
+#entriesadmin, #tags{
+	li{
+		cursor: pointer;
+		.tag{
+			color: #777;
+			margin-left: 10px;
+			
+		}
+	}
+	li:hover{
+		background: white;
+	}
+}
+
+hidden{
+	dislay: none;
+}
+img{
+	.img-responsive;
+}
+
+@br: 230;
+
+@brr: 180;
+
+#entries{
+	padding-top:102px
+}
+
+.adminscreen{
+	h1, h2{
+		background: black;		
+	} 
+	
+}
+.solidbg{
+	color: black;
+	background-color: rgba(@br,@br,@br,0.8);
+}
+
+.entry{
+	color: black;
+	background-color: rgba(@br,@br,@br,0.8);	
+	margin-bottom: 40px;
+}
+.entrytime{
+	cursor: default;
+	font-size: small;
+	div{	
+		background: #226;
+		padding: 3px;		
+		margin-bottom: 10px;
+		color: black;		
+	}
+	.monthday, 
+	.day, 
+	.timeofday{
+		background: rgba(@brr,@brr,@brr,0.8); 
+		color: #black;
+	}
+	.timeofday{
+		font-size: x-large;
+		text-align: center;
+	}
+	/*
+	.monthday{
+		&.m1{background: #8fd9ff;}
+		&.m2{background: #69e4b3;}
+		&.m3{background: #3bf354;}
+		&.m4{background: #2afc11;}
+		&.m5{background: #36ff00;}
+		&.m6{background: #90ff00;}
+		&.m7{background: #fffe00;}
+		&.m8{background: #ffe100;}
+		&.m9{background: #ffb200;}
+		&.m10{background: #dcb650;}
+		&.m11{background: #c7be7f;}
+		&.m12{background: #8fd8ff;}
+	}
+	.day{
+		&.d0{ background: #d07700; }
+		&.d1{ background: #76c0f9; }
+		&.d2{ background: #c276f9; }
+		&.d3{ background: #7133dc; }
+		&.d4{ background: #c9fc77; }
+		&.d5{ background: #77c100; }
+		&.d6{ background: #fdc478; }
+	}
+	.timeofday{
+		font-size: x-large;
+		text-align: center;
+		&.hh0{ background: #6ad3f4 ; }
+		&.hh1{ background: #90ffbf ; }
+		&.hh2{ background: #cdff49 ; }
+		&.hh3{ background: #fff304 ; }
+		&.hh4{ background: #ffc730 ; }
+		&.hh5{ background: #ff897f ; }
+		&.hh6{ background: #e535ff ; }
+		&.hh7{ background: #b736ff ; }
+	}
+	*/
+}
+
+.rotate(@angle, @origin){
+	transform: rotate(@angle);
+	-ms-transform: rotate(@angle); /* IE 9 */
+	-webkit-transform: rotate(@angle); /* Opera, Chrome, and Safari */	
+	
+	transform-origin: @origin;
+	-ms-transform-origin: @origin; /* IE 9 */
+	-webkit-transform-origin: @origin; /* Chrome, Safari, Opera */
+}
+
+@tagangle: -90deg;
+
+.tags{	
+	cursor: default;
+	position: relative;	
+	.tagscontainer{
+/* 		outline: 1px solid white; */
+		position: absolute;	
+		text-align: right;
+		.rotate(@tagangle, right bottom);
+		.tag{
+			display: inline-block;
+			width: auto;			
+			margin-left: 10px;
+			margin-bottom: 10px;
+			padding: 3px;			
+			background: white;
+			color: black;
+			font-size: small;
+		}
+	}
+}
+
+header#index{
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 70px;
+	font-weight: bold;
+	position: fixed;
+	z-index: 1;
+	background: rgba(0,0,0,0.5);
+	
+	color: rgba(@headercolor,@headercolor,@headercolor,0.8);
+/* 	right: 0; */
+/* 	top: 0; */
+	
+/* 	padding: 0px; */
+/* 	padding-left: 30px; */
+/* 	padding-right: 10px; */
+	.tagline{
+		font-size: 12px;
+		text-align: right;
+	}	
+}
+
+
+.footer{
+ position: fixed;
+ bottom: 0;  
+ color: white; 
+ padding: 10px;
+ cursor: default;
+ right: 0px;
+ background: rgba(0,0,0,0.2);
+}
+
+a {
+  color: #00B7FF;
+}
+
+.tageditor{
+	
+	border-radius: 4px;
+	border: 1px solid grey;
+	padding: 10px;
+	
+	input, textarea{
+		width: 350px;
+		display: block;		
+	}
+}
+
+.nav{	
+	width: 120px;
+	position: fixed;
+	right: 0;
+	bottom: 150px;	
+	text-align: right;
+	#actualyear, #eratags div{
+
+		display: block;		
+		margin-bottom: 10px;
+
+		span{
+			padding: 5px;
+			background: black;
+			color: white;
+		}
+	}
+	
+	#actualyear{
+		background: white;
+		font-size: large;
+		color: black;
+		margin-bottom: 300px;
+	}
+	
+}
+
+.bgfader{
+/* 	background-color: rgba(255,0,0,0.5); */
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 0;	
+	opacity: 0;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+.button{
+	cursor: pointer;
+}
