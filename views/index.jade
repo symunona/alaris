@@ -1,0 +1,46 @@
+doctype html
+html
+	head
+		title=title
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel="shortcut icon" href="/css/favicon.png")
+		link(rel='stylesheet', href='/css/style.css')
+		script(type='text/javascript', src='js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src='js/lib/vendor/jquery.debounce-1.0.5.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src='js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src='js/base.js')
+		script(type='text/javascript', src='js/client.js')		
+		meta(name='offsetstart',content=offset)
+		style=style
+		script.
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-48378065-1', 'dyndns.hu');
+			ga('send', 'pageview');
+	body
+		div.bgfader &nbsp;
+		header#index.div.col-md-3.col-md-offset-9 
+			div=title
+			div.tagline=tagline
+		//
+			section#main-entry
+				article				
+					h2=mainentry.title
+					div!=mainentry.body				
+		section#entries.container-fluid
+			include part						
+						
+		section.nav
+			#actualyear
+			#eratags
+			
+		
+		section.footer
+			div#tmp(title=footerTitle)=footer

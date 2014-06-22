@@ -1,0 +1,16 @@
+- for (var x = 0; x < count; x++)
+	article.row
+		div.col-md-6.col-md-offset-3.entry(data-year=entries[x].year,data-timestamp=entries[x].timestamp)			
+			h3.title=entries[x].title
+			span.peek!=entries[x].body
+			div.control
+				a(onclick='toggletop(this,"'+entries[x].id+'",'+entries[x].top+')', class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
+				span T: #{entries[x].topic}
+		div.col-md-1.entrytime
+			div.monthday(class=entries[x].monthdaym)=entries[x].monthday
+			div.day(class=entries[x].dayofweeks)=entries[x].dayofweek
+			div.timeofday(class=entries[x].timee)=entries[x].time
+		div.col-md-1.tags
+			div.tagscontainer
+				- for (var y = 0; y < entries[x].tags.length; y++)
+					div.tag=entries[x].tags[y]								

@@ -1,0 +1,92 @@
+doctype html
+html(lang='hu')
+	head
+		title Alaris Admin
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel='stylesheet', href='/css/style.css')
+		link(rel='stylesheet', href='/js/lib/vendor/tagselector/styles/token-input.css')
+		link(rel="stylesheet", href="css/bootstrap.css")
+		link(rel="stylesheet", href='js/lib/vendor/jqueryui/css/ui-darkness/jquery-ui-1.10.4.custom.min.css')
+		script(type='text/javascript', src='js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src='js/lib/vendor/jqueryui/js/jquery-ui-1.10.4.custom.min.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src='js/lib/vendor/ckeditor/ckeditor.js')
+		script(type='text/javascript', src='js/lib/vendor/tagselector/src/jquery.tokeninput.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src='js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src='js/lib/vendor/moment.min.js')
+		script(type='text/javascript', src='js/bindings.js')
+		script(type='text/javascript', src='js/base.js')
+		script(src='js/adminclient.js')
+	body
+		header    
+			nav.navbar.navbar-inverse(role="navigation")
+				div.container-fluid
+					div.navbar-header				
+						a.navbar-brand(href="/") Alaris blog engine admin
+
+		section.content.container-fluid.adminscreen
+			h2 Entries 
+				a(data-bind="click: addEntry", href='#')  +
+
+			div.row(data-bind='if:editingEntry()')
+					
+				#editor.col-xs-12(data-bind='with: editingEntry')
+					button(data-bind="click: saveEntry") save
+					button(data-bind="click: discardEntry") discard
+					input#entrytitle(data-bind="value: title",placeholder='Title')
+					input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
+					textarea#entrycontent(data-bind='richText: body')
+					
+			ul#entriesadmin.solidbg(data-bind='foreach: entries')
+				li(data-bind="click: $root.editEntry.bind($data)")
+					span.title(data-bind='text: title')
+					// span.peek(data-bind='text: bodyshort')
+					
+					span.tag(data-bind='text: tag')
+					// span.commands
+						span.glyphicon.glyphicon-star.starme(title='star me')
+						span.glyphicon.glyphicon-pencil(title='edit')				
+						span.glyphicon.upvote.glyphicon-up-arrow(title='up')
+						span.glyphicon.downvote.glyphicon-down-arrow(title='down')
+						span.glyphicon.delete.glyphicon-trash(title='delete')
+						span.glyphicon.glyphicon-eye-open(title='visibility')
+			
+			h2 Tags 
+				a.button(data-bind="click: addTag") +
+			div.solidbg
+				div(data-bind='if:editingTag()').solidbg.col-xs-12		
+					div.tageditor.col-md-6.col-md-offset-3(data-bind='with: editingTag')
+						input(data-bind="value: name",placeholder='Tagname')
+						textarea(data-bind='value: style', placeholder='style parmeters')
+						textarea(data-bind='value: customjs', placeholder='custom javascript')
+						input(placeholder='background image',data-bind="value: background")
+						input(placeholder='era start date',data-bind="datepicker: startdate")
+						input(placeholder='era end date',data-bind="datepicker: enddate")
+						button(data-bind="click: saveTag") save
+						button(data-bind="click: discardTag") discard
+					
+				ul#tags(data-bind='foreach: tags').solidbg.col-xs-12
+					li(data-bind="click: $root.editTag.bind($data)")
+						span.name(data-bind='text: name')
+						span.commands
+							span.glyphicon-edit(title='edit')
+		//				
+			h2 Deleted entries
+			ul#deletedentries(data-bind='foreach: deletedEntries')
+				li
+					span.title(data-bind='text: title, click: $root.editEntry.bind($data)')
+					// span.peek(data-bind='text: bodyshort')
+					span.tags(data-bind='foreach: tags')
+						span.tag(data-bind='text: name')
+					span.commands
+						span.glyphicon.glyphicon-star.starme(title='star me')
+						span.glyphicon-edit(title='edit')				
+						span.upvote.glyphicon-up-arrow(title='up')
+						span.downvote.glyphicon-down-arrow(title='down')
+						span.delete.glyphicon-trash(title='delete')
+						
+						
+					

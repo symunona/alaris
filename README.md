@@ -5,6 +5,14 @@ This is a very simple and lightweight blog engine created in nodejs, using expre
 
 I wanted to create something really lightweight.
 
+Installation
+------------
+
+Check out the master.
+
+npm install in the command line to pull the 
+
+
 
 Tag system
 ----------
