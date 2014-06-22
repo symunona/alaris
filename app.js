@@ -57,7 +57,7 @@ var auth = express.basicAuth(function(user, pass) {
  return user === config.admin.user && pass === config.admin.pass;
 });
 
-app.get('/:offset', wheretogoroot);
+//app.get('/:offset', wheretogoroot);
 app.get('/', routes.index);
 app.get('/api/part', routes.part);
 app.post('/api/top', admin.toggletop);
@@ -65,6 +65,7 @@ app.get('/api/partAll', routes.partAll);
 app.get('/api/eras', routes.getErasIntf);
 //app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
+app.get('/all', auth, routes.all);
 app.get('/api/entries', admin.getEntriesIntf);
 app.post('/api/saveEntry', api.saveEntry);
 app.post('/api/saveTag', api.saveTag);
