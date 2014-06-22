@@ -4,13 +4,12 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
+  , routes = require('./routes')  
   , admin = require('./routes/admin')
   , api = require('./routes/api')
   , http = require('http')
   , path = require('path')
-  , config = require('../config.json')
+  , config = require('./config.json')
   
   ;
 
@@ -64,7 +63,7 @@ app.get('/api/part', routes.part);
 app.post('/api/top', admin.toggletop);
 app.get('/api/partAll', routes.partAll);
 app.get('/api/eras', routes.getErasIntf);
-app.get('/users', user.list);
+//app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
 app.get('/api/entries', admin.getEntriesIntf);
 app.post('/api/saveEntry', api.saveEntry);
@@ -75,7 +74,7 @@ app.get('/api/deletedEntries', api.deletedEntries);
 
 var entries;
 
-app.get('/entry', user.list);
+//app.get('/entry', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

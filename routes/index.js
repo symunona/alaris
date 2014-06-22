@@ -1,14 +1,14 @@
 /*
  * GET home page.
  */
-//var monk = require('monk');
+////var monk = require('monk');
 //var db = monk('localhost:27017/alaris');
-var blog = db.get('blog');
+//var blog = db.get('blog');
 var displaySize = 10;
 var when = require('when');
 var api = require('./api');
 var moment = require('moment');
-var config = require('../config.json');
+var config = require('./../config.json');
 
 
 function processentries(ctrl) {
@@ -25,7 +25,7 @@ function processentries(ctrl) {
 		e.dayofweeks = 'd'+moment(e.date).format('d');
 		e.time = moment(e.date).format('h:mm');
 		e.timee = 'hh'+Math.floor(moment(e.date).format('h')/3);
-		e.tags = e.tag.split(',').map(function(t){return t.trim()});
+		e.tags = e.tag.split(',').map(function(t){return t.trim();});
 		e.year = moment(e.date).format('YYYY');
 		e.timestamp = moment(e.date).format();
 		return e;
