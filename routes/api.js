@@ -72,22 +72,8 @@ exports.getEras = function(time, cb){
 				});
 }
 
-exports.getEntriesIntf = function(req, res) {	
-	exports.getEntries(10,0,function(data,cnt){
-		res.send({
-			result : data,
-			count : cnt
-		});
-	})
-}
 
 
-exports.getTags = function(req, res) {
-
-	res.send({
-		result : 'success get tags'
-	});
-};
 
 exports.searchTags = function(req, res) {
 	

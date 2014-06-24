@@ -25,7 +25,7 @@ exports.getEntriesIntf = function(req, res) {
 		}
 	}
 	console.log('admin:',req.query, req.params);
-	api.getEntries(ctrl);
+	api.getAllEntries(ctrl);
 };
 
 exports.toggletop = function(req, res) {
