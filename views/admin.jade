@@ -32,20 +32,28 @@ html(lang='hu')
 			h2 Entries 
 				a(data-bind="click: addEntry", href='#')  +
 
-			div.row(data-bind='if:editingEntry()')
-					
-				#editor.col-xs-12(data-bind='with: editingEntry')
+			div.row(data-bind='if:editingEntry()')					
+				#editor.col-xs-10(data-bind='with: editingEntry')
 					button(data-bind="click: saveEntry") save
 					button(data-bind="click: discardEntry") discard
 					input#entrytitle(data-bind="value: title",placeholder='Title')
 					input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
+					input#topic(data-bind='value: topic')
 					textarea#entrycontent(data-bind='richText: body')
 					
+			div
+				button#first(data-bind="click: pager.first, enable: pager.hasPrev") |<
+				button#prev(data-bind="click: pager.prev, enable: pager.hasPrev") <
+				input(type="number",data-bind="value: pager.offset, enable:false")				
+				button#next(data-bind="click: pager.next, enable: pager.hasNext") >
+				button#last(data-bind="click: pager.last, enable: pager.hasNext") >|
+
 			ul#entriesadmin.solidbg(data-bind='foreach: entries')
 				li(data-bind="click: $root.editEntry.bind($data)")
 					span.title(data-bind='text: title')
 					// span.peek(data-bind='text: bodyshort')
-					
+					span.date(data-bind="text: moment(date()).format('YYYY. MM. DD. HH:mm')")
+					span.topic(data-bind="text: topic")
 					span.tag(data-bind='text: tag')
 					// span.commands
 						span.glyphicon.glyphicon-star.starme(title='star me')

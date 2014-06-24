@@ -88,6 +88,38 @@ function saveTag(){
 	});
 }
 
+var pager = {
+	offset: ko.observable(0),
+	pagesize: ko.observable(10),
+	allentries: ko.observable(0),
+	actualpage: ko.observable(0),
+	next: function(){pager.offset(pager.offset()+pager.pagesize())},
+	prev: function(){pager.offset(pager.offset()-pager.pagesize())},
+	first: function(){pager.offset(0)},
+	last: function(){
+		var notround = Math.floor(pager.allentries()/(pager.pagesize()));		
+		pager.offset(pager.pagesize()*notround)}
+
+};
+pager.load = ko.computed(function(){
+	var filter = filterRoot();
+	filter.orderBy = 'creationDate';
+	filter.orderDirection = 'desc';
+	filter.offset = pager.offset();
+	filter.limit = pager.pagesize();
+	
+	getJson('api/entries', filter).done(function(data){		
+		console.log("dddd",data)
+		if (data.entries)
+			entries(data.entries.map(function(e){return new Entry(e);}));	
+		pager.allentries(data.max);
+		
+	});
+	
+});
+pager.hasNext = ko.computed(function(){return pager.offset()+pager.pagesize()<pager.allentries();});
+pager.hasPrev = ko.computed(function(){return pager.offset()>0;});
+
 $(function(){
 	
 	var filter = filterRoot();
@@ -118,7 +150,8 @@ $(function(){
 		editTag   : editTag,
 		addEntry : addEntry,
 		saveEntry : saveEntry,
-		editingTag: editingTag
+		editingTag: editingTag,
+		pager: pager
 	});
 
 });

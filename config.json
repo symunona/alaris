@@ -14,5 +14,6 @@
 	"title":"Alaris",
 	"tagline":"Láss ezer csodát!",
 	"footer":"™P",
-	"footerTitle":"alaris blog engine part of The Minimal Project by goose"
+	"footerTitle":"alaris blog engine part of The Minimal Project by goose",
+	"debug": true
 }
