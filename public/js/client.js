@@ -32,16 +32,14 @@ $(function(){
 		for(i=0; offsets[i]<top; i++);
 		
 		var ents = $('.entry'); 
-		
-//		ents.css('outline','0');
-//		$(ents[i]).css('outline','rgba(255,255,255,0.9) solid 1px');
+
 		$('#actualyear').html($(ents[i]).attr('data-year'));
+		$('#actualmonth').html(moment($(ents[i]).attr('data-timestamp')).format('MMM'));
+		$('#actualday').html(moment($(ents[i]).attr('data-timestamp')).format('DD'));
 		
-//		if (actual!=i)
-//			window.history.pushState("object or string", "Title", "/"+(offsetstart+i));
-		
+
 		getEra('api/eras', {time: $(ents[i]).attr('data-timestamp')}).done(function(data){
-//			console.log('eras:',data)
+
 			if (data && data.length > 0)
 			{
 				for(var i = 0; i<data.length; i++)

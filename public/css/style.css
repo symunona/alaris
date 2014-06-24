@@ -6146,6 +6146,10 @@ header#index .tagline {
 a {
   color: #00B7FF;
 }
+.tagpadding {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .tageditor {
   border-radius: 4px;
   border: 1px solid grey;
@@ -6164,20 +6168,37 @@ a {
   text-align: right;
 }
 .nav #actualyear,
+.nav #actualmonth,
+.nav #actualday,
 .nav #eratags div {
-  display: block;
   margin-bottom: 10px;
+  display: inline-block;
 }
 .nav #actualyear span,
+.nav #actualmonth span,
+.nav #actualday span,
 .nav #eratags div span {
+  display: inline;
   padding: 5px;
   background: black;
   color: white;
+  line-height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* 			display:inline-block; */
 }
-.nav #actualyear {
+.nav #actualyear,
+.nav #actualmonth,
+.nav #actualday {
+  right: 0px;
   background: white;
   font-size: large;
   color: black;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.nav #actualday {
   margin-bottom: 300px;
 }
 .bgfader {

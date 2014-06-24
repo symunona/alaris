@@ -210,6 +210,11 @@ a {
   color: #00B7FF;
 }
 
+.tagpadding{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .tageditor{
 	
 	border-radius: 4px;
@@ -228,24 +233,35 @@ a {
 	right: 0;
 	bottom: 150px;	
 	text-align: right;
-	#actualyear, #eratags div{
-
-		display: block;		
+	
+	#actualyear, #actualmonth, #actualday, #eratags div{
+			
 		margin-bottom: 10px;
-
+		display: inline-block;
+		
 		span{
+			display: inline;
 			padding: 5px;
 			background: black;
 			color: white;
+			line-height: 20px;
+			.tagpadding;	
+/* 			display:inline-block; */
 		}
 	}
 	
-	#actualyear{
+	#actualyear, #actualmonth,#actualday{
+		right: 0px;
 		background: white;
 		font-size: large;
 		color: black;
-		margin-bottom: 300px;
+		margin-bottom: 5px;
+		.tagpadding;	
 	}
+	 #actualday{
+	 	margin-bottom: 300px;
+
+	 }
 	
 }
 
