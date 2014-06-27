@@ -28,40 +28,49 @@ html(lang='hu')
 					div.navbar-header				
 						a.navbar-brand(href="/") Alaris blog engine admin
 
-		section.content.container-fluid.adminscreen
-			h2 Entries 
-				a(data-bind="click: addEntry", href='#')  +
-
-			div.row(data-bind='if:editingEntry()')					
-				#editor.col-xs-10(data-bind='with: editingEntry')
-					button(data-bind="click: saveEntry") save
-					button(data-bind="click: discardEntry") discard
-					input#entrytitle(data-bind="value: title",placeholder='Title')
-					input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
-					input#topic(data-bind='value: topic')
-					textarea#entrycontent(data-bind='richText: body')
+		section.content.container-fluid.adminscreen							
+			div.row					
+				h2.col-xs-8 Entries 
+					a(data-bind="click: addEntry", href='#')  +
+			div.row(data-bind='if:editingEntry()')			
+				#editor.col-xs-8(data-bind='with: editingEntry')
+					div
+						button(data-bind="click: saveEntry") save
+						button(data-bind="click: discardEntry") discard
+						input#entrytitle(data-bind="value: title",placeholder='Title')
+						input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
+						input#topic(data-bind='value: topic')
+						textarea#entrycontent(data-bind='richText: body')
+				div.contenter.col-xs-4.solidbg						
+					div#dropspace.dropspace(data-bind="dragupload: uploadconfig, style:{'background-image': 'url(' + selectedimg()+ ')'}, click: addImg.bind(this,selectedimg)")
 					
+					ul(data-bind="foreach: content").contentlist
+						li(data-bind="text: filename, click: selectedimg.bind(this,'content/' + filename)")
+										
 			div
 				button#first(data-bind="click: pager.first, enable: pager.hasPrev") |<
 				button#prev(data-bind="click: pager.prev, enable: pager.hasPrev") <
 				input(type="number",data-bind="value: pager.offset, enable:false")				
 				button#next(data-bind="click: pager.next, enable: pager.hasNext") >
 				button#last(data-bind="click: pager.last, enable: pager.hasNext") >|
+			div.row
 
-			ul#entriesadmin.solidbg(data-bind='foreach: entries')
-				li(data-bind="click: $root.editEntry.bind($data)")
-					span.title(data-bind='text: title')
-					// span.peek(data-bind='text: bodyshort')
-					span.date(data-bind="text: moment(date()).format('YYYY. MM. DD. HH:mm')")
-					span.topic(data-bind="text: topic")
-					span.tag(data-bind='text: tag')
-					// span.commands
-						span.glyphicon.glyphicon-star.starme(title='star me')
-						span.glyphicon.glyphicon-pencil(title='edit')				
-						span.glyphicon.upvote.glyphicon-up-arrow(title='up')
-						span.glyphicon.downvote.glyphicon-down-arrow(title='down')
-						span.glyphicon.delete.glyphicon-trash(title='delete')
-						span.glyphicon.glyphicon-eye-open(title='visibility')
+				div.col-sm-8
+					ul#entriesadmin.solidbg(data-bind='foreach: entries')
+						li(data-bind="click: $root.editEntry.bind($data)")
+							span.title(data-bind='text: title')
+							// span.peek(data-bind='text: bodyshort')
+							span.date(data-bind="text: moment(date()).format('YYYY. MM. DD. HH:mm')")
+							span.topic(data-bind="text: topic")
+							span.tag(data-bind='text: tag')
+							// span.commands
+								span.glyphicon.glyphicon-star.starme(title='star me')
+								span.glyphicon.glyphicon-pencil(title='edit')				
+								span.glyphicon.upvote.glyphicon-up-arrow(title='up')
+								span.glyphicon.downvote.glyphicon-down-arrow(title='down')
+								span.glyphicon.delete.glyphicon-trash(title='delete')
+								span.glyphicon.glyphicon-eye-open(title='visibility')
+
 			
 			h2 Eras 
 				a.button(data-bind="click: addTag") +

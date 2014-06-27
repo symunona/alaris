@@ -10,7 +10,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , config = require('./config.json')
-  
+ 
   ;
 
 
@@ -23,7 +23,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.bodyParser());
+app.use(express.bodyParser({uploadDir:'./public/content'}));
 app.use(express.methodOverride());
 app.use(app.router);
 
@@ -74,6 +74,10 @@ app.post('/api/saveTag', api.saveTag);
 app.get('/api/searchTags', api.searchTags);
 app.get('/api/tags', api.getTags);
 app.get('/api/deletedEntries', api.deletedEntries);
+app.get('/api/content', admin.content);
+app.post('/api/uploadfile',function(req,res){
+	api.upload(req,res,app);
+});
 
 var entries;
 

@@ -6218,3 +6218,42 @@ a {
 .button {
   cursor: pointer;
 }
+/* draggable upload */
+.dropspace {
+  border: 10px dashed #ccc;
+  min-height: 200px;
+  margin: 20px auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.dropspace.hover {
+  border: 10px dashed #0c0;
+}
+.contentlist > li:hover {
+  background: white;
+  cursor: pointer;
+}
+.hover {
+  background: #bfb;
+}
+.uploading {
+  background: #ffb;
+}
+.uploadprogress {
+  width: 100%;
+}
+.visible {
+  display: block !important;
+}
+.hidden {
+  display: none;
+}
+.contenter {
+  height: 400px;
+}
+.contenter ul {
+  display: block;
+  overflow-y: scroll;
+  height: 140px;
+}

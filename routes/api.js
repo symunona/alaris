@@ -13,7 +13,7 @@
 
 var moment = require('moment');
 var config = require('../config.json');
-
+var fs = require('fs');
 var Db = require('mysql-activerecord');
 var db = new Db.Adapter({
     server: config.db.server,
@@ -123,7 +123,7 @@ exports.saveEntry = function(req, res) {
 };
 
 exports.toggletop = function(id, oldval, cb){
-	console.log('top called with: ',id,oldval);
+//	console.log('top called with: ',id,oldval);
 	exports.saveOrUpdate({
 		id: id,
 		top: !oldval
@@ -178,3 +178,26 @@ exports.deletedEntries = function(ctrl) {
 		});		
 	});
 };
+
+exports.upload = function(req, res, app) {
+    // get the temporary location of the file
+//	console.log(req.files);
+    var tmp_path = req.files.file.path;
+    
+    // set where the file should actually exists - in this case it is in the "images" directory
+    var target_path = module.parent.filename+"/../../public/content/" + req.files.file.name;
+    console.log('tmppath',tmp_path,target_path);
+    debugger;
+    
+    // move the file from the temporary location to the intended location
+    fs.rename(tmp_path, target_path, function(err) {
+        if (err) throw err;
+        // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+        fs.unlink(tmp_path, function() {
+            if (err) throw err;
+            res.send('File uploaded to: ' + target_path + ' - ' + req.files.file.size + ' bytes');
+        });
+    });
+
+}
+

@@ -3,12 +3,44 @@
  */
 
 var api = require('./api');
+var fs = require('fs');
+var path = require('path');
+console.log(path.dirname(module.parent.filename));
 
 exports.admin = function(req, res){
+	
+  var dirlist = fs.readdirSync(module.parent.filename+"/../public/content")
+  
   res.render('admin', { 
-	  title: 'admin screen' 
+	  title: 'admin screen', 
+      
   });
 };
+
+exports.content = function(req, res){
+	var dir = module.parent.filename+"/../public/content";
+	fs.readdir(dir, function (err, files) {
+
+	    res.send(files.map(function (file) {
+	        return {file: file, path: path.join(dir, file)};
+	    }).filter(function (file) {
+	        return fs.statSync(file.path).isFile();
+	    }).map(function (file) {
+	    	var data = fs.statSync(file.path);
+	    	data.filename = file.file;
+	    	data.path=file.path
+	    	return data;
+
+	    }).sort(function(a,b){
+	    	if (a.ctime > b.ctime) return -1;
+	    	if (a.ctime < b.ctime) return 1;
+	    	return 0;
+	    }));
+	    
+	});
+	
+};
+
 exports.saveEntry = function(req,res){
 	res.send("respond with a resource 2");
 }
