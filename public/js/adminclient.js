@@ -109,7 +109,7 @@ pager.load = ko.computed(function(){
 	filter.limit = pager.pagesize();
 	
 	getJson('api/entries', filter).done(function(data){		
-		console.log("dddd",data)
+//		console.log("dddd",data)
 		if (data.entries)
 			entries(data.entries.map(function(e){return new Entry(e);}));	
 		pager.allentries(data.max);
@@ -119,6 +119,40 @@ pager.load = ko.computed(function(){
 });
 pager.hasNext = ko.computed(function(){return pager.offset()+pager.pagesize()<pager.allentries();});
 pager.hasPrev = ko.computed(function(){return pager.offset()>0;});
+
+
+
+
+var contentdir = ko.observableArray(), selectedimg = ko.observable();
+
+var getContent = function(){
+	return getJson('api/content',{}).done(function(data){		
+		contentdir(data)		
+		
+	});
+}
+
+var addImg = function(img){
+	var entry = editingEntry();
+	editingEntry(false);
+	entry.body(entry.body() + "<p class='blogimg'><img src='"+img()+"'></p>");
+	editingEntry(entry);
+}
+
+var uploadconfig={
+		target: 'api/uploadfile', 
+		dropAreaId: 'dropspace',
+		progressBarId: 'uploadprogress',
+		onDone: function(data){
+			console.log('uploaddone');
+			getContent().done(function(){
+				console.log('contentdir:','content/'+contentdir()[0].filename)			
+				selectedimg('content/'+contentdir()[0].filename);
+			})
+		},
+		formdata: []
+	};
+
 
 $(function(){
 	
@@ -141,7 +175,8 @@ $(function(){
 //			deletedEntries(data.result.map(function(e){return new Entry(e);}));		
 //	});
 //	
-
+	getContent();
+	
 	ko.applyBindings({
 		entries : entries,
 		tags: tags,
@@ -151,7 +186,11 @@ $(function(){
 		addEntry : addEntry,
 		saveEntry : saveEntry,
 		editingTag: editingTag,
-		pager: pager
+		pager: pager,
+		uploadconfig: uploadconfig,
+		content: contentdir,
+		selectedimg: selectedimg,
+		
 	});
 
 });
