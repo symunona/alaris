@@ -13,7 +13,7 @@ var Entry = Class.extend({
 			id : '',
 			title : '',
 			body : '',
-			date : undefined,
+			date : moment().format(),
 			tag : '',
 			topic: 0,
 			top: 0,
@@ -28,7 +28,6 @@ var Tag = Class.extend({
 			name : '',
 			style : '',
 			customjs: '',
-			color : '',
 			startdate: '',
 			enddate: '',
 			background: ''

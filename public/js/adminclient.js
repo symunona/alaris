@@ -51,8 +51,7 @@ function replaceAll(find, replace, str) {
 
 function deleteEntry(entry){
 	if (!confirm('Sure you want to delete entry?')) return;
-	
-	debugger;
+		
 	entries.remove(entry);
 	editingEntry(entry);
 	entry.deleted(1);

@@ -107,8 +107,8 @@ exports.getTags = function(req, res) {
 };
 
 exports.saveTag = function(req, res) {
-	if (!req.body.id)
-		req.body.date = moment().format();
+	req.body.startdate = moment(req.body.startdate).format("YYYY-MM-DD HH:mm:ss")
+	req.body.enddate = moment(req.body.enddate).format("YYYY-MM-DD HH:mm:ss")
 	exports.saveOrUpdate(req.body, 'tags', function(scs){
 		res.send(req.body);
 	});
@@ -116,7 +116,7 @@ exports.saveTag = function(req, res) {
 
 exports.saveEntry = function(req, res) {
 	if (!req.body.id)
-		req.body.date = moment().format();
+		req.body.date = moment().format("YYYY-MM-DD HH:mm:ss");
 	exports.saveOrUpdate(req.body, 'blog', function(scs){
 		res.send(req.body);
 	});
