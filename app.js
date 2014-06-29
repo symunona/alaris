@@ -23,7 +23,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.bodyParser({uploadDir:'public/content'}));
+app.use(express.bodyParser({uploadDir:__dirname +'/public/content'}));
 app.use(express.methodOverride());
 app.use(app.router);
 
