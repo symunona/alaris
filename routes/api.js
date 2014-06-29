@@ -194,7 +194,7 @@ exports.upload = function(req, res, app) {
     	target_path = target_path.replace(/\//g,'\\');
     console.log('tmppath',tmp_path,target_path);
     debugger;
-    
+    try{
     // move the file from the temporary location to the intended location
     fs.rename(tmp_path, target_path, function(err) {
         if (err) throw err;
@@ -204,6 +204,10 @@ exports.upload = function(req, res, app) {
             res.send('File uploaded to: ' + target_path + ' - ' + req.files.file.size + ' bytes');
         });
     });
-
+    }
+    catch(e)
+    {
+    	res.send({'upload error':e.message});
+    }
 }
 
