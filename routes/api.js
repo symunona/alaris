@@ -185,7 +185,13 @@ exports.upload = function(req, res, app) {
     var tmp_path = req.files.file.path;
     
     // set where the file should actually exists - in this case it is in the "images" directory
-    var target_path = module.parent.filename+"/../../public/content/" + req.files.file.name;
+    
+	 var path = module.parent.filename.replace(/\\/g,'/');
+	 path = path.slice(0,path.lastIndexOf("/")) +"/../public/content/";
+    
+    var target_path = path + req.files.file.name;
+    if (module.parent.filename.indexOf('\\')>-1)
+    	target_path = target_path.replace(/\//g,'\\');
     console.log('tmppath',tmp_path,target_path);
     debugger;
     
