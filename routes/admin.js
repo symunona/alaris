@@ -5,11 +5,14 @@
 var api = require('./api');
 var fs = require('fs');
 var path = require('path');
-console.log(path.dirname(module.parent.filename));
+
 
 exports.admin = function(req, res){
 	
-  var dirlist = fs.readdirSync(module.parent.filename+"/../public/content")
+ var path = module.parent.filename.replace(/\\/g,'/');
+ path = path.slice(0,path.lastIndexOf("/")) +"/public/content";
+	
+  var dirlist = fs.readdirSync(path)
   
   res.render('admin', { 
 	  title: 'admin screen', 
@@ -18,7 +21,10 @@ exports.admin = function(req, res){
 };
 
 exports.content = function(req, res){
-	var dir = module.parent.filename+"/../public/content";
+	
+ var dir = module.parent.filename.replace(/\\/g,'/');
+ dir = dir.slice(0,dir.lastIndexOf("/")) +"/public/content";
+	
 	fs.readdir(dir, function (err, files) {
 
 	    res.send(files.map(function (file) {
@@ -52,11 +58,11 @@ exports.getEntriesIntf = function(req, res) {
 		limit: parseInt(req.query.limit) || 10,
 		
 		callback: function(renderobj){
-			console.log('query result',renderobj)
+//			console.log('query result',renderobj)
 			res.send(renderobj);			
 		}
 	}
-	console.log('admin:',req.query, req.params);
+//	console.log('admin:',req.query, req.params);
 	api.getAllEntries(ctrl);
 };
 
