@@ -107,8 +107,8 @@ exports.getTags = function(req, res) {
 };
 
 exports.saveTag = function(req, res) {
-	req.body.startdate = moment(req.body.startdate).format("YYYY-MM-DD HH:mm:ss")
-	req.body.enddate = moment(req.body.enddate).format("YYYY-MM-DD HH:mm:ss")
+	req.body.startdate = req.body.startdate?moment(req.body.startdate).format("YYYY-MM-DD HH:mm:ss"):null;
+	req.body.enddate = req.body.enddate?moment(req.body.enddate).format("YYYY-MM-DD HH:mm:ss"):null;
 	exports.saveOrUpdate(req.body, 'tags', function(scs){
 		res.send(req.body);
 	});
@@ -145,8 +145,9 @@ exports.saveOrUpdate = function(entry, table, cb){
 		});
 	} else 
 	{	
-		db.select('id').order_by('id desc').limit(1).get('blog',function(err,el){							
+		db.select('id').order_by('id desc').limit(1).get(table,function(err,el){							
 			entry.id = parseInt(el[0].id)+1;		
+			
 			db.insert(table,entry,function(err){
 					if (err)
 					{

@@ -107,6 +107,11 @@ ko.bindingHandlers.datepicker = {
 	        var options = allBindingsAccessor().datepickerOptions || {};
 //	        console.log('dp binging',ko.utils.unwrapObservable(valueAccessor()));
 	        options.dateFormat = 'yy.mm.dd.';
+	        options.beforeShow= function() {
+		        setTimeout(function(){
+		            $('.ui-datepicker').css('z-index', 60000);
+		        }, 0);
+		    }
 	        $(element).datepicker(options);
 	          
 	        //handle the field changing
