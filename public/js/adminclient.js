@@ -6,6 +6,18 @@ var entries = ko.observableArray(),
 	tagsearch = ko.observableArray();
 
 
+var timeline_config = {
+    width:              '100%',
+    height:             '300',
+    embed_id:           'timeline',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
+    start_at_end:       true,                          //OPTIONAL START AT LATEST DATE
+//    start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
+    start_zoom_adjust:  '1',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+    hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
+    lang:               'en',                           //OPTIONAL LANGUAGE
+    css:                'js/lib/vendor/timelinejs/timeline.css',     //OPTIONAL PATH TO CSS
+    js:                 'js/lib/vendor/timelinejs/timeline.js'    //OPTIONAL PATH TO JS
+}
 
 function logout(){}
 
@@ -78,6 +90,9 @@ function saveEntry(){
 function saveTag(){
 	
 	var tag = ko.toJS(editingTag);	
+
+	tag.startdate = moment(tag.startdate).isValid()?tag.startdate : null;
+	tag.enddate = moment(tag.startdate).isValid()?tag.enddate : null;
 
 	postJson('api/saveTag', tag ).done(function(data){
 		console.log('data:',data);
@@ -152,12 +167,34 @@ var uploadconfig={
 		formdata: []
 	};
 
+var loadTimeline = function(){
+	var eras = tags().map(function(e){return {
+				startDate: moment(e.startdate()).format("YYYY,MM,DD"),
+				endDate: moment(e.enddate()).format("YYYY,MM,DD"),
+				headline: e.name()
+				
+			}});
+	var tmlnconfig = {
+					timeline: {
+						headline: "My eras",
+						type: "default",
+						text: "",
+						date: eras,						
+						era: []							
+					}			
+			}
+			timeline_config.source = tmlnconfig;		
+			$('#'+timeline_config.embed_id).html('');
+			createStoryJS(timeline_config);
+}
+
 
 $(function(){
 	
 	var filter = filterRoot();
 	filter.orderBy = 'creationDate';
 	filter.orderDirection = 'desc';
+	tags.subscribe(loadTimeline);
 	
 	getJson('api/entries', filter).done(function(data){			
 		if (data.entries)
@@ -165,8 +202,10 @@ $(function(){
 	});
 	
 	getJson('api/tags', filter).done(function(data){			
-		if (data)
-			tags(data.map(function(e){return new Tag(e);}));		
+		if (data){
+			tags(data.map(function(e){return new Tag(e);}));						
+		}
+				
 	});
 	
 //	getJson('api/deletedEntries', filter).done(function(data){			

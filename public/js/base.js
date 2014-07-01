@@ -25,11 +25,12 @@ var Entry = Class.extend({
 var Tag = Class.extend({
 	init : function(properties) {
 		util.extend(this, {
+			id: '',
 			name : '',
 			style : '',
 			customjs: '',
-			startdate: '',
-			enddate: '',
+			startdate: null,
+			enddate: null,
 			background: ''
 		}, properties);
 	}
