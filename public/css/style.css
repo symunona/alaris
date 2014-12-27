@@ -88,6 +88,11 @@ sub {
 img {
   border: 0;
 }
+
+span.peek p img{
+	margin: 0 auto;
+}
+
 svg:not(:root) {
   overflow: hidden;
 }
