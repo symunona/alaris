@@ -15,5 +15,6 @@ function rate(element,id,plusminus){
 	});
 }
 
-
-parturl = "api/partAll";
+$(function(){
+	parturl = serverroot + "/api/partAll";
+	});

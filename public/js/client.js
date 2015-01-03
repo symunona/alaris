@@ -20,7 +20,7 @@ function isScrolledIntoView(elem)
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 }
 
-var parturl = serverroot+"/api/part";
+var parturl;
 
 function search(){
 
@@ -209,6 +209,7 @@ $(function(){
 	offsetstart = offset = parseInt($('meta[name="offsetstart"]').attr('content'));
 
 	serverroot = $('meta[name=serverroot]').attr('content');
+	parturl = serverroot+"/api/part";
 
 	offsets = $('.entry').map(function(i,e){return $(e).position().top})
 	
