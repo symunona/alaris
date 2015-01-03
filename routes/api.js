@@ -106,8 +106,6 @@ exports.getAllEntries = function(ctrl) {
 			selector
 				.limit(ctrl.limit,ctrl.offset)
 				.order_by('date desc')
-				.where('topic = 0 ')
-				.where('top = 1');
 		}
 		else
 		{
@@ -115,15 +113,11 @@ exports.getAllEntries = function(ctrl) {
 				.limit(ctrl.limit,ctrl.offset)
 				.order_by('date desc')
 				.where('body like "%'+ctrl.keyword+'%" or title like "%'+ctrl.keyword+'%" or tag like "%'+ctrl.keyword+'%"')
-				.where('topic = 0 ')
-				.where('top = 1');
 		}
 	}
 	else{
 		selector
 			.where({id: ctrl.id})
-			.where('topic = 0 ')
-			.where('top = 1');
 	}
 //	if (ctrl.offset>0)
 //		selector = selector;
