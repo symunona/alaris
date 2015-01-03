@@ -56,7 +56,7 @@ exports.getEntriesIntf = function(req, res) {
 	var ctrl = {
 		offset: parseInt(req.query.offset) || 0,
 		limit: parseInt(req.query.limit) || 10,
-		
+		id: req.query.id,
 		callback: function(renderobj){
 //			console.log('query result',renderobj)
 			res.send(renderobj);			

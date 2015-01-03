@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')  
   , admin = require('./routes/admin')
   , api = require('./routes/api')
+  , grader = require('./routes/grader')
   , http = require('http')
   , path = require('path')
   , config = require('./config.json')
@@ -22,7 +23,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());
-app.use(express.logger('dev'));
+
 app.use(express.bodyParser({uploadDir:__dirname +'/public/content'}));
 app.use(express.methodOverride());
 app.use(app.router);
@@ -46,10 +47,13 @@ if ('development' == app.get('env')) {
 
 function wheretogoroot(req,res)
 {
+	console.log(req)
 	if (req.params.offset == config.admin.url)
 		admin.admin(req,res);
 	else if (req.params.offset == 'all')
 		routes.all(req,res);
+	else if (req.params.offset == 'grader')
+		routes.grader(req,res);
 	else
 		routes.index(req,res);
 }
@@ -61,13 +65,19 @@ var auth = express.basicAuth(function(user, pass) {
 
 //app.get('/:offset', wheretogoroot);
 app.get('/', routes.index);
+
 app.get('/api/part', routes.part);
 app.post('/api/top', admin.toggletop);
+app.post('/api/rate', grader.rate);
 app.get('/api/partAll', routes.partAll);
 app.get('/api/eras', routes.getErasIntf);
 //app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
 app.get('/all', auth, routes.all);
+app.get('/grader', auth, grader.grader);
+app.get('/:offset', routes.index);
+app.get('/id/:id', routes.index);
+app.get('/api/search/:keyword', routes.index);
 app.get('/api/entries', admin.getEntriesIntf);
 app.post('/api/saveEntry', api.saveEntry);
 app.post('/api/saveTag', api.saveTag);
@@ -82,6 +92,8 @@ app.post('/api/uploadfile',function(req,res){
 var entries;
 
 //app.get('/entry', user.list);
+
+app.use(express.logger('dev'));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

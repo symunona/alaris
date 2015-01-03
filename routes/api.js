@@ -1,16 +1,4 @@
 
-
-// var server = new Server('localhost', 27017, { auto_reconnect: true }),
-// alaris = new Db('alaris', server);
-//
-// alaris.open(function (err, db) {
-// if (!err) {
-// console.log("Database connection established");
-// if (err) {
-// console.log("DB error blipp");
-// }
-// });
-
 var moment = require('moment');
 var config = require('../config.json');
 var fs = require('fs');
@@ -22,20 +10,89 @@ var db = new Db.Adapter({
     database: config.db.database
 });
 
+exports.processentries = function (ctrl) {
+	
+	var docs = ctrl.entries || [];	
+	
+	var style = '';
+	
+	var offset = ctrl.offset;
+	
+	docs = docs.map(function(e){
+		e.monthday = moment(e.date).format('MMM D.');
+		e.monthdaym = 'm'+moment(e.date).format('M');
+		e.dayofweek = moment(e.date).format('dddd');
+		e.dayofweeks = 'd'+moment(e.date).format('d');
+		e.time = moment(e.date).format('h:mm');
+		e.timee = 'hh'+Math.floor(moment(e.date).format('h')/3);
+		e.tags = e.tag.length?(e.tag.split(',').map(function(t){return t.trim();})):[];
+		e.year = moment(e.date).format('YYYY');
+		e.timestamp = moment(e.date).format();
+		e.offset = offset++;
+		e.body = e.body.replace(/(<img.+?src *= *[\"'])(?!http:?)(?!https:?)(.+?)([\"'].*?>)/gi, "$1"+config.serverroot+"/$2$3");
+		return e;
+	});
+	return {
+		title : config.title,
+		tagline : config.tagline,
+		footer : config.footer,
+		footerTitle : config.footerTitle,
+		style: style,
+		mainentry : docs[0],
+		entries : docs,
+		offset: ctrl.offset || 0,
+		max: ctrl.max || 1,
+		count: ctrl.count || docs.length,
+		years: ctrl.years || [],
+		serverroot: config.serverroot
+//		prev: req.params.offset - displaySize > 0 ? req.params.offset - displaySize : '',
+//		next: req.params.offset + displaySize > max ? req.params.offset + displaySize : req.params.offset,
+//		hasPrev: (req.params.offset - displaySize) < 0,
+//		hasNext: (req.params.offset + displaySize) < max
+		
+	};
+}; 
+
+
+
 exports.getEntries = function(ctrl) {
-	var selector = db.select('*')
-		.limit(ctrl.limit,ctrl.offset)
-		.order_by('date desc')
-		.where('topic = 0 ')
-	if (ctrl.offset>0)
-		selector = selector.where('top = 1');
+	var selector = db.select('*');
+	if (!ctrl.id){
+		if (!ctrl.keyword){
+			selector
+				.limit(ctrl.limit,ctrl.offset)
+				.order_by('date desc')
+				.where('topic = 0 ')
+				.where('top = 1');
+		}
+		else
+		{
+			selector
+				.limit(ctrl.limit,ctrl.offset)
+				.order_by('date desc')
+				.where('body like "%'+ctrl.keyword+'%" or title like "%'+ctrl.keyword+'%" or tag like "%'+ctrl.keyword+'%"')
+				.where('topic = 0 ')
+				.where('top = 1');
+		}
+	}
+	else{
+		selector
+			.where({id: ctrl.id})
+			.where('topic = 0 ')
+			.where('top = 1');
+	}
+//	if (ctrl.offset>0)
+//		selector = selector;
 	
 	selector.get('blog',function(err,rows,fields){		
 			db.count('blog',function(err,c,fields){
-				ctrl.entries = rows;
-				ctrl.max = c;
-				ctrl.count = rows?rows.length:0;
-				ctrl.callback(ctrl);	
+				db.query("SELECT YEAR(date) as year, min(date), count(id) as cnt FROM blog WHERE topic = 0 AND top = 1 GROUP BY year",function(err,years){
+					ctrl.entries = rows;
+					ctrl.max = c;
+					ctrl.count = rows?rows.length:0;
+					ctrl.years = years;					
+					ctrl.callback(ctrl);						
+				})
 			});		
 	});
 };
@@ -43,18 +100,47 @@ exports.getEntries = function(ctrl) {
 
 
 exports.getAllEntries = function(ctrl) {
-	var selector = db.select('*')
-		.limit(ctrl.limit,ctrl.offset)
-		.order_by('date desc');
-	
-	selector.get('blog',function(err,rows,fields){		
-			db.count('blog',function(err,c,fields){
+	var selector = db.select('*');
+	if (!ctrl.id){
+		if (!ctrl.keyword){
+			selector
+				.limit(ctrl.limit,ctrl.offset)
+				.order_by('date desc')
+				.where('topic = 0 ')
+				.where('top = 1');
+		}
+		else
+		{
+			selector
+				.limit(ctrl.limit,ctrl.offset)
+				.order_by('date desc')
+				.where('body like "%'+ctrl.keyword+'%" or title like "%'+ctrl.keyword+'%" or tag like "%'+ctrl.keyword+'%"')
+				.where('topic = 0 ')
+				.where('top = 1');
+		}
+	}
+	else{
+		selector
+			.where({id: ctrl.id})
+			.where('topic = 0 ')
+			.where('top = 1');
+	}
+//	if (ctrl.offset>0)
+//		selector = selector;
+
+	selector.get('blog',function(err,rows,fields){
+		db.count('blog',function(errcnt,c,fields){
+			db.query("SELECT YEAR(date) as year, min(date), count(id) as cnt FROM blog WHERE topic = 0 AND top = 1 GROUP BY year",function(err,years){
+
 				ctrl.entries = rows;
 				ctrl.max = c;
 				ctrl.count = rows?rows.length:0;
-				ctrl.callback(ctrl);	
-			});		
+				ctrl.years = years;
+				ctrl.callback(ctrl);
+			})
+		});
 	});
+
 };
 
 

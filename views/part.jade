@@ -1,10 +1,13 @@
 - for (var x = 0; x < count; x++)
 	article.row
-		div.col-md-6.col-md-offset-3.entry(data-year=entries[x].year,data-timestamp=entries[x].timestamp)			
+		div.col-md-6.col-md-offset-3.entry(data-year=entries[x].year,data-timestamp=entries[x].timestamp, data-id=entries[x].id, data-offset=entries[x].offset, id=entries[x].id)
+			div.isactual
+				a(href=serverroot+'/id/'+entries[x].id)
+					i.glyphicon.glyphicon-asterisk
 			h3.title=entries[x].title
 			span.peek!=entries[x].body
-			
-		div.col-md-1.tags
-			div.tagscontainer
-				- for (var y = 0; y < entries[x].tags.length; y++)
-					div.tag=entries[x].tags[y]								
+		if entries[x].tags.length>0
+			div.col-md-1.tags
+				div.tagscontainer
+					- for (var y = 0; y < entries[x].tags.length; y++)
+						div.tag=entries[x].tags[y]								
