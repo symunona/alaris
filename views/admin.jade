@@ -28,14 +28,14 @@ html(lang='hu')
 		header    
 			nav.navbar.navbar-inverse(role="navigation")
 				div.container-fluid
-					div.navbar-header				
+					div.navbar-header
 						a.navbar-brand(href="/") Alaris blog engine admin
 
-		section.content.container-fluid.adminscreen							
-			div.row					
+		section.content.container-fluid.adminscreen
+			div.row
 				h2.col-xs-8 Entries 
 					a(data-bind="click: addEntry", href='#')  +
-			div.row(data-bind='if:editingEntry()')			
+			div.row(data-bind='if:editingEntry()')
 				#editor.col-xs-8(data-bind='with: editingEntry')
 					div
 						button(data-bind="click: saveEntry") save
@@ -44,7 +44,7 @@ html(lang='hu')
 						input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
 						input#topic(data-bind='value: topic')
 						textarea#entrycontent(data-bind='richText: body')
-				div.contenter.col-xs-4.solidbg						
+				div.contenter.col-xs-4.solidbg
 					div#dropspace.dropspace(data-bind="dragupload: uploadconfig, style:{'background-image': 'url(' + selectedimg()+ ')'}, click: addImg.bind(this,selectedimg)")
 					
 					ul(data-bind="foreach: content").contentlist
@@ -53,7 +53,7 @@ html(lang='hu')
 			div
 				button#first(data-bind="click: pager.first, enable: pager.hasPrev") |<
 				button#prev(data-bind="click: pager.prev, enable: pager.hasPrev") <
-				input(type="number",data-bind="value: pager.offset, enable:false")				
+				input(type="number",data-bind="value: pager.offset, enable:false")
 				button#next(data-bind="click: pager.next, enable: pager.hasNext") >
 				button#last(data-bind="click: pager.last, enable: pager.hasNext") >|
 			div.row
@@ -79,7 +79,7 @@ html(lang='hu')
 				a.button(data-bind="click: addTag") +
 
 			div.solidbg
-				div(data-bind='if:editingTag()').solidbg.col-xs-12		
+				div(data-bind='if:editingTag()').solidbg.col-xs-12
 					div.tageditor.col-md-6.col-md-offset-3(data-bind='with: editingTag')
 						input(data-bind="value: name",placeholder='Tagname')
 						textarea(data-bind='value: style', placeholder='style parmeters')

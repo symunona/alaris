@@ -3,11 +3,13 @@
 @fadedcolor: #777;
 @headercolor: 255;
 
+@black: #111;
+@white: #efefef;
+
 body {	
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #019678;
-  background: #777;
-  
+  background-color: #fefefe;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,6 +29,12 @@ body {
 	span{
 		color: grey;
 		margin-left: 10px;
+		&.rate > a{
+			font-weight: bold;
+			display: inline-block;
+			padding: 2px;
+			margin-left: 5px;
+		}
 	}
 }
 
@@ -82,6 +90,27 @@ img{
 	color: black;
 	background-color: rgba(@br,@br,@br,0.8);	
 	margin-bottom: 40px;
+	padding-bottom: 10px;
+  /*
+    &.actual::before{
+		// content: '◄';
+	  	position: absolute;
+	  	top: 0px;
+	  	left: -20px;
+	  	color: white;
+	  	font-size: 20px;
+	}
+	*/
+  &.theend{
+	text-align: center;
+	font-style: italic;
+	padding-top:10px;
+	margin-bottom: 200px;
+  }
+}
+span.highlight{
+  background: black;
+  color: white;
 }
 .entrytime{
 	cursor: default;
@@ -167,7 +196,7 @@ img{
 			margin-left: 10px;
 			margin-bottom: 10px;
 			padding: 3px;			
-			background: white;
+			background: #F7F7F7;
 			color: black;
 			font-size: small;
 		}
@@ -196,7 +225,15 @@ header#index{
 	.tagline{
 		font-size: 12px;
 		text-align: right;
-	}	
+	}
+  	a{
+	  color: rgba(@headercolor,@headercolor,@headercolor,0.8);
+	  &:hover{
+		color: rgba(150,150,150,1);
+		text-decoration: none;
+	  }
+	}
+
 }
 
 
@@ -332,3 +369,85 @@ a {
 	}
 }
 
+
+.isactual{
+	display: none;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: -30px;
+	top: 0px;
+	background-color: rgba(200,200,200,0.4);
+	font-size: 10px;
+	line-height: 30px;
+	text-align: center;
+	&:hover{
+	  background-color: rgba(200,200,200,0.6);
+	}
+  	a{
+	  display: block;
+	  height: 30px;
+	  width: 30px;
+	  color: black;
+	  &:hover{
+		color: white;
+	  }
+	}
+
+}
+.actual > .isactual{
+  display: inline-block;
+
+}
+
+.searchbox {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	display: block;	
+	height: 32px;
+	width: 95%;
+	a.trigger{
+		display: inline-block;
+		height: 32px;
+		width: 32px;
+		background: url('search-icon-tr50.png');
+		// background: url('search-icon-md.png');
+		background-size: 32px 32px;
+		cursor: pointer;
+	  &:hover{
+		-webkit-filter: invert(100%);
+	  }
+	}
+	input{
+		height: 28px;
+		border: 0px;
+		padding: 2px;
+		display: inline-block;
+		&:active, &:focus{
+			outline: #777 3px solid;
+		}
+	}
+	.searchboxbuttons{
+		display: inline-block;
+		width: 95%;
+	}
+	.yearpicker{
+		display: inline-block;
+	}
+}
+
+.yearpicker a{
+	background: @white;
+	color: @black;
+	display: inline-block;
+	padding: 3px;
+	margin-left: 5px;
+	cursor: pointer;
+	&:hover{
+		background: @black;
+		color: @white;		
+		text-decoration: none;
+	}
+
+}

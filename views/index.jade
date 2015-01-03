@@ -5,17 +5,19 @@ html
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name="viewport", content="width=device-width, initial-scale=1")
-		link(rel="shortcut icon" href="/css/favicon.png")
-		link(rel='stylesheet', href='/css/style.css')
-		script(type='text/javascript', src='js/lib/vendor/jquery-1.11.0.js')
-		script(type='text/javascript', src='js/lib/vendor/jquery.debounce-1.0.5.js')
-		script(type='text/javascript', src='js/lib/vendor/knockout-3.0.0.debug.js')
-		script(type='text/javascript', src='js/lib/vendor/knockout.wrap.js')
-		script(type='text/javascript', src='js/lib/vendor/inheritance.js')
-		script(type='text/javascript', src='js/lib/vendor/moment.min.js')
-		script(type='text/javascript', src='js/base.js')
-		script(type='text/javascript', src='js/client.js')		
+		link(rel="shortcut icon" href=serverroot+"/css/favicon.png")
+		link(rel='stylesheet', href=serverroot+'/css/style.css')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/jquery.debounce-1.0.5.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/jquery.highlight.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src=serverroot+'/js/lib/vendor/moment.min.js')
+		script(type='text/javascript', src=serverroot+'/js/base.js')
+		script(type='text/javascript', src=serverroot+'/js/client.js')
 		meta(name='offsetstart',content=offset)
+		meta(name="serverroot", content=serverroot)
 		style=style
 		script.
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -27,8 +29,9 @@ html
 			ga('send', 'pageview');
 	body
 		div.bgfader &nbsp;
-		header#index.div.col-md-3.col-md-offset-9 
-			div=title
+		header#index.div.col-md-3.col-md-offset-9
+			div
+				a(href='/')=title
 			div.tagline=tagline
 		//
 			section#main-entry
@@ -36,7 +39,10 @@ html
 					h2=mainentry.title
 					div!=mainentry.body				
 		section#entries.container-fluid
-			include part						
+			if count > 0
+				include part
+			else
+				div no entires found
 						
 		section.nav
 			#actualyear
@@ -47,6 +53,12 @@ html
 			div.clear
 			#eratags
 			
-		
+		section.searchbox
+			a.trigger(onclick="$(this).hide().parent().children('.searchboxbuttons').show(); $('.lookfor').focus()")
+			.searchboxbuttons(style="display:none;")
+				input.lookfor(onblur="setTimeout(function(){$('.searchbox').children('a.trigger').show(); $('.searchboxbuttons').hide()},500)")
+				.yearpicker(data-years=years)
+					- for (var y = 0; y < years.length; y++)
+						a(onclick="toYear(this)",data-year=years[y])=years[y].year
 		section.footer
 			div#tmp(title=footerTitle)=footer

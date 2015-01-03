@@ -196,7 +196,8 @@ $(function(){
 	filter.orderDirection = 'desc';
 	tags.subscribe(loadTimeline);
 	
-	getJson('api/entries', filter).done(function(data){			
+	getJson('api/entries', filter).done(function(data){
+
 		if (data.entries)
 			entries(data.entries.map(function(e){return new Entry(e);}));		
 	});
@@ -214,7 +215,20 @@ $(function(){
 //	});
 //	
 	getContent();
-	
+
+	if (window.location.hash){
+		var filter = filterRoot();
+		filter.orderBy = 'creationDate';
+		filter.orderDirection = 'desc';
+		filter.id = window.location.hash.substring(1);
+
+		getJson('api/entries', filter).done(function(data){
+			console.log(filter, data)
+			if (data.entries)
+				editEntry(new Entry(data.entries[0]));
+		});
+	}
+
 	ko.applyBindings({
 		entries : entries,
 		tags: tags,
