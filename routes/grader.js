@@ -2,8 +2,7 @@ var db = require('./db');
 var api = require('./api');
 
 exports.grader = function(req, res){
-	db.getRandom('blog').done(function(data){
-		console.log(data);
+	db.getRandom('blog').done(function(data){		
 		res.render('indexall', api.processentries({entries: [data]}));
 	})
 }
