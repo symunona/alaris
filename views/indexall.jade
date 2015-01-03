@@ -18,7 +18,7 @@ html
 		script(type='text/javascript', src=serverroot + '/js/client.js')
 		script(type='text/javascript', src=serverroot + '/js/clientall.js')
 		meta(name='offsetstart',content=offset)
-		meta(name="serverroot", content=serverroot)		script(type='text/javascript', src='js/lib/vendor/jquery-1.11.0.js')
+		meta(name="serverroot", content=serverroot)		
 		style=style
 		
 	body
@@ -50,6 +50,5 @@ html
 				.yearpicker(data-years=years)
 					- for (var y = 0; y < years.length; y++)
 						a(onclick="toYear(this)",data-year=years[y])=years[y].year
-
 		section.footer
 			div#tmp(title=footerTitle)=footer
