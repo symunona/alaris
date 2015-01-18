@@ -22,6 +22,27 @@ function isScrolledIntoView(elem)
 
 var parturl;
 
+var QueryString = function () {
+
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");        
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];        
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
+keyword = QueryString.keyword;
+
 function search(){
 
 	$('#entries').html('');
@@ -76,14 +97,18 @@ function setActual(jqentry, scrollthere){
 
 
 	actualEntryIndex = $('.entry').index(jqentry[0]);
-	console.log(actualEntryIndex);
+//	console.log(actualEntryIndex);
 	jqentry.addClass('actual');
 
 	if (jqentry.attr('data-id')){
-		if (scrollthere)
-			window.location.hash = jqentry.attr('data-id');
-		else
-			changeHashWithoutScrolling(jqentry.attr('data-id'));
+		
+		changeHashWithoutScrolling(jqentry.attr('data-id'));
+		if (scrollthere)			
+		{
+			// window.location.hash = jqentry.attr('data-id');			
+			var offset = jqentry.position().top;
+			$("html, body").animate({ scrollTop: offset + 'px' });
+		}
 	}
 
 
@@ -136,7 +161,7 @@ function getcurrententry(){
 	var i;
 	for(i=0; offsets[i]<top; i++);
 
-	console.log('currententry',i)
+	//console.log('currententry',i)
 
 	var ents = $('.entry');
 	actualEntryIndex = i;
@@ -168,14 +193,14 @@ function loadnextl(){
 		$('#entries').append(data);
 
 		offsets = $('.entry').map(function(i,e){
-			console.log('Offset - ', $(e).attr('data-id'), $(e).position().top)
+//			console.log('Offset - ', $(e).attr('data-id'), $(e).position().top)
 			return $(e).position().top
 
 		});
 
 		if (keyword)
 		{
-			console.log('highlighting...',keyword);
+//			console.log('highlighting...',keyword);
 			$('#entries').highlight(keyword);
 		}
 		getcurrententry();
@@ -210,6 +235,8 @@ $(function(){
 
 	serverroot = $('meta[name=serverroot]').attr('content');
 	parturl = serverroot+"/api/part";
+	
+	
 
 	offsets = $('.entry').map(function(i,e){return $(e).position().top})
 	

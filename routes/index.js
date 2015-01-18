@@ -15,11 +15,12 @@ var processentries = api.processentries;
 
 exports.index = function(req, res) {
 //	console.log(req.paramsm, parseInt(req.params.offset)  );
+// console.log(req,req.params, req)
 	var ctrl = {
 		offset: parseInt(req.params.offset) || 0,
 		limit: parseInt(req.params.limit) || 10,
 		id: req.params.id,
-		keyword: req.params.keyword,
+		keyword: req.params.keyword || req.query.keyword,
 		callback: function(renderobj){			
 			res.render('index', processentries(renderobj));			
 		}
