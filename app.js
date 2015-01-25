@@ -73,6 +73,7 @@ app.get('/api/partAll', routes.partAll);
 app.get('/api/eras', routes.getErasIntf);
 //app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
+app.get('/stat', auth, admin.stat);
 app.get('/all', auth, routes.all);
 app.get('/grader', auth, grader.grader);
 app.get('/:offset', routes.index);

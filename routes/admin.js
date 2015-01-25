@@ -5,7 +5,20 @@
 var api = require('./api');
 var fs = require('fs');
 var path = require('path');
+var db = require('./db');
 
+exports.stat = function(req, res){
+	
+  var query = "select year(date) as Y, month(date) as M, concat(year(date) ,'-', month(date)) as YM, count(id) as cnt, top from blog group by year(date),month(date), top;"
+  var ret = api.processentries({});
+  
+  db.query(query).done(function(data){
+  	ret.statdata = data[0];
+  	res.render('stat',  ret);
+  })
+  
+  
+}; 
 
 exports.admin = function(req, res){
 	

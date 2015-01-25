@@ -243,6 +243,9 @@ exports.saveOrUpdate = function(entry, table, cb){
 	
 };
 
+
+
+
 exports.deletedEntries = function(ctrl) {
 	var selector = db.select('*')
 	.limit(ctrl.limit,ctrl.offset)
