@@ -204,7 +204,12 @@ $(function(){
 	
 	getJson('api/tags', filter).done(function(data){			
 		if (data){
-			tags(data.map(function(e){return new Tag(e);}));						
+			tags(data.map(function(e){return new Tag(e);}).sort(function(a,b){
+
+				if (a.startdate() > b.startdate()) return 1;
+				if (a.startdate() < b.startdate()) return -1;
+				return 0;
+			}));						
 		}
 				
 	});
