@@ -96,7 +96,10 @@ html(lang='hu')
 					
 				ul#tags(data-bind='foreach: tags').solidbg.col-xs-12
 					li(data-bind="click: $root.editTag.bind($data)")
-						span.name(data-bind='text: name')
+						span.name(data-bind='text: name') &nbsp;                                            
+						span.tag.from(data-bind='text: moment(startdate()).format("YYYY. MM. DD")')
+						span.tag -  
+						span.tag.to(data-bind='text: moment(enddate()).format("YYYY. MM. DD")')
 						span.commands
 							span.glyphicon-edit(title='edit')
 		//				
@@ -107,6 +110,8 @@ html(lang='hu')
 					// span.peek(data-bind='text: bodyshort')
 					span.tags(data-bind='foreach: tags')
 						span.tag(data-bind='text: name')
+						span.from.tag(data-bind='text: startdate') -
+						span.to.tag(data-bind='text: enddate')
 					span.commands
 						span.glyphicon.glyphicon-star.starme(title='star me')
 						span.glyphicon-edit(title='edit')				
