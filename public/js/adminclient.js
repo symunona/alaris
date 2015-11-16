@@ -141,8 +141,7 @@ var contentdir = ko.observableArray(), selectedimg = ko.observable();
 
 var getContent = function(){
 	return getJson('api/content',{}).done(function(data){		
-		contentdir(data)		
-		
+		contentdir(data)				
 	});
 }
 
@@ -185,7 +184,7 @@ var loadTimeline = function(){
 			}
 			timeline_config.source = tmlnconfig;		
 			$('#'+timeline_config.embed_id).html('');
-			createStoryJS(timeline_config);
+			if (window.createStoryJS) createStoryJS(timeline_config);
 }
 
 

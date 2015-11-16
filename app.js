@@ -18,6 +18,7 @@ var express = require('express')
 
 var app = express();
 
+console.log('starting server... ', process.env.PORT)
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -73,6 +74,7 @@ app.get('/api/partAll', routes.partAll);
 app.get('/api/eras', routes.getErasIntf);
 //app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
+app.get('/m', auth, admin.mobile);
 app.get('/stat', auth, admin.stat);
 app.get('/all', auth, routes.all);
 app.get('/grader', auth, grader.grader);

@@ -33,13 +33,22 @@ exports.admin = function(req, res){
   });
 };
 
+exports.mobile = function(req, res){  
+  res.render('mobile', { 
+	  title: 'mobile screen'      
+  });
+};
+
 exports.content = function(req, res){
 	
  var dir = module.parent.filename.replace(/\\/g,'/');
  dir = dir.slice(0,dir.lastIndexOf("/")) +"/public/content";
 	
 	fs.readdir(dir, function (err, files) {
-
+		if (!files) {
+			res.send(err);
+			return 0;
+		}		
 	    res.send(files.map(function (file) {
 	        return {file: file, path: path.join(dir, file)};
 	    }).filter(function (file) {
