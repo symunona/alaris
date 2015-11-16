@@ -1,0 +1,52 @@
+doctype html
+html(lang='hu')
+	head
+		title Alaris Admin
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel="shortcut icon" href="/css/favicon.png")
+		link(rel='stylesheet', href='/css/style.css')
+		link(rel="stylesheet", href="css/bootstrap.css")
+		link(rel="stylesheet", href='js/lib/vendor/timelinejs/timeline.css')
+		
+		script(type='text/javascript', src='js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src='js/lib/vendor/jqueryui/js/jquery-ui-1.10.4.custom.min.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src='js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src='js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src='js/lib/vendor/moment.min.js')
+		script(type='text/javascript', src='js/bindings.js')
+		script(type='text/javascript', src='js/base.js')
+		script(src='js/adminclient.js')
+	body
+		section.content.container-fluid.adminscreen
+			div.row
+				h2.col-xs-12 New entry 
+					a(data-bind="click: addEntry", href='#')  +					
+			div.row(data-bind='if:editingEntry()')
+				#editor.col-xs-12(data-bind='with: editingEntry')
+					div
+						button.col-xs-8(data-bind="click: saveEntry") save
+						button.col-xs-4(data-bind="click: discardEntry") discard
+						input#entrytitle.col-xs-12(data-bind="value: title",placeholder='Title')
+						input#entrytags.col-xs-8(data-bind='value: tag', placeholder='tags with comma separation...')
+						input#topic.col-xs-4(data-bind='value: topic')
+						textarea#entrycontent.col-xs-12(data-bind='value: body', rows='10')
+										
+			div
+				button#first(data-bind="click: pager.first, enable: pager.hasPrev") |<
+				button#prev(data-bind="click: pager.prev, enable: pager.hasPrev") <
+				input(type="number",data-bind="value: pager.offset, enable:false")
+				button#next(data-bind="click: pager.next, enable: pager.hasNext") >
+				button#last(data-bind="click: pager.last, enable: pager.hasNext") >|
+			div.row
+
+				div.col-sm-12
+					ul#entriesadmin.solidbg(data-bind='foreach: entries')
+						li(data-bind="click: $root.editEntry.bind($data)")
+							span.title(data-bind='text: title')
+							// span.peek(data-bind='text: bodyshort')
+							span.date(data-bind="text: moment(date()).format('YYYY. MM. DD. HH:mm')")
+							span.topic(data-bind="text: topic")
+							span.tag(data-bind='text: tag')
