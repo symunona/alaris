@@ -5,6 +5,7 @@ var entries = ko.observableArray(),
 	tags = ko.observableArray(),
 	tagsearch = ko.observableArray();
 
+window.onbeforeunload = saveEntry;
 
 var timeline_config = {
     width:              '100%',
@@ -70,21 +71,15 @@ function deleteEntry(entry){
 	saveEntry();
 }
 
+
+
 function saveEntry(){
 	
 	var entry = ko.toJS(editingEntry);	
-	
-//	entry.bodyshort = entry.body.slice(0,30);
-//	if (!entry.id) entry.date = moment.format();
-//	entry.bodyshort = replaceAll("<[^>]*>", "", entry.bodyshort) + '...';
-	console.log('saveentry',entry);
 	editingEntry(false);
 	
 	postJson('api/saveEntry', entry).done(function(data){
-		console.log('data:',data);		
-//		if (!entry.id)
 		entries.unshift(new Entry(data));
-
 	});
 }
 function saveTag(){
@@ -123,7 +118,7 @@ pager.load = ko.computed(function(){
 	filter.limit = pager.pagesize();
 	
 	getJson('api/entries', filter).done(function(data){		
-//		console.log("dddd",data)
+
 		if (data.entries)
 			entries(data.entries.map(function(e){return new Entry(e);}));	
 		pager.allentries(data.max);
