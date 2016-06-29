@@ -4,9 +4,9 @@ alaris
 Disclaimer from 2015
 --------------------
 ```
-Being spent now a couple of years in the industry: this is not a good code. 
+Spending a couple of years in the industry: this is not a good code. 
 It is more of a personal experiment of headless development, without any kind of plan. 
-So unless this is exactly what you are looking for, please note: do not use this code. For your own sake.
+So unless this is exactly what you are looking for, please note: do not use this code. For your own sake. It is also my very first experiment with nodeJS.
 ```
 
 
