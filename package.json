@@ -15,7 +15,7 @@
     "jade": "1.1.5",
     "mysql-activerecord": "0.8.3",
     "less-middleware": "0.1.15",
-    "moment": "2.5.1",
+    "moment": "2.19.3",
     "when": "2.8.0",
     "express": "3.3.4",
     "deferred":"0.7.1"
