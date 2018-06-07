@@ -1,3 +1,6 @@
+
+
+
 var entries = ko.observableArray(),
 	deletedEntries = ko.observableArray(),
 	editingEntry = ko.observable(false),

@@ -11,40 +11,43 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , config = require('./config.json')
- 
-  ;
+  , bodyParser = require('body-parser')
+  , basicAuth = require('express-basic-auth')
+  
 
 
 
-var app = express();
+var app = express()
 
 console.log('starting server... ', process.env.PORT)
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
 
-app.use(express.bodyParser({uploadDir:__dirname +'/public/content'}));
-app.use(express.methodOverride());
-app.use(app.router);
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-if (config.debug) 
-	app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.set('port', process.env.PORT || 3000)
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jade')
+
+if (config.debug) {
+	console.warn('[DEBUG] Less compile on.')
+	// app.use(require('less-middleware')('public'));
+}
+app.use(express.static('public'));
+app.use(express.static('node_modules'));
+
 
 
 
 // auth
-//app
-//.use(express.cookieParser('mypersonalcookieparserwithahorseandabatterystaple'))
-//.use(express.session())
-//.use(everyauth.middleware(app));
+// app
+// .use(express.cookieParser('mypersonalcookieparserwithahorseandabatterystaple'))
+// .use(express.session())
+// .use(everyauth.middleware(app));
 
 // development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
+// if ('development' == app.get('env')) {
+//   app.use(express.errorHandler());
+// }
 
 function wheretogoroot(req,res)
 {
@@ -60,18 +63,18 @@ function wheretogoroot(req,res)
 }
 
 //Synchronous Function
-var auth = express.basicAuth(function(user, pass) {
- return user === config.admin.user && pass === config.admin.pass;
+
+var auth = basicAuth({
+	users: config.admin.users,
+	challenge: true
 });
 
-//app.get('/:offset', wheretogoroot);
 app.get('/', routes.index);
 
 app.get('/api/part', routes.part);
-app.post('/api/top', admin.toggletop);
-app.post('/api/rate', grader.rate);
-app.get('/api/partAll', routes.partAll);
-app.get('/api/eras', routes.getErasIntf);
+app.post('/api/top/:id', auth, admin.toggleTop);
+app.get('/api/partAll', auth, routes.partAll);
+
 //app.get('/users', user.list);
 app.get('/x', auth, admin.admin);
 app.get('/m', auth, admin.mobile);
@@ -80,9 +83,12 @@ app.get('/all', auth, routes.all);
 app.get('/grader', auth, grader.grader);
 app.get('/:offset', routes.index);
 app.get('/id/:id', routes.index);
+
+app.post('/api/entry/save', auth, admin.saveEntry);
+
 app.get('/api/search/:keyword', routes.index);
 app.get('/api/entries', admin.getEntriesIntf);
-app.post('/api/saveEntry', api.saveEntry);
+
 app.post('/api/saveTag', api.saveTag);
 app.get('/api/searchTags', api.searchTags);
 app.get('/api/tags', api.getTags);
@@ -94,9 +100,8 @@ app.post('/api/uploadfile',function(req,res){
 
 var entries;
 
-//app.get('/entry', user.list);
 
-app.use(express.logger('dev'));
+// app.use(express.logger('dev'));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

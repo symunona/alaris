@@ -4,77 +4,89 @@
 ////var monk = require('monk');
 //var db = monk('localhost:27017/alaris');
 //var blog = db.get('blog');
-var displaySize = 10;
-var when = require('when');
-var api = require('./api');
+
+
 var moment = require('moment');
-var config = require('./../config.json');
-var db = require('./db');
 
-var processentries = api.processentries;
+const config = require('./../config.json'),
+	db = require('../lib/db'),
+	utils = require('../lib/utils')
 
-exports.index = function(req, res) {
-//	console.log(req.paramsm, parseInt(req.params.offset)  );
-// console.log(req,req.params, req)
-	var ctrl = {
-		offset: parseInt(req.params.offset) || 0,
-		limit: parseInt(req.params.limit) || 10,
-		id: req.params.id,
-		keyword: req.params.keyword || req.query.keyword,
-		callback: function(renderobj){			
-			res.render('index', processentries(renderobj));			
+exports.index = function (req, res) {
+	utils.renderEntries(res, 'index', exports.getEntriesFromReq(req, isThisPostPublic), {
+		offsetStart: req.query.offset || 0
+	})
+};
+
+exports.part = function (req, res) {
+	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req, isThisPostPublic))
+};
+
+exports.getEntriesFromReq = function(req, filterFunction){
+	let offset = parseInt(req.query.offset) || 0,
+	limit = parseInt(req.query.limit) || config.pageSize,
+	id = req.params.id,
+	keyword = req.params.keyword || req.query.keyword
+
+	let length = db.db.blog.length - 1;
+	
+	// Get the visible ones.
+	if (filterFunction){
+		while (offset > 0 && length > 0) {
+			if (filterFunction(db.db.blog[length])) {offset--} 
+			length--;
 		}
 	}
-
-	api.getEntries(ctrl);	
-
-};
-
-exports.all = function(req, res) {
-
-	var ctrl = {
-		offset: parseInt(req.params.offset) || 0,
-		limit: parseInt(req.params.limit) || 10,
-		
-		callback: function(renderobj){			
-			res.render('indexall', processentries(renderobj));			
-		}
+	else {
+		length = length - offset;
 	}
-	api.getAllEntries(ctrl);
+	
+	let entriesToShow = []
+	while (limit > 0 && length > 0) {
+		let entry = db.db.blog[length]
+		if (!filterFunction || filterFunction(entry)) {
+			entriesToShow.push(entry)
+			limit--
+		}
+
+		length--
+	}
+	return entriesToShow
+}
+
+
+exports.all = function (req, res) {
+	utils.renderEntries(res, 'index', exports.getEntriesFromReq(req), {
+		offsetStart: req.query.offset || 0,
+		admin: 'true'
+	})	
 };
 
 
-exports.part = function(req, res) {
-	
-	var ctrl = {
-			offset: parseInt(req.query.offset) || 0,
-			limit: parseInt(req.query.limit) || 10,
-			keyword: req.query.keyword,
-			callback: function(renderobj){
-				res.render('part', processentries(renderobj));			
-			}
-		};
-//	console.log('part:',req.query, req.params);
-	api.getEntries(ctrl);
+// Here comes a very opinionated if. I want to show publicly posts only if they match ALL of the following:
+// - top flag is true
+// - topic is 0
+// - they have been upvoted at least the delta T time / 2 times.
+function isThisPostPublic(post) {
+	return post.top &&
+		post.topic === 0 &&
+		(
+			(moment().diff(moment(post.date), 'year') / 2) < 1 ||
+			post.grade &&
+			post.grade > (moment().diff(moment(post.date), 'year') / 2)
+		)
+}
+
+exports.partAll = function (req, res) {
+	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
+		admin: true
+	})
 };
 
-exports.partAll = function(req, res) {
-	
-	var ctrl = {
-			offset: parseInt(req.query.offset) || 0,
-			limit: parseInt(req.query.limit) || 10,
-			keyword: req.query.keyword,
-			callback: function(renderobj){
-				res.render('partall', processentries(renderobj));			
-			}
-		};	
-	api.getAllEntries(ctrl);
-};
+exports.getErasIntf = function (req, res) {
+	var time = req.query.time;
 
-exports.getErasIntf = function(req, res) {
-	var time = req.query.time; 
-	
-	api.getEras(time,function(data){
+	api.getEras(time, function (data) {
 		res.send(data);
 	});
 };

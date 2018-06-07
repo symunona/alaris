@@ -1,4 +1,4 @@
-@import url("//fonts.googleapis.com/css?family=Droid+Sans:400,700");
+/* @import url("//fonts.googleapis.com/css?family=Droid+Sans:400,700"); */
 /*!
  * Bootswatch v3.1.1
  * Homepage: http://bootswatch.com
@@ -273,7 +273,6 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #888888;
@@ -362,7 +361,6 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: #ffffff;
@@ -5958,7 +5956,6 @@ legend {
   position: fixed;
 }
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #019678;
   background-color: #fefefe;
   background-attachment: fixed;
@@ -6020,7 +6017,7 @@ img {
   max-width: 100%;
   height: auto;
 }
-#entries {
+#new-post {
   padding-top: 102px;
 }
 .adminscreen h1,
@@ -6031,7 +6028,8 @@ img {
   color: black;
   background-color: rgba(230, 230, 230, 0.8);
 }
-.entry {
+.entry,
+#new-entry {
   color: black;
   background-color: rgba(230, 230, 230, 0.8);
   margin-bottom: 40px;
@@ -6047,7 +6045,8 @@ img {
 	}
 	*/
 }
-.entry.theend {
+.entry.theend,
+#new-entry.theend {
   text-align: center;
   font-style: italic;
   padding-top: 10px;
@@ -6174,11 +6173,14 @@ header#index a:hover {
 .footer {
   position: fixed;
   bottom: 0;
-  color: white;
+  right: 0px;
   padding: 10px;
   cursor: default;
-  right: 0px;
+  color: white;
   background: rgba(0, 0, 0, 0.2);
+}
+.footer a {
+  color: white !important;
 }
 a {
   color: #00B7FF;
@@ -6369,4 +6371,19 @@ a {
   background: #111111;
   color: #efefef;
   text-decoration: none;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

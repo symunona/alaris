@@ -1,5 +1,5 @@
 
-function toggletop(element,id, currentvalue){
+function toggleTop(element,id, currentvalue){
 	console.log('switching top: '+id, element);
 	postJson('api/top', {id: id, top: currentvalue} ).done(function(data){
 		console.log('data:',data);		
@@ -16,5 +16,5 @@ function rate(element,id,plusminus){
 }
 
 $(function(){
-	parturl = serverroot + "/api/partAll";
+	parturl = serverRoot + "/api/partAll";
 	});

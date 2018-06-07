@@ -2,13 +2,6 @@
 var moment = require('moment');
 var config = require('../config.json');
 var fs = require('fs');
-var Db = require('mysql-activerecord');
-var db = new Db.Adapter({
-    server: config.db.server,
-    username: config.db.user,
-    password: config.db.pass,
-    database: config.db.database
-});
 
 exports.processentries = function (ctrl) {
 	
@@ -29,7 +22,7 @@ exports.processentries = function (ctrl) {
 		e.year = moment(e.date).format('YYYY');
 		e.timestamp = moment(e.date).format();
 		e.offset = offset++;
-		e.body = e.body.replace(/(<img.+?src *= *[\"'])(?!http:?)(?!https:?)(.+?)([\"'].*?>)/gi, "$1"+config.serverroot+"/$2$3");
+		e.body = e.body.replace(/(<img.+?src *= *[\"'])(?!http:?)(?!https:?)(.+?)([\"'].*?>)/gi, "$1"+config.serverRoot+"/$2$3");
 		return e;
 	});
 	return {
@@ -44,7 +37,7 @@ exports.processentries = function (ctrl) {
 		max: ctrl.max || 1,
 		count: ctrl.count || docs.length,
 		years: ctrl.years || [],
-		serverroot: config.serverroot
+		serverRoot: config.serverRoot
 //		prev: req.params.offset - displaySize > 0 ? req.params.offset - displaySize : '',
 //		next: req.params.offset + displaySize > max ? req.params.offset + displaySize : req.params.offset,
 //		hasPrev: (req.params.offset - displaySize) < 0,
@@ -56,6 +49,7 @@ exports.processentries = function (ctrl) {
 
 
 exports.getEntries = function(ctrl) {
+	
 	var selector = db.select('*');
 	if (!ctrl.id){
 		if (!ctrl.keyword){
@@ -202,7 +196,7 @@ exports.saveEntry = function(req, res) {
 	});
 };
 
-exports.toggletop = function(id, oldval, cb){
+exports.toggleTop = function(id, oldval, cb){
 //	console.log('top called with: ',id,oldval);
 	exports.saveOrUpdate({
 		id: id,

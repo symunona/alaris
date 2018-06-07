@@ -5,20 +5,22 @@ html
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name="viewport", content="width=device-width, initial-scale=1")
-		link(rel="shortcut icon" href=serverroot + "/css/favicon.png")
-		link(rel='stylesheet', href=serverroot + '/css/style.css')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/jquery-1.11.0.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/jquery.debounce-1.0.5.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/jquery.highlight.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/knockout-3.0.0.debug.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/knockout.wrap.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/inheritance.js')
-		script(type='text/javascript', src=serverroot + '/js/lib/vendor/moment.min.js')
-		script(type='text/javascript', src=serverroot + '/js/base.js')
-		script(type='text/javascript', src=serverroot + '/js/client.js')
-		script(type='text/javascript', src=serverroot + '/js/clientall.js')
-		meta(name='offsetstart',content=offset)
-		meta(name="serverroot", content=serverroot)
+		link(rel="shortcut icon" href="/css/faviconmiddle.png")
+		link(rel='stylesheet', href='/css/style.css')
+
+		meta(name='offsetStart',content=offsetStart)
+		meta(name="eras", content=JSON.stringify(eras))
+
+		script(type='text/javascript', src='/js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src='/js/lib/vendor/jquery.debounce-1.0.5.js')
+		script(type='text/javascript', src='/js/lib/vendor/jquery.highlight.js')
+		script(type='text/javascript', src='/js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src='/js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src='/js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src='/js/lib/vendor/moment.min.js')
+		script(type='text/javascript', src='/js/base.js')
+		script(type='text/javascript', src='/js/client.js')
+		
 		style=style
 		
 	body

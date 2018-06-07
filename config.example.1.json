@@ -3,14 +3,14 @@
 		"server":"localhost",
 		"user":"root",
 		"pass":"",
-		"database":"tyukol"
+		"database":"alaris"
 	},
 	"admin":{
 		"url":"x",
 		"user":"admin",
 		"pass":"admin"
 	},
-	"serverroot":"alaris.dyndns.hu",
+	"serverRoot":"alaris.dyndns.hu",
 	"title":"Alaris",
 	"tagline":"Láss ezer csodát!",
 	"footer":"™P",
