@@ -12,13 +12,18 @@
   },
   "main": "./app.js",
   "dependencies": {
-    "jade": "1.1.5",
-    "mysql-activerecord": "0.8.3",
-    "less-middleware": "0.1.15",
-    "moment": "2.19.3",
-    "when": "2.8.0",
-    "express": "3.3.4",
-    "deferred":"0.7.1"
+    "body-parser": "^1.18.3",
+    "deferred": "0.7.9",
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
+    "jade": "1.11.0",
+    "less-middleware": "3.0.0",
+    "moment": "2.22.2",
+    "mysql-activerecord": "0.8.6",
+    "trumbowyg": "^2.10.0",
+    "underscore": "^1.8.3",
+    "uuid": "^3.2.1",
+    "when": "3.7.8"
   },
   "readmeFilename": "README.md"
 }

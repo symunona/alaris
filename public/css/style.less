@@ -7,7 +7,7 @@
 @white: #efefef;
 
 body {	
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  // font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #019678;
   background-color: #fefefe;
   background-attachment: fixed;
@@ -72,6 +72,9 @@ img{
 @brr: 180;
 
 #entries{
+	
+}
+#new-post{
 	padding-top:102px
 }
 
@@ -86,7 +89,9 @@ img{
 	background-color: rgba(@br,@br,@br,0.8);
 }
 
-.entry{
+
+
+.entry, #new-entry{
 	color: black;
 	background-color: rgba(@br,@br,@br,0.8);	
 	margin-bottom: 40px;
@@ -238,17 +243,16 @@ header#index{
 
 
 .footer{
- position: fixed;
- bottom: 0;  
- color: white; 
- padding: 10px;
- cursor: default;
- right: 0px;
- background: rgba(0,0,0,0.2);
+	position: fixed; bottom: 0; right: 0px; padding: 10px;
+	cursor: default;
+	color: white; background: rgba(0,0,0,0.2);
+	a{
+		color: white !important;
+	}
 }
 
 a {
-  color: #00B7FF;
+  	color: #00B7FF;
 }
 
 .tagpadding{
@@ -450,4 +454,14 @@ a {
 		text-decoration: none;
 	}
 
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

@@ -2,12 +2,12 @@
 	article.row
 		div.col-md-6.col-md-offset-3.entry(data-year=entries[x].year,data-timestamp=entries[x].timestamp, data-id=entries[x].id, id=entries[x].id, data-offset=entries[x].offset)
 			div.isactual
-				a(href=serverroot+'/id/'+entries[x].id)
+				a(href=serverRoot+'/id/'+entries[x].id)
 					i.glyphicon.glyphicon-asterisk
 			h3.title=entries[x].title
 			span.peek!=entries[x].body
 			div.control
-				a(onclick='toggletop(this,"'+entries[x].id+'",'+entries[x].top+')', class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
+				a(onclick='toggleTop(this,"'+entries[x].id+'",'+entries[x].top+')', class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
 				span T: #{entries[x].topic}
 				span.rate R: 
 					span #{entries[x].grade || 0}

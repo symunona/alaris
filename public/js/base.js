@@ -51,7 +51,17 @@ function postJson(url, filters){
         type: 'POST',
         url : url,
         data: JSON.stringify(filters),
-        contentType: 'application/json'                
+        contentType: 'application/json;charset=UTF-8'                
+    });
+}
+
+
+
+function getEras(url, filters){
+	return $.ajax({
+        dataType: 'json',
+        type: 'GET',
+        url : url
     });
 }
 

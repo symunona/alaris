@@ -5,7 +5,7 @@
 var api = require('./api');
 var fs = require('fs');
 var path = require('path');
-var db = require('./db');
+var db = require('../lib/db');
 
 exports.stat = function(req, res){
 	
@@ -88,9 +88,13 @@ exports.getEntriesIntf = function(req, res) {
 	api.getAllEntries(ctrl);
 };
 
-exports.toggletop = function(req, res) {
-
-	api.toggletop(req.body.id, req.body.top,function(data){
-		res.send(data);
-	})
+exports.toggleTop = function(req, res) {
+	let entry = db.getById('blog', parseInt(req.params.id))
+	entry.top = !entry.top
+	db.persist()	
+	res.send(entry)
 };
+
+exports.saveEntry = function (req, res) {	
+	res.send(db.saveOrUpdate('blog', req.body))
+}

@@ -1,4 +1,4 @@
-var db = require('./db');
+var db = require('../lib/db');
 var api = require('./api');
 
 exports.grader = function(req, res){
