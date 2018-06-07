@@ -5963,24 +5963,6 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-.control a {
-  text-decoration: none;
-  color: grey;
-}
-.control a:hover {
-  color: black;
-  cursor: pointer;
-}
-.control span {
-  color: grey;
-  margin-left: 10px;
-}
-.control span.rate > a {
-  font-weight: bold;
-  display: inline-block;
-  padding: 2px;
-  margin-left: 5px;
-}
 h1,
 h2,
 h3 {
@@ -6028,12 +6010,50 @@ img {
   color: black;
   background-color: rgba(230, 230, 230, 0.8);
 }
+.entry-wrapper:hover .control {
+  display: inline-block;
+}
+.gradeq {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  color: grey;
+}
+.entry-wrapper .control {
+  position: absolute;
+  display: none;
+  width: 45px;
+  left: -45px;
+  top: 0px;
+  background: rgba(230, 230, 230, 0.3);
+  text-align: center;
+  padding: 2px;
+  color: grey;
+}
+.entry-wrapper .control a {
+  display: block;
+  text-decoration: none;
+  color: grey;
+  font-weight: bold;
+  padding: 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.entry-wrapper .control a:hover {
+  color: black !important;
+  cursor: pointer;
+}
+.entry-wrapper .control div {
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
 .entry,
 #new-entry {
   color: black;
   background-color: rgba(230, 230, 230, 0.8);
   margin-bottom: 40px;
   padding-bottom: 10px;
+  position: relative;
   /*
     &.actual::before{
 		// content: '◄';

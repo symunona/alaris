@@ -80,10 +80,11 @@ html
 				a(title=config.footerTitle, href='/x')=config.footer
 		
 		section.editor-wrapper.hidden
-			#editor
-				button(data-bind="click: saveEntry") save
+			#editor				
+				input#title.col-md-12(data-bind="value: title",placeholder='Title')
+				textarea#body.col-md-12(data-bind='richText: body')
+				input#tags.col-md-8(data-bind='value: tag', placeholder='tags with comma separation...')
+				input#topic.col-md-4(data-bind='value: topic')
+				br
+				button(onclick='saveEntry()') save
 				button(data-bind="click: discardEntry") discard
-				input#entrytitle(data-bind="value: title",placeholder='Title')
-				input#entrytags(data-bind='value: tag', placeholder='tags with comma separation...')
-				input#topic(data-bind='value: topic')
-				textarea#entrycontent(data-bind='richText: body')
