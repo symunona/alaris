@@ -52,6 +52,30 @@ html
 					div.col-md-6.col-md-offset-3#new-entry
 						h3
 							a.new(onclick='addPost()') +
+				article.entry-stub.row.entry-wrapper.hidden
+					div.col-md-6.col-md-offset-3.entry
+						div.isactual
+								a(href='#')
+									i.glyphicon.glyphicon-asterisk
+						.content
+							h3.title
+							span.peek.body
+						
+						div.grade.gradeq.noselect 0	
+
+						div.control.noselect
+							a.editButton(onclick="edit(this)")
+								span.glyphicon.glyphicon-pencil
+							a.toggleTop(onclick='toggleTop(this)')
+								span(class='glyphicon-star-empty').glyphicon
+							div.topic T: 0
+							
+							a(onclick="rate(this, 1)") ▲
+							span.grade 0
+							a(onclick="rate(this, -1)") ▼
+					div.col-md-1.tags
+						div.tagscontainer
+
 						
 		section#entries.container-fluid
 			if entries.length > 0
@@ -80,7 +104,7 @@ html
 				a(title=config.footerTitle, href='/x')=config.footer
 		
 		section.editor-wrapper.hidden
-			#editor				
+			#editor
 				input#title.col-md-12(data-bind="value: title",placeholder='Title')
 				textarea#body.col-md-12(data-bind='richText: body')
 				input#tags.col-md-8(data-bind='value: tag', placeholder='tags with comma separation...')

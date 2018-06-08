@@ -6024,7 +6024,7 @@ img {
   display: none;
   width: 45px;
   left: -45px;
-  top: 0px;
+  top: 45px;
   background: rgba(230, 230, 230, 0.3);
   text-align: center;
   padding: 2px;
@@ -6318,14 +6318,14 @@ a {
 }
 .isactual {
   display: none;
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   position: absolute;
-  left: -30px;
+  left: -45px;
   top: 0px;
   background-color: rgba(200, 200, 200, 0.4);
   font-size: 10px;
-  line-height: 30px;
+  line-height: 45px;
   text-align: center;
 }
 .isactual:hover {
@@ -6333,8 +6333,8 @@ a {
 }
 .isactual a {
   display: block;
-  height: 30px;
-  width: 30px;
+  height: 45px;
+  width: 45px;
   color: black;
 }
 .isactual a:hover {

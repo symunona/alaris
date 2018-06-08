@@ -90,6 +90,7 @@ for (var i = 0; i < tags.length; i++) {
 }
 
 function getTagsForTime(time) {
+	time = time || moment().format();
 	var ret = [];
 	for (var i = 0; i < tags.length; i++) {
 		var tag = tags[i];

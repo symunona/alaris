@@ -74,7 +74,7 @@ img{
 
 .entry-wrapper .control{	
 	position: absolute; display: none;
-	width: 45px; left: -45px; top: 0px;
+	width: 45px; left: -45px; top: 45px;
 	background: rgba(@br,@br,@br,0.3);;
 	text-align: center;	
 	padding: 2px;
@@ -384,23 +384,24 @@ a {
 
 
 .isactual{
+	@size: 45px;
 	display: none;
-	width: 30px;
-	height: 30px;
+	width: @size;
+	height: @size;
 	position: absolute;
-	left: -30px;
+	left: -@size;
 	top: 0px;
 	background-color: rgba(200,200,200,0.4);
 	font-size: 10px;
-	line-height: 30px;
+	line-height: @size;
 	text-align: center;
 	&:hover{
 	  background-color: rgba(200,200,200,0.6);
 	}
   	a{
 	  display: block;
-	  height: 30px;
-	  width: 30px;
+	  height: @size;
+	  width: @size;
 	  color: black;
 	  &:hover{
 		color: white;

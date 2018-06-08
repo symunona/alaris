@@ -1,28 +1,28 @@
 - for (var x = 0; x < entries.length; x++)
 	article.row.entry-wrapper
 		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]))
-			.content
-				div.isactual
-					a(href=serverRoot+'/id/'+entries[x].id)
+			div.isactual
+					a(href='#'+entries[x].id)
 						i.glyphicon.glyphicon-asterisk
+			.content
 				h3.title=entries[x].title
-				span.peek!=entries[x].body
+				span.peek.body!=entries[x].body
 			if admin
-				div.grade.gradeq.noselect #{entries[x].grade || 0}	
+				div.grade.gradeq.noselect #{entries[x].grade || 0}
 
-				div.control.noselect					
-					a(onclick="edit("+entries[x].id+")")
-						span.glyphicon.glyphicon-pencil															
-					a(onclick='toggleTop(this,"'+entries[x].id+'",'+entries[x].top+')')
+				div.control.noselect
+					a(onclick="edit(this)")
+						span.glyphicon.glyphicon-pencil
+					a(onclick='toggleTop(this)')
 						span(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
 					div T: #{entries[x].topic}
 					
-					a(onclick="rate(this,'"+entries[x].id+"' ,1)") ▲						
-					span.grade #{entries[x].grade || 0}										
-					a(onclick="rate(this,'"+entries[x].id+"' ,-1)") ▼
+					a(onclick="rate(this, 1)") ▲
+					span.grade #{entries[x].grade || 0}
+					a(onclick="rate(this, -1)") ▼
 					
 		if entries[x].tags.length>0
 			div.col-md-1.tags
 				div.tagscontainer
 					- for (var y = 0; y < entries[x].tags.length; y++)
-						div.tag=entries[x].tags[y]		
+						div.tag=entries[x].tags[y]
