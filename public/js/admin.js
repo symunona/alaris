@@ -4,6 +4,7 @@ $(function () {
 
 var currentEntry;
 
+
 function addPost(entry) {	
 	if (currentEntry) {
 		if (confirm('you wanna discard changes?')) {
@@ -18,14 +19,15 @@ function addPost(entry) {
 	$('#editor').show();
 	$('#title').val('');
 	$('#tags').val('');
-	$('#body').val('');
+	$('#body').val('');	
+	$('#body').trumbowyg();		
 	$('#title').focus();
-
 }
 
 function edit(element) {
 	var id = getId(element);
 	if (currentEntry) {
+		if (currentEntry.id === id) return;
 		if (confirm('you wanna discard changes?')) {
 			$('#' + currentEntry.id).children('.content').show();
 		}
@@ -34,9 +36,11 @@ function edit(element) {
 	$('#title').val(entry.title);
 	$('#tags').val(entry.tags.join(', '));
 	$('#topic').val(entry.topic);
-	$('#body').val(entry.body);
-	$('#' + id).append($('#editor'));
+	$('#body').val(entry.body);	
+	$('#' + id).append($('#editor'));	
 	$('#editor').show()
+	$('#body').trumbowyg();
+	$('#body').trumbowyg('html', entry.body);	
 	$('#' + id).children('.content').hide();
 }
 
@@ -99,4 +103,15 @@ function rate(element, plusminus) {
 
 function getId(element) {
 	return $(element).closest('.entry').data('id');
+}
+
+
+function isThisPostPublic(post) {
+	return post.top &&
+		post.topic === 0 &&
+		(
+			(moment().diff(moment(post.date), 'year') / 2) < 1 ||
+			post.grade &&
+			post.grade > (moment().diff(moment(post.date), 'year') / 2)
+		)
 }

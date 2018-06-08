@@ -475,3 +475,20 @@ a {
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.text-editor-wrapper{ display: block; float: left; }
+
+#editor{
+	h3 input{
+		padding: 0px;
+	}
+	input{
+		background: transparent;
+		outline: 1px solid #ddd;
+		border: 0px;
+		padding: 4px;
+		&:focus{
+			outline: 1px solid #555;
+		}		
+	}
+}

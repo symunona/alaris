@@ -23,6 +23,7 @@ html
 		script(type='text/javascript', src='/js/client.js')
 		
 		if admin
+			link(rel='stylesheet', href='/trumbowyg/dist/ui/trumbowyg.css')
 			script(type='text/javascript', src='/trumbowyg/dist/trumbowyg.min.js')
 			script(type='text/javascript', src='/js/admin.js')
 
@@ -105,10 +106,12 @@ html
 		
 		section.editor-wrapper.hidden
 			#editor
-				input#title.col-md-12(data-bind="value: title",placeholder='Title')
-				textarea#body.col-md-12(data-bind='richText: body')
-				input#tags.col-md-8(data-bind='value: tag', placeholder='tags with comma separation...')
-				input#topic.col-md-4(data-bind='value: topic')
+				h3
+					input#title.col-md-12(data-bind="value: title",placeholder='Title')
+				div.text-editor-wrapper
+					textarea#body.col-md-12
+				input#tags.col-md-8(placeholder='tags with comma separation...')
+				input#topic.col-md-4
 				br
 				button(onclick='saveEntry()') save
 				button(data-bind="click: discardEntry") discard
