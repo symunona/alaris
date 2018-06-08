@@ -5,7 +5,10 @@
 					a(href='#'+entries[x].id)
 						i.glyphicon.glyphicon-asterisk
 			.content
-				h3.title=entries[x].title
+				if admin
+					h3.title(onclick="edit(this)")=entries[x].title
+				if !admin
+					h3.title=entries[x].title
 				span.peek.body!=entries[x].body
 			if admin
 				div.grade.gradeq.noselect #{entries[x].grade || 0}

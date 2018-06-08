@@ -6407,3 +6407,19 @@ a {
   /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.text-editor-wrapper {
+  display: block;
+  float: left;
+}
+#editor h3 input {
+  padding: 0px;
+}
+#editor input {
+  background: transparent;
+  outline: 1px solid #ddd;
+  border: 0px;
+  padding: 4px;
+}
+#editor input:focus {
+  outline: 1px solid #555;
+}
