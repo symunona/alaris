@@ -49,13 +49,12 @@ function search() {
 	loadnextl();
 }
 
-var toYear = function (element) {
-	var yearData = $('.yearpicker').data('years');
-	var selectedYear = $(element).data('year').year;
+var toYear = function (element, _offset) {
+	
+	console.warn('to year', element.innerText, _offset)
+
 	keyword = '';
-	offset = yearData.reduce(function (prev, cur) {
-		return cur.year > selectedYear ? prev + cur.cnt : prev;
-	}, 0) - pageSize;
+	offset = _offset - pageSize;
 
 	$('#entries').html('');
 	loadnextl();
@@ -103,7 +102,7 @@ function getTagsForTime(time) {
 		if (a.length < b.length) return -1;
 		return 0;
 	})
-	console.warn(ret)
+	
 	return ret;
 }
 
@@ -215,8 +214,14 @@ function loadnextl() {
 			//			console.log('highlighting...',keyword);
 			$('#entries').highlight(keyword);
 		}
+
+		
 		getCurrentEntry();
 		resizer();
+
+		if (typeof(placeFirstPostMarker)!=='undefined'){
+			placeFirstPostMarker()
+		}
 	});
 
 }

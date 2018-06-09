@@ -1,7 +1,7 @@
 - for (var x = 0; x < entries.length; x++)
 	article.row.entry-wrapper
-		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]))
-			div.isactual
+		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'top':'')
+			div.isactual(class=admin?'hidden':'')
 					a(href='#'+entries[x].id)
 						i.glyphicon.glyphicon-asterisk
 			.content
@@ -11,14 +11,19 @@
 					h3.title=entries[x].title
 				span.peek.body!=entries[x].body
 			if admin
-				div.grade.gradeq.noselect #{entries[x].grade || 0}
+				div.gradeq.noselect 
+					span R 
+					span.grade #{entries[x].grade || 0} 
+				div.topicq.noselect
+					span T #{entries[x].topic}
+				div.topq.noselect
+					span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
 
 				div.control.noselect
-					a(onclick="edit(this)")
+					a.edit-button(onclick="edit(this)")
 						span.glyphicon.glyphicon-pencil
 					a(onclick='toggleTop(this)')
-						span(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
-					div T: #{entries[x].topic}
+						span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
 					
 					a(onclick="rate(this, 1)") ▲
 					span.grade #{entries[x].grade || 0}

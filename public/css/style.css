@@ -6013,10 +6013,25 @@ img {
 .entry-wrapper:hover .control {
   display: inline-block;
 }
+.entry-wrapper.editing .edit-button {
+  display: none;
+}
 .gradeq {
   position: absolute;
   right: 5px;
   bottom: 5px;
+  color: grey;
+}
+.topicq {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  color: grey;
+}
+.topq {
+  position: absolute;
+  right: 5px;
+  top: 5px;
   color: grey;
 }
 .entry-wrapper .control {
@@ -6024,7 +6039,7 @@ img {
   display: none;
   width: 45px;
   left: -45px;
-  top: 45px;
+  top: 0;
   background: rgba(230, 230, 230, 0.3);
   text-align: center;
   padding: 2px;
@@ -6046,6 +6061,13 @@ img {
 .entry-wrapper .control div {
   padding-bottom: 2px;
   padding-top: 2px;
+}
+.entry:not(.top) {
+  outline: 6px dashed rgba(200, 200, 200, 0.3);
+  background-color: rgba(230, 230, 230, 0.5);
+}
+hr#first-marker {
+  border-top: 5px solid rgba(200, 200, 200, 0.9);
 }
 .entry,
 #new-entry {
