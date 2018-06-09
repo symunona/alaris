@@ -124,6 +124,14 @@ function updatePostData(entry) {
 	element.find('.grade').html(entry.grade);
 	element.find('.title').html(entry.title);
 	element.find('.body').html(entry.body);
+	element.find('.topic').html(entry.topic);
+	
+	if (!entry.topic){
+		element.find('.topicq').addClass('hidden')
+	}
+	else{
+		element.find('.topicq').removeClass('hidden')
+	}
 	element.parent().find('.tagscontainer').html(entry.tags.map(function (tag) {
 		return `<div class='tag'>${tag}</div>`;
 	}).join());
