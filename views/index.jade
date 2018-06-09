@@ -25,6 +25,7 @@ html
 		if admin
 			link(rel='stylesheet', href='/trumbowyg/dist/ui/trumbowyg.css')
 			script(type='text/javascript', src='/trumbowyg/dist/trumbowyg.min.js')
+			script(type='text/javascript', src='/js/is-public.js')
 			script(type='text/javascript', src='/js/admin.js')
 
 		style=style
@@ -107,11 +108,15 @@ html
 		section.editor-wrapper.hidden
 			#editor
 				h3
+					button.save-entry(onclick='saveEntry()') ✔
 					input#title.col-md-12(data-bind="value: title",placeholder='Title')
 				div.text-editor-wrapper
 					textarea#body.col-md-12
 				input#tags.col-md-8(placeholder='tags with comma separation...')
-				input#topic.col-md-4
-				br
-				button(onclick='saveEntry()') save
-				button(data-bind="click: discardEntry") discard
+				input#topic.col-md-3
+				span.col-md-1
+					button.discard(onclick="discardEntry()", title="Discard") ×
+				
+				
+				
+				
