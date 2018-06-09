@@ -15,7 +15,7 @@
 					div.topq.noselect
 						a.ctrl.top-toggler(onclick='toggleTop(this)')
 							span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
-					span.topicq T 
+					span.topicq(class=entries[x].topic?'':'hidden') T 
 						span.topic #{entries[x].topic}
 					span.grade-wrapper
 						a.ctrl(onclick="rate(this, 1)") ▲

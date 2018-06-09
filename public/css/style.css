@@ -6027,6 +6027,12 @@ button.discard {
 .entry-wrapper.editing .control {
   display: none;
 }
+.entry-wrapper:hover .control .glyphicon-star-empty {
+  visibility: visible;
+}
+.entry-wrapper:hover .control .grade-wrapper a {
+  visibility: visible;
+}
 .topicq {
   position: absolute;
   left: 0px;
@@ -6071,6 +6077,10 @@ a.ctrl:hover {
 .entry-wrapper .control .grade-wrapper a {
   display: inline-block;
   padding: 7px 10px 0px 10px;
+  visibility: hidden;
+}
+.entry-wrapper .control .glyphicon-star-empty {
+  visibility: hidden;
 }
 .entry-wrapper .control .min-to-visible {
   font-size: 10px;
@@ -6078,6 +6088,9 @@ a.ctrl:hover {
 .entry:not(.public) {
   outline: 6px dashed rgba(200, 200, 200, 0.3);
   background-color: rgba(230, 230, 230, 0.5);
+}
+.entry.public .control .topicq {
+  display: none;
 }
 hr#first-marker {
   border: 0;
