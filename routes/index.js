@@ -23,13 +23,31 @@ exports.part = function (req, res) {
 	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req, isThisPostPublic))
 };
 
-exports.getEntriesFromReq = function (req, filterFunction) {
+exports.getEntriesFromReq = function (req, _filterFunction) {
 	let offset = parseInt(req.query.offset) || 0,
 		limit = parseInt(req.query.limit) || config.pageSize,
 		id = req.params.id,
 		keyword = req.params.keyword || req.query.keyword
 
+	if (keyword){
+		keyword = keyword.toLowerCase()
+	}
 	let length = db.db.blog.length - 1;
+
+	if (keyword){
+		if (_filterFunction){
+			filterFunc = function(entry){
+				return _filterFunction(entry) && entryContainsString(keyword, entry)
+			}
+		}
+		else{
+			filterFunction = entryContainsString.bind(this, keyword)
+		}
+		
+	} else{
+		filterFunction = _filterFunction
+	}
+		
 
 	// Get the visible ones.
 	if (filterFunction) {
@@ -53,6 +71,12 @@ exports.getEntriesFromReq = function (req, filterFunction) {
 		length--
 	}
 	return entriesToShow
+}
+
+function entryContainsString(string, entry){
+	return entry.tags.join().toLowerCase().includes(string) ||
+		entry.body.toLowerCase().includes(string) ||
+		entry.title.toLowerCase().includes(string)
 }
 
 

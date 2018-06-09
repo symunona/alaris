@@ -6006,68 +6006,84 @@ img {
 .adminscreen h2 {
   background: black;
 }
+button {
+  border: 0px;
+  background: rgba(230, 230, 230, 0.8);
+  text-align: center !important;
+}
+button.discard {
+  font-size: 19px;
+}
 .solidbg {
   color: black;
   background-color: rgba(230, 230, 230, 0.8);
 }
-.entry-wrapper:hover .control {
-  display: inline-block;
+#editor .trumbowyg-box {
+  margin-top: 2px;
+  margin-bottom: 4px;
+  margin-left: -1px;
+  margin-right: -1px;
 }
-.entry-wrapper.editing .edit-button {
+.entry-wrapper.editing .control {
   display: none;
-}
-.gradeq {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  color: grey;
 }
 .topicq {
   position: absolute;
-  left: 5px;
-  bottom: 5px;
-  color: grey;
+  left: 0px;
+  bottom: 0px;
+  display: block;
+  padding-left: 15px;
 }
 .topq {
   position: absolute;
-  right: 5px;
-  top: 5px;
-  color: grey;
-}
-.entry-wrapper .control {
-  position: absolute;
-  display: none;
-  width: 45px;
-  left: -45px;
-  top: 0;
-  background: rgba(230, 230, 230, 0.3);
+  right: 0px;
+  top: 0px;
   text-align: center;
-  padding: 2px;
-  color: grey;
 }
-.entry-wrapper .control a {
+.topq a {
+  width: 32px;
+  line-height: 32px;
   display: block;
-  text-decoration: none;
-  color: grey;
-  font-weight: bold;
-  padding: 6px;
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
-.entry-wrapper .control a:hover {
-  color: black !important;
+a.ctrl {
+  color: #444444;
   cursor: pointer;
 }
-.entry-wrapper .control div {
-  padding-bottom: 2px;
-  padding-top: 2px;
+a.ctrl:hover {
+  color: white;
+  text-decoration: none;
 }
-.entry:not(.top) {
+.clickable {
+  cursor: pointer;
+}
+.entry-wrapper .control {
+  color: #444444;
+  text-align: center;
+  font-size: 10px;
+}
+.entry-wrapper .control .grade-wrapper {
+  padding: 3px;
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.entry-wrapper .control .grade-wrapper a {
+  display: inline-block;
+  padding: 7px 10px 0px 10px;
+}
+.entry-wrapper .control .min-to-visible {
+  font-size: 10px;
+}
+.entry:not(.public) {
   outline: 6px dashed rgba(200, 200, 200, 0.3);
   background-color: rgba(230, 230, 230, 0.5);
 }
 hr#first-marker {
-  border-top: 5px solid rgba(200, 200, 200, 0.9);
+  border: 0;
+  outline: 5px solid rgba(200, 200, 200, 0.9);
+  margin-top: -18px;
+  margin-bottom: 0px;
 }
 .entry,
 #new-entry {
@@ -6435,6 +6451,10 @@ a {
 }
 #editor h3 input {
   padding: 0px;
+  width: 70%;
+}
+#editor h3 button {
+  float: right;
 }
 #editor input {
   background: transparent;

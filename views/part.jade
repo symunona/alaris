@@ -1,33 +1,27 @@
 - for (var x = 0; x < entries.length; x++)
 	article.row.entry-wrapper
-		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'top':'')
-			div.isactual(class=admin?'hidden':'')
-					a(href='#'+entries[x].id)
-						i.glyphicon.glyphicon-asterisk
+		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'public':'', onclick='setActual($(this),false)')
+			div.isactual
+				a(href='#'+entries[x].id)
+					i.glyphicon.glyphicon-asterisk
 			.content
 				if admin
-					h3.title(onclick="edit(this)")=entries[x].title
+					h3.title.clickable(onclick="edit(this)")=entries[x].title
 				if !admin
 					h3.title=entries[x].title
 				span.peek.body!=entries[x].body
-			if admin
-				div.gradeq.noselect 
-					span R 
-					span.grade #{entries[x].grade || 0} 
-				div.topicq.noselect
-					span T #{entries[x].topic}
-				div.topq.noselect
-					span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
-
-				div.control.noselect
-					a.edit-button(onclick="edit(this)")
-						span.glyphicon.glyphicon-pencil
-					a(onclick='toggleTop(this)')
-						span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
-					
-					a(onclick="rate(this, 1)") ▲
-					span.grade #{entries[x].grade || 0}
-					a(onclick="rate(this, -1)") ▼
+			if admin				
+				span.control.noselect
+					div.topq.noselect
+						a.ctrl.top-toggler(onclick='toggleTop(this)')
+							span.top(class=entries[x].top?'glyphicon-star':'glyphicon-star-empty').glyphicon
+					span.topicq T 
+						span.topic #{entries[x].topic}
+					span.grade-wrapper
+						a.ctrl(onclick="rate(this, 1)") ▲
+						span.grade #{entries[x].grade || 0}
+						span.min-to-visible #{entries[x].isWithinHalfYear?'':'>'+entries[x].minimumGradeToBeVisible}
+						a.ctrl(onclick="rate(this, -1)") ▼
 					
 		if entries[x].tags.length>0
 			div.col-md-1.tags

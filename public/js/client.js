@@ -126,7 +126,7 @@ function setActual(jqentry, scrollthere) {
 		if (scrollthere) {
 			// window.location.hash = jqentry.attr('data-id');			
 			var offset = jqentry.position().top;
-			$("html, body").animate({ scrollTop: offset + 'px' });
+			$("html, body").animate({ scrollTop: offset + 'px' }, 150);
 		}
 	}
 
@@ -192,7 +192,7 @@ function loadnextl() {
 	offset += pageSize;
 	filter.offset = offset;
 
-	console.log('loading items from-to: ', filter.offset, ' - ', offset + pageSize);
+	// console.log('loading items from-to: ', filter.offset, ' - ', offset + pageSize);
 
 	getPart(parturl, filter).done(function (data) {
 		loadingnextx = false;
@@ -216,7 +216,7 @@ function loadnextl() {
 		}
 
 		
-		getCurrentEntry();
+		// getCurrentEntry();
 		resizer();
 
 		if (typeof(placeFirstPostMarker)!=='undefined'){

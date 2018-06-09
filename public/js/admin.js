@@ -4,8 +4,11 @@ $(function () {
 
 var currentEntry;
 
+function discardEntry(){
+	stopEditing(currentEntry.id)
+}
 
-function addPost(entry) {	
+function addPost(entry) {
 	if (currentEntry) {
 		if (confirm('you wanna discard changes?')) {
 			stopEditing(currentEntry.id);
@@ -19,8 +22,8 @@ function addPost(entry) {
 	$('#editor').show();
 	$('#title').val('');
 	$('#tags').val('');
-	$('#body').val('');	
-	$('#body').trumbowyg();		
+	$('#body').val('');
+	$('#body').trumbowyg();
 	$('#title').focus();
 }
 
@@ -37,16 +40,16 @@ function edit(element) {
 	$('#title').val(entry.title);
 	$('#tags').val(entry.tags.join(', '));
 	$('#topic').val(entry.topic);
-	$('#body').val(entry.body);	
-	$('#' + id).append($('#editor'));	
+	$('#body').val(entry.body);
+	$('#' + id).append($('#editor'));
 	$('#editor').show()
 	$('#body').trumbowyg();
-	$('#body').trumbowyg('html', entry.body);	
+	$('#body').trumbowyg('html', entry.body);
 	$('#' + id).children('.content').hide();
 }
 
 function newEntryElement(entry) {
-	var stub = $('.entry-stub')[0].outerHTML;	
+	var stub = $('.entry-stub')[0].outerHTML;
 	$('#entries').prepend(stub);
 	var newEntry = $('#entries .entry-stub');
 	newEntry.removeClass('.entry-stub hidden');
@@ -57,20 +60,23 @@ function newEntryElement(entry) {
 	});
 }
 
-function stopEditing(id){
+function stopEditing(id) {
 	$('#' + id).children('.content').show();
-	$('#' + id).parent().addClass('.editing')
+	$('#' + id).parent().removeClass('editing')
 }
 
 
-function saveEntry() {	
-	currentEntry.title = $('#title').val();
-	currentEntry.tags = $('#tags').val().split(',').map(function (s) { return s.trim() });
-	currentEntry.topic = parseInt($('#topic').val());
-	currentEntry.body = $('#body').val();
-	console.log('saving...', currentEntry)
+function saveEntry() {
+	var update = {
+		id: currentEntry.id,
+		title: $('#title').val(),
+		tags: $('#tags').val().split(',').map(function (s) { return s.trim() }),
+		topic: parseInt($('#topic').val()),
+		body: $('#body').val(),
+	}	
+	console.log('saving...', update)
 
-	postJson('api/entry/save', currentEntry).done(function (data) {
+	postJson('api/entry/save', update).done(function (data) {
 
 		if (!currentEntry.id) {
 			// insert new one...
@@ -78,16 +84,9 @@ function saveEntry() {
 			$('#new-post a.new').show();
 		}
 
-		var entryElement = $('#' + data.id);
-
-		entryElement.find('.title').html(data.title);
-		entryElement.find('.body').html(data.body);
-		entryElement.parent().find('.tagscontainer').html(data.tags.map(function (tag) {
-			return `<div class='tag'>${tag}</div>`;
-		}).join());
-
 		stopEditing(currentEntry.id);
 
+		updatePostData(data);
 		$('#editor').hide();
 		currentEntry = false;
 	});
@@ -96,16 +95,46 @@ function saveEntry() {
 function toggleTop(element) {
 	var id = getId(element);
 	postJson('api/top/' + id).done(function (data) {
-		$(element).children().toggleClass('glyphicon-star').toggleClass('glyphicon-star-empty');
+		updatePostData(data);		
+		placeFirstPostMarker();
 	});
 }
+
 
 function rate(element, plusminus) {
 	var id = getId(element);
 	var grade = (parseInt($(element).parent().children('span').html()) || 0) + plusminus;
-	postJson('/api/entry/save', { id: parseInt(id), grade: grade }).done(function (data) {
-		$(element).parent().parent().find('.grade').html(data.grade);
-	});
+	postJson('/api/entry/save', { id: parseInt(id), grade: grade })
+		.done(updatePostData);
+}
+
+
+function updatePostData(entry) {
+	var element = $('#' + entry.id);
+
+	element.data('entry', entry);
+	
+	if (entry.top){		
+		element.find('.top').addClass('glyphicon-star').removeClass('glyphicon-star-empty');
+	}
+	else{
+		element.find('.top').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+	}
+	
+	element.find('.grade').html(entry.grade);
+	element.find('.title').html(entry.title);
+	element.find('.body').html(entry.body);
+	element.parent().find('.tagscontainer').html(entry.tags.map(function (tag) {
+		return `<div class='tag'>${tag}</div>`;
+	}).join());
+
+	// check if it's public
+	if (isThisPostPublic(entry)){
+		element.addClass('public')
+	}
+	else{
+		element.removeClass('public')
+	}
 }
 
 function getId(element) {
@@ -113,18 +142,7 @@ function getId(element) {
 }
 
 
-function isThisPostPublic(post) {
-	return post.top &&
-		post.topic === 0 &&
-		(
-			(moment().diff(moment(post.date), 'year') / 2) < 1 ||
-			post.grade &&
-			post.grade > (moment().diff(moment(post.date), 'year') / 2)
-		)
-}
-
-
-function placeFirstPostMarker(){
+function placeFirstPostMarker() {
 	$('#first-marker').remove();
-	$('.entry.top').first().before('<hr id="first-marker">');	
+	$('.entry.public').first().before('<hr id="first-marker">');
 }
