@@ -1,5 +1,5 @@
 $(function () {
-
+	placeFirstPostMarker()
 });
 
 var currentEntry;
@@ -8,7 +8,7 @@ var currentEntry;
 function addPost(entry) {	
 	if (currentEntry) {
 		if (confirm('you wanna discard changes?')) {
-			$('#' + currentEntry.id).children('.content').show();
+			stopEditing(currentEntry.id);
 		}
 	}
 
@@ -29,10 +29,11 @@ function edit(element) {
 	if (currentEntry) {
 		if (currentEntry.id === id) return;
 		if (confirm('you wanna discard changes?')) {
-			$('#' + currentEntry.id).children('.content').show();
+			stopEditing(currentEntry.id);
 		}
 	}
 	var entry = currentEntry = $('#' + id).data('entry');
+	$('#' + id).parent().addClass('editing')
 	$('#title').val(entry.title);
 	$('#tags').val(entry.tags.join(', '));
 	$('#topic').val(entry.topic);
@@ -54,6 +55,11 @@ function newEntryElement(entry) {
 		id: entry.id,
 		date: entry.date
 	});
+}
+
+function stopEditing(id){
+	$('#' + id).children('.content').show();
+	$('#' + id).parent().addClass('.editing')
 }
 
 
@@ -80,7 +86,8 @@ function saveEntry() {
 			return `<div class='tag'>${tag}</div>`;
 		}).join());
 
-		$('#' + currentEntry.id).children('.content').show();
+		stopEditing(currentEntry.id);
+
 		$('#editor').hide();
 		currentEntry = false;
 	});
@@ -114,4 +121,10 @@ function isThisPostPublic(post) {
 			post.grade &&
 			post.grade > (moment().diff(moment(post.date), 'year') / 2)
 		)
+}
+
+
+function placeFirstPostMarker(){
+	$('#first-marker').remove();
+	$('.entry.top').first().before('<hr id="first-marker">');	
 }

@@ -88,8 +88,8 @@ function getPart(url, filters, type){
 
 function filterRoot(){
 	return {
-		pageStart: 0,
-		pageSize: 10,
+		offset: 0,
+		limit: 10,
 		orderBy: '',
 		orderDirection: 'asc',
 		filters: []

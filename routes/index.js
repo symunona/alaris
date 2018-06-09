@@ -6,7 +6,8 @@
 //var blog = db.get('blog');
 
 
-var moment = require('moment');
+const moment = require('moment'),
+	isThisPostPublic = require('../public/js/is-public')
 
 const config = require('./../config.json'),
 	db = require('../lib/db'),
@@ -22,25 +23,25 @@ exports.part = function (req, res) {
 	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req, isThisPostPublic))
 };
 
-exports.getEntriesFromReq = function(req, filterFunction){
+exports.getEntriesFromReq = function (req, filterFunction) {
 	let offset = parseInt(req.query.offset) || 0,
-	limit = parseInt(req.query.limit) || config.pageSize,
-	id = req.params.id,
-	keyword = req.params.keyword || req.query.keyword
+		limit = parseInt(req.query.limit) || config.pageSize,
+		id = req.params.id,
+		keyword = req.params.keyword || req.query.keyword
 
 	let length = db.db.blog.length - 1;
-	
+
 	// Get the visible ones.
-	if (filterFunction){
+	if (filterFunction) {
 		while (offset > 0 && length > 0) {
-			if (filterFunction(db.db.blog[length])) {offset--} 
+			if (filterFunction(db.db.blog[length])) { offset-- }
 			length--;
 		}
 	}
 	else {
 		length = length - offset;
 	}
-	
+
 	let entriesToShow = []
 	while (limit > 0 && length > 0) {
 		let entry = db.db.blog[length]
@@ -59,23 +60,10 @@ exports.all = function (req, res) {
 	utils.renderEntries(res, 'index', exports.getEntriesFromReq(req), {
 		offsetStart: req.query.offset || 0,
 		admin: 'true'
-	})	
+	})
 };
 
 
-// Here comes a very opinionated if. I want to show publicly posts only if they match ALL of the following:
-// - top flag is true
-// - topic is 0
-// - they have been upvoted at least the delta T time / 2 times.
-function isThisPostPublic(post) {
-	return post.top &&
-		post.topic === 0 &&
-		(
-			(moment().diff(moment(post.date), 'year') / 2) < 1 ||
-			post.grade &&
-			post.grade > (moment().diff(moment(post.date), 'year') / 2)
-		)
-}
 
 exports.partAll = function (req, res) {
 	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
@@ -84,9 +72,10 @@ exports.partAll = function (req, res) {
 };
 
 exports.getErasIntf = function (req, res) {
-	var time = req.query.time;
+	let time = req.query.time;
 
 	api.getEras(time, function (data) {
 		res.send(data);
 	});
 };
+

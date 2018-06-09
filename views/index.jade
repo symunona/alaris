@@ -98,11 +98,11 @@ html
 			.searchboxbuttons(style="display:none;")
 				input.lookfor(onblur="setTimeout(function(){$('.searchbox').children('a.trigger').show(); $('.searchboxbuttons').hide()},500)")
 				.yearpicker(data-years=years)
-					- for (var y = 0; y < years.length; y++)
-						a(onclick="toYear(this)",data-year=years[y])=years[y]
+					- for (var year in years)
+						a(onclick="toYear(this, "+years[year]+")", data-year=year)=year
 		section.footer
 			div#tmp
-				a(title=config.footerTitle, href='/x')=config.footer
+				a(title=config.footerTitle, href=admin?'/':'/all')=config.footer
 		
 		section.editor-wrapper.hidden
 			#editor
