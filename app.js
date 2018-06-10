@@ -86,13 +86,8 @@ app.get('/id/:id', routes.index);
 
 app.post('/api/entry/save', auth, admin.saveEntry);
 
-app.get('/api/search/:keyword', routes.index);
-app.get('/api/entries', admin.getEntriesIntf);
+app.post('/api/tag/save', auth, admin.saveTag);
 
-app.post('/api/saveTag', api.saveTag);
-app.get('/api/searchTags', api.searchTags);
-app.get('/api/tags', api.getTags);
-app.get('/api/deletedEntries', api.deletedEntries);
 app.get('/api/content', admin.content);
 app.post('/api/uploadfile',function(req,res){
 	api.upload(req,res,app);
