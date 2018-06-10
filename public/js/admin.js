@@ -118,7 +118,6 @@ function saveTag(){
 
 }
 
-
 function discardTag(){
 	
 }
