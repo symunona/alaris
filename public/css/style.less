@@ -507,21 +507,19 @@ a {
 
 #editor{
 	h3 {
-		input{
-			padding: 0px;
-			width: 70%;
-		}
-		button{
-			float: right;
-		}
+		input{ padding: 0px; width: 70%; }
+		button{ float: right; }
 	}
 	input{
-		background: transparent;
-		outline: 1px solid #ddd;
-		border: 0px;
-		padding: 4px;
-		&:focus{
-			outline: 1px solid #555;
-		}		
+		background: transparent; outline: 1px solid #ddd;
+		border: 0px; padding: 4px;
+		&:focus{ outline: 1px solid #555; }		
 	}
+}
+
+#tag-editor{
+	display: none;
+	position: fixed; bottom: 0px; width: 100%;
+	padding: 10px;
+	background: rgba(@br,@br,@br,0.8);
 }

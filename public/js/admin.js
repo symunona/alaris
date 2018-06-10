@@ -27,6 +27,28 @@ function addPost(entry) {
 	$('#title').focus();
 }
 
+// $.fn.datepicker.setDefaults({
+// 	format: moment.ISO_8601
+// })
+var DATE_FORMAT_MOMENT = 'YYYY-MM-DD';
+var DATE_FORMAT_JQUERY = 'yy-mm-dd';
+var editingTag;
+function bindTags(){
+	$('#eratags').children().on('click', function(){
+		if ($(this).data('tag')){
+			editingTag = $(this).data('tag');
+			console.warn('edit tag', editingTag);
+			$('#tag-name').val(editingTag.name);
+			$('#tag-image').val(editingTag.image);
+			$('#tag-start').val(moment(editingTag.startdate).format(DATE_FORMAT_MOMENT));
+			$('#tag-end').val(moment(editingTag.enddate).format(DATE_FORMAT_MOMENT));
+			$('#tag-editor').show();
+			$('#tag-start').datepicker({dateFormat: DATE_FORMAT_JQUERY});
+			$('#tag-end').datepicker({dateFormat: DATE_FORMAT_JQUERY})
+		}
+	})
+}
+
 function edit(element) {
 	var id = getId(element);
 	if (currentEntry) {
@@ -90,6 +112,15 @@ function saveEntry() {
 		$('#editor').hide();
 		currentEntry = false;
 	});
+}
+
+function saveTag(){
+
+}
+
+
+function discardTag(){
+	
 }
 
 function toggleTop(element) {

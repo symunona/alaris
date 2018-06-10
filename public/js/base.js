@@ -7,34 +7,6 @@ var util = {
 	    return $.extend(target, ko.wrap.fromJS(sources));
 	}
 }
-var Entry = Class.extend({
-	init : function(properties) {
-		util.extend(this, {
-			id : '',
-			title : '',
-			body : '',
-			date : moment().format(),
-			tag : '',
-			topic: 0,
-			top: 0,
-			grade: 0
-		}, properties);
-	}
-});
-
-var Tag = Class.extend({
-	init : function(properties) {
-		util.extend(this, {
-			id: '',
-			name : '',
-			style : '',
-			customjs: '',
-			startdate: null,
-			enddate: null,
-			background: ''
-		}, properties);
-	}
-});
 function getJson(url, filters){
 	return $.ajax({
 //        dataType: 'json',
