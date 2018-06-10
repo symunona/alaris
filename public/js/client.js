@@ -1,4 +1,3 @@
-var entries = ko.observableArray();
 var loadingnextx = false;
 var offset = 0;
 var pageSize = 10;
@@ -135,16 +134,26 @@ function setActual(jqentry, scrollthere) {
 	if (data && data.length > 0) {
 		for (var i = 0; i < data.length; i++) {
 			if ($('#eratags').children('[data-name="' + data[i].name + '"]').length == 0)
-				$('#eratags').append($('<div>', { 'data-name': data[i].name }).html($('<span>').html(data[i].name)));
+				$('#eratags').append($('<div>', { 
+					'data-name': data[i].name,					
+					title: data[i].startdate + ' - ' + data[i].enddate
+				}).data('tag', data[i]).html($('<span>').html(data[i].name)));
 
 		}
 		$('#eratags').children().each(function (i, e) {
-			if ($.grep(data, function (k) { return k.name == $(e).attr('data-name') }).length == 0)
-				$(e).hide('slow');
+			if ($.grep(data, function (k) { return k.name == $(e).attr('data-name') }).length == 0){
+				if (!$(e).hasClass('new'))
+					$(e).hide('slow');				
+			}
+				
 			else
 				if (!$(e).is(":visible"))
 					$(e).show('slow');
 		});
+		
+		if (typeof(bindTags)!=='undefined'){
+			bindTags()
+		}
 
 		if (data[0].background) {
 			var bg = 'url("/' + data[0].background + '")';

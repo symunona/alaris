@@ -12,11 +12,12 @@
   },
   "main": "./app.js",
   "dependencies": {
+    "@fengyuanchen/datepicker": "^0.6.5",
     "body-parser": "^1.18.3",
     "deferred": "0.7.9",
     "express": "^4.16.3",
     "express-basic-auth": "^1.1.5",
-    "jade": "1.11.0",
+    "jade": "1.11.0",    
     "less-middleware": "3.0.0",
     "moment": "2.22.2",
     "mysql-activerecord": "0.8.6",

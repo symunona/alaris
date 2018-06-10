@@ -15,9 +15,6 @@ html
 		script(type='text/javascript', src='/js/lib/vendor/jquery-1.11.0.js')
 		script(type='text/javascript', src='/js/lib/vendor/jquery.debounce-1.0.5.js')
 		script(type='text/javascript', src='/js/lib/vendor/jquery.highlight.js')
-		script(type='text/javascript', src='/js/lib/vendor/knockout-3.0.0.debug.js')
-		script(type='text/javascript', src='/js/lib/vendor/knockout.wrap.js')
-		script(type='text/javascript', src='/js/lib/vendor/inheritance.js')
 		script(type='text/javascript', src='/js/lib/vendor/moment.min.js')
 		script(type='text/javascript', src='/js/base.js')
 		script(type='text/javascript', src='/js/client.js')
@@ -25,6 +22,8 @@ html
 		if admin
 			link(rel='stylesheet', href='/trumbowyg/dist/ui/trumbowyg.css')
 			script(type='text/javascript', src='/trumbowyg/dist/trumbowyg.min.js')
+			link(rel="stylesheet", href='js/lib/vendor/jqueryui/css/ui-darkness/jquery-ui-1.10.4.custom.min.css')
+			script(type='text/javascript', src='js/lib/vendor/jqueryui/js/jquery-ui-1.10.4.custom.min.js')
 			script(type='text/javascript', src='/js/is-public.js')
 			script(type='text/javascript', src='/js/admin.js')
 
@@ -93,6 +92,9 @@ html
 			#actualday
 			div.clear
 			#eratags
+				if admin
+					.new
+						span.clickable(onclick="newTag()") +
 			
 		section.searchbox
 			a.trigger(onclick="$(this).hide().parent().children('.searchboxbuttons').show(); $('.lookfor').focus()")
@@ -116,6 +118,14 @@ html
 				input#topic.col-md-3
 				span.col-md-1
 					button.discard(onclick="discardEntry()", title="Discard") ×
+		#tag-editor
+			input#tag-name(placeholder='Tagname')
+			input#tag-image(placeholder='background image')
+			input#tag-start(placeholder='era start date')
+			input#tag-end(placeholder='era end date')
+			button(onclick="saveTag()") ✔
+			button.discard-tag(onclick="discardTag()") ×
+
 				
 				
 				

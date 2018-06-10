@@ -6478,3 +6478,11 @@ a {
 #editor input:focus {
   outline: 1px solid #555;
 }
+#tag-editor {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+  background: rgba(230, 230, 230, 0.8);
+}
