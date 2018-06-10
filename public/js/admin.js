@@ -39,7 +39,7 @@ function bindTags(){
 			editingTag = $(this).data('tag');
 			console.warn('edit tag', editingTag);
 			$('#tag-name').val(editingTag.name);
-			$('#tag-image').val(editingTag.image);
+			$('#tag-background').val(editingTag.background);
 			$('#tag-start').val(moment(editingTag.startdate).format(DATE_FORMAT_MOMENT));
 			$('#tag-end').val(moment(editingTag.enddate).format(DATE_FORMAT_MOMENT));
 			$('#tag-editor').show();
@@ -47,6 +47,32 @@ function bindTags(){
 			$('#tag-end').datepicker({dateFormat: DATE_FORMAT_JQUERY})
 		}
 	})
+}
+
+
+function saveTag(){
+	var update = {
+		id: editingTag.id,
+		name: $('#tag-name').val(),
+		startdate: moment($('#tag-start').val(), DATE_FORMAT_MOMENT),
+		enddate: moment($('#tag-end').val(), DATE_FORMAT_MOMENT),
+		background: $('#tag-image').val()
+	}
+	postJson('api/tag/save', update).then(function(tag){
+		var existingTag = tags.find(function(t){return t.id===tag.id})
+		if (existingTag){
+			$.extend(existingTag, tag)
+		}
+		else{
+			tags.push(tag)
+		}
+		editingTag = false;
+		$('#tag-editor').hide();
+	})
+}
+
+function discardTag(){
+	$('#tag-editor').hide();
 }
 
 function edit(element) {
@@ -114,13 +140,6 @@ function saveEntry() {
 	});
 }
 
-function saveTag(){
-
-}
-
-function discardTag(){
-	
-}
 
 function toggleTop(element) {
 	var id = getId(element);

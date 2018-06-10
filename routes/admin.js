@@ -69,10 +69,6 @@ exports.content = function(req, res){
 	
 };
 
-exports.saveEntry = function(req,res){
-	res.send("respond with a resource 2");
-}
-
 exports.getEntriesIntf = function(req, res) {
 
 	var ctrl = {
@@ -97,4 +93,8 @@ exports.toggleTop = function(req, res) {
 
 exports.saveEntry = function (req, res) {	
 	res.send(db.saveOrUpdate('blog', req.body))
+}
+
+exports.saveTag = function (req, res) {	
+	res.send(db.saveOrUpdate('tags', req.body))
 }
