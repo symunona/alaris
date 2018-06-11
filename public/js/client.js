@@ -135,6 +135,7 @@ function setActual(jqentry, scrollthere) {
 		for (var i = 0; i < data.length; i++) {
 			if ($('#eratags').children('[data-name="' + data[i].name + '"]').length == 0)
 				$('#eratags').append($('<div>', { 
+					class: 'tag',
 					'data-name': data[i].name,					
 					title: data[i].startdate + ' - ' + data[i].enddate
 				}).data('tag', data[i]).html($('<span>').html(data[i].name)));

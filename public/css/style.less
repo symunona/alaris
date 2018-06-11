@@ -296,17 +296,6 @@ a {
 	padding-right: 10px;
 }
 
-.tageditor{
-	
-	border-radius: 4px;
-	border: 1px solid grey;
-	padding: 10px;
-	
-	input, textarea{
-		width: 350px;
-		display: block;		
-	}
-}
 
 .nav{	
 	width: 120px;
@@ -519,7 +508,26 @@ a {
 
 #tag-editor{
 	display: none;
-	position: fixed; bottom: 0px; width: 100%;
-	padding: 10px;
+	position: fixed; bottom: 0px; 
+	left: 50px;
+	width: calc(~"100% - 100px");
+	padding: 15px;
 	background: rgba(@br,@br,@br,0.8);
+	#tag-image-upload{
+		width: 150px;
+		// height: 30px;
+		border: 5px dashed grey;
+		display: inline-block;
+	}
+	.dz-preview{
+		.dz-image { display: inline-block; height: 64px; img{ height: 64px} }
+		.dz-detail {display: inline-block}
+		.dz-success-mark, .dz-error-mark {display: none}
+	}
+	
+	&.dz-drag-hover{
+		background: rgba(@brr,@brr,@brr,0.4);
+		outline: 5px dashed white;
+	}	
 }
+

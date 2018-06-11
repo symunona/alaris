@@ -257,35 +257,3 @@ exports.deletedEntries = function(ctrl) {
 	});
 };
 
-exports.upload = function(req, res, app) {
-    // get the temporary location of the file
-//	console.log(req.files);
-    var tmp_path = req.files.file.path;
-    
-    // set where the file should actually exists - in this case it is in the "images" directory
-    
-	 var path = module.parent.filename.replace(/\\/g,'/');
-	 path = path.slice(0,path.lastIndexOf("/")) +"/../public/content/";
-    
-    var target_path = path + req.files.file.name;
-    if (module.parent.filename.indexOf('\\')>-1)
-    	target_path = target_path.replace(/\//g,'\\');
-    console.log('tmppath',tmp_path,target_path);
-    debugger;
-    try{
-    // move the file from the temporary location to the intended location
-    fs.rename(tmp_path, target_path, function(err) {
-        if (err) throw err;
-        // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
-        fs.unlink(tmp_path, function() {
-            if (err) throw err;
-            res.send('File uploaded to: ' + target_path + ' - ' + req.files.file.size + ' bytes');
-        });
-    });
-    }
-    catch(e)
-    {
-    	res.send({'upload error':e.message});
-    }
-}
-
