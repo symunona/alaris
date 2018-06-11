@@ -4,7 +4,7 @@ $(function () {
 
 var currentEntry;
 
-function discardEntry(){
+function discardEntry() {
 	stopEditing(currentEntry.id)
 }
 
@@ -33,46 +33,74 @@ function addPost(entry) {
 var DATE_FORMAT_MOMENT = 'YYYY-MM-DD';
 var DATE_FORMAT_JQUERY = 'yy-mm-dd';
 var editingTag;
-function bindTags(){
-	$('#eratags').children().on('click', function(){
-		if ($(this).data('tag')){
-			editingTag = $(this).data('tag');
-			console.warn('edit tag', editingTag);
+
+function bindTags() {
+	$('#eratags').on('click', function (event) {
+		var tag = $(event.target).closest('.tag')		
+		if (tag.data('tag')) {
+			editingTag = tag.data('tag');			
 			$('#tag-name').val(editingTag.name);
 			$('#tag-background').val(editingTag.background);
 			$('#tag-start').val(moment(editingTag.startdate).format(DATE_FORMAT_MOMENT));
 			$('#tag-end').val(moment(editingTag.enddate).format(DATE_FORMAT_MOMENT));
 			$('#tag-editor').show();
-			$('#tag-start').datepicker({dateFormat: DATE_FORMAT_JQUERY});
-			$('#tag-end').datepicker({dateFormat: DATE_FORMAT_JQUERY})
+			$('#tag-start').datepicker({ dateFormat: DATE_FORMAT_JQUERY });
+			$('#tag-end').datepicker({ dateFormat: DATE_FORMAT_JQUERY })
+			initTagImageUpload();
 		}
 	})
 }
 
 
-function saveTag(){
+var tagDropZone;
+
+function initTagImageUpload() {
+	var e = $('#tag-image-upload')
+	var lastFile
+	$('#tag-editor').dropzone({
+		url: '/api/upload',		
+		success: function (file) {
+			if (lastFile){
+				tagDropZone.removeFile(lastFile)
+			}
+			$('#tag-background').val('content/' + file.name);
+			lastFile = file;
+		},
+		init: function() {
+			tagDropZone = this;
+		}			
+	})
+
+}
+
+function saveTag() {
 	var update = {
 		id: editingTag.id,
 		name: $('#tag-name').val(),
 		startdate: moment($('#tag-start').val(), DATE_FORMAT_MOMENT),
 		enddate: moment($('#tag-end').val(), DATE_FORMAT_MOMENT),
-		background: $('#tag-image').val()
+		background: $('#tag-background').val()
 	}
-	postJson('api/tag/save', update).then(function(tag){
-		var existingTag = tags.find(function(t){return t.id===tag.id})
-		if (existingTag){
+	postJson('api/tag/save', update).then(function (tag) {
+		var existingTag = tags.find(function (t) { return t.id === tag.id })
+		if (existingTag) {
 			$.extend(existingTag, tag)
 		}
-		else{
+		else {
 			tags.push(tag)
 		}
 		editingTag = false;
+		setTimeout(getCurrentEntry, 100);
+		
 		$('#tag-editor').hide();
+		tagDropZone.destroy();
 	})
 }
 
-function discardTag(){
+function discardTag() {
 	$('#tag-editor').hide();
+	tagDropZone.destroy();
+
 }
 
 function edit(element) {
@@ -110,7 +138,9 @@ function newEntryElement(entry) {
 
 function stopEditing(id) {
 	$('#' + id).children('.content').show();
-	$('#' + id).parent().removeClass('editing')
+	$('#' + id).parent().removeClass('editing');
+	$('#editor').hide();
+	currentEntry = false;
 }
 
 
@@ -121,7 +151,7 @@ function saveEntry() {
 		tags: $('#tags').val().split(',').map(function (s) { return s.trim() }),
 		topic: parseInt($('#topic').val()),
 		body: $('#body').val(),
-	}	
+	}
 	console.log('saving...', update)
 
 	postJson('api/entry/save', update).done(function (data) {
@@ -144,7 +174,7 @@ function saveEntry() {
 function toggleTop(element) {
 	var id = getId(element);
 	postJson('api/top/' + id).done(function (data) {
-		updatePostData(data);		
+		updatePostData(data);
 		placeFirstPostMarker();
 	});
 }
@@ -162,23 +192,23 @@ function updatePostData(entry) {
 	var element = $('#' + entry.id);
 
 	element.data('entry', entry);
-	
-	if (entry.top){		
+
+	if (entry.top) {
 		element.find('.top').addClass('glyphicon-star').removeClass('glyphicon-star-empty');
 	}
-	else{
+	else {
 		element.find('.top').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
 	}
-	
+
 	element.find('.grade').html(entry.grade);
 	element.find('.title').html(entry.title);
 	element.find('.body').html(entry.body);
 	element.find('.topic').html(entry.topic);
-	
-	if (!entry.topic){
+
+	if (!entry.topic) {
 		element.find('.topicq').addClass('hidden')
 	}
-	else{
+	else {
 		element.find('.topicq').removeClass('hidden')
 	}
 	element.parent().find('.tagscontainer').html(entry.tags.map(function (tag) {
@@ -186,10 +216,10 @@ function updatePostData(entry) {
 	}).join());
 
 	// check if it's public
-	if (isThisPostPublic(entry)){
+	if (isThisPostPublic(entry)) {
 		element.addClass('public')
 	}
-	else{
+	else {
 		element.removeClass('public')
 	}
 }
