@@ -128,9 +128,10 @@ html
 		#tag-editor
 			input#tag-name(placeholder='Tagname')
 			input#tag-background(placeholder='background image')
+			button(onclick="tagImageFromList()") F
 			input#tag-start(placeholder='era start date')
 			input#tag-end(placeholder='era end date')
-			button(onclick="saveTag()") ✔
+			button(onclick="saveTag()") ✔			
 			button.discard-tag(onclick="discardTag()") ×
 		#file-list.modal
 			.modal-dialog

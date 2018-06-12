@@ -118,6 +118,13 @@ function listOfFiles(_fileListCallback){
 	
 }
 
+function tagImageFromList(){	
+	listOfFiles(function(context){
+		$('#tag-background').val('content/' + context.innerHTML);
+		$('#file-list').modal('hide')
+	})
+}
+
 var tagDropZone;
 
 function initTagImageUpload() {
