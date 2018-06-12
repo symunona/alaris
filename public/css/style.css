@@ -6098,6 +6098,13 @@ hr#first-marker {
   margin-top: -18px;
   margin-bottom: 0px;
 }
+#file-list .modal-body {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+#file-list .list a {
+  display: block;
+}
 .entry,
 #new-entry {
   color: black;
@@ -6115,6 +6122,10 @@ hr#first-marker {
 	  	font-size: 20px;
 	}
 	*/
+}
+.entry .dz-preview,
+#new-entry .dz-preview {
+  display: none;
 }
 .entry.theend,
 #new-entry.theend {

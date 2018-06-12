@@ -26,6 +26,9 @@ html
 			script(type='text/javascript', src='/js/lib/vendor/jqueryui/js/jquery-ui-1.10.4.custom.min.js')
 			script(type='text/javascript', src='/dropzone/dist/min/dropzone.min.js')
 			link(rel='stylesheet', href='/dropzone/dist/min/dropzone.min.css')
+			script(type='text/javascript', src='/bootstrap/js/dist/util.js')
+			script(type='text/javascript', src='/bootstrap/js/dist/modal.js')
+			//- script(type='text/javascript', src='/js/lib/trumbowyg-insert-at-cursor.js')
 			script(type='text/javascript', src='/js/is-public.js')
 			script(type='text/javascript', src='/js/admin.js')
 
@@ -117,7 +120,9 @@ html
 				div.text-editor-wrapper
 					textarea#body.col-md-12
 				input#tags.col-md-8(placeholder='tags with comma separation...')
-				input#topic.col-md-3
+				input#topic.col-md-2
+				span.col-md-1
+					button#add-file F
 				span.col-md-1
 					button.discard(onclick="discardEntry()", title="Discard") ×
 		#tag-editor
@@ -126,7 +131,13 @@ html
 			input#tag-start(placeholder='era start date')
 			input#tag-end(placeholder='era end date')
 			button(onclick="saveTag()") ✔
-			button.discard-tag(onclick="discardTag()") ×			
+			button.discard-tag(onclick="discardTag()") ×
+		#file-list.modal
+			.modal-dialog
+				.modal-content
+					.modal-header Pick a file to insert
+					.modal-body
+						.list
 
 				
 				
