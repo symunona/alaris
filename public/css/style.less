@@ -126,12 +126,24 @@ a.ctrl {color: @admin-color; cursor: pointer;
 
 hr#first-marker{ border: 0; outline: 5px solid rgba(200, 200, 200, 0.9); margin-top: -18px; margin-bottom: 0px; }
 
+#file-list {
+	.modal-body{
+		max-height: 95vh;
+		overflow-y: scroll;
+	}
+	.list a{
+		display: block;
+	}
+}
+
 .entry, #new-entry{
 	color: black;
 	background-color: rgba(@br,@br,@br,0.8);	
 	margin-bottom: 40px;
 	padding-bottom: 10px;
 	position: relative;
+
+	.dz-preview{display: none}
   /*
     &.actual::before{
 		// content: '◄';
@@ -503,8 +515,9 @@ a {
 		background: transparent; outline: 1px solid #ddd;
 		border: 0px; padding: 4px;
 		&:focus{ outline: 1px solid #555; }		
-	}
+	}	
 }
+
 
 #tag-editor{
 	display: none;

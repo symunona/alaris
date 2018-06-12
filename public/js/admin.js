@@ -8,6 +8,58 @@ function discardEntry() {
 	stopEditing(currentEntry.id)
 }
 
+var editorDropZoneElement;
+
+function initTrumbowygOnElement(element){	
+		
+	if (editorDropZoneElement && editorDropZoneElement[0].dropzone){
+		editorDropZoneElement[0].dropzone.destroy();
+	}
+
+	$(element).trumbowyg();
+
+	editorDropZoneElement = element.closest('.entry')
+	
+	if (!editorDropZoneElement.data().dropzone){
+		editorDropZoneElement.dropzone({
+			url: '/api/upload',		
+			success: function (file) {
+				var html = $(element).trumbowyg('html')
+				html += '<img src="content/'+file.name+'">';
+				$('#body').trumbowyg('html', html);			
+			}		
+		})
+	}
+	$('#add-file').on('click', function(){
+		listOfFiles(function(context){
+			var html = $(element).trumbowyg('html')
+				html += '<img src="content/'+context.innerHTML+'">';
+				$('#body').trumbowyg('html', html);		
+				$('#file-list').modal('hide')
+		})
+	})
+	
+	
+}
+
+
+// var defaultTrumbowygConfig = {
+// 	btns: [
+// 		['viewHTML'],
+// 		['undo', 'redo'], // Only supported in Blink browsers
+// 		['formatting'],
+// 		['strong', 'em', 'del'],
+// 		['superscript', 'subscript'],
+// 		['link'],		
+// 		['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+// 		['unorderedList', 'orderedList'],
+// 		['horizontalRule'],
+// 		['removeformat'],
+// 		['insertImage', 'insertImageAtCursor'],
+// 		['fullscreen']		
+// 	]
+// }
+
 function addPost(entry) {
 	if (currentEntry) {
 		if (confirm('you wanna discard changes?')) {
@@ -23,7 +75,7 @@ function addPost(entry) {
 	$('#title').val('');
 	$('#tags').val('');
 	$('#body').val('');
-	$('#body').trumbowyg();
+	initTrumbowygOnElement($('#body'));
 	$('#title').focus();
 }
 
@@ -51,6 +103,20 @@ function bindTags() {
 	})
 }
 
+var fileListCallback;
+
+function listOfFiles(_fileListCallback){
+	fileListCallback = _fileListCallback;
+	$('#file-list').modal()
+	getJson('api/content', {}).then(function(data){
+		var list = '';
+		for(var i = 0; i<data.length; i++){
+			list += '<a onclick="fileListCallback(this)">'+data[i].filename+'</a>'
+		}		
+		$('#file-list .list').append(list);
+	})
+	
+}
 
 var tagDropZone;
 
@@ -119,7 +185,7 @@ function edit(element) {
 	$('#body').val(entry.body);
 	$('#' + id).append($('#editor'));
 	$('#editor').show()
-	$('#body').trumbowyg();
+	initTrumbowygOnElement($('#body'));
 	$('#body').trumbowyg('html', entry.body);
 	$('#' + id).children('.content').hide();
 }

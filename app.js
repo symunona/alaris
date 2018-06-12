@@ -85,7 +85,7 @@ app.post('/api/entry/save', auth, admin.saveEntry);
 
 app.post('/api/tag/save', auth, admin.saveTag);
 
-app.get('/api/content', admin.content);
+app.get('/api/content', auth, admin.content);
 // app.post('/api/upload', auth, upload);
 
 let storage = multer.diskStorage({
