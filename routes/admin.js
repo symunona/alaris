@@ -95,6 +95,10 @@ exports.saveEntry = function (req, res) {
 	res.send(db.saveOrUpdate('blog', req.body))
 }
 
+exports.deleteTag = function (req, res) {	
+	res.send(db.deleteItem('tags', req.params.id))
+}
+
 exports.saveTag = function (req, res) {	
 	res.send(db.saveOrUpdate('tags', req.body))
 }

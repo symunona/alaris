@@ -90,17 +90,30 @@ function bindTags() {
 	$('#eratags').on('click', function (event) {
 		var tag = $(event.target).closest('.tag')		
 		if (tag.data('tag')) {
-			editingTag = tag.data('tag');			
-			$('#tag-name').val(editingTag.name);
-			$('#tag-background').val(editingTag.background);
-			$('#tag-start').val(moment(editingTag.startdate).format(DATE_FORMAT_MOMENT));
-			$('#tag-end').val(moment(editingTag.enddate).format(DATE_FORMAT_MOMENT));
-			$('#tag-editor').show();
-			$('#tag-start').datepicker({ dateFormat: DATE_FORMAT_JQUERY });
-			$('#tag-end').datepicker({ dateFormat: DATE_FORMAT_JQUERY })
-			initTagImageUpload();
+			editTag(tag.data('tag'));
 		}
 	})
+}
+
+function editTag(tag){	
+	editingTag = tag;
+	$('#tag-name').val(editingTag.name);
+	$('#tag-background').val(editingTag.background);
+	$('#tag-start').val(moment(editingTag.startdate).format(DATE_FORMAT_MOMENT));
+	$('#tag-end').val(moment(editingTag.enddate).format(DATE_FORMAT_MOMENT));
+	$('#tag-editor').show();
+	$('#tag-start').datepicker({ dateFormat: DATE_FORMAT_JQUERY });
+	$('#tag-end').datepicker({ dateFormat: DATE_FORMAT_JQUERY })
+	initTagImageUpload();
+}
+
+function newTag(){
+	editTag({
+		name: '',
+		background: '',
+		startdate: moment().format(),
+		enddate: moment().format()
+	});
 }
 
 var fileListCallback;

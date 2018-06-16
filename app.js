@@ -83,6 +83,8 @@ app.get('/id/:id', routes.index);
 
 app.post('/api/entry/save', auth, admin.saveEntry);
 
+app.delete('/api/tag/delete', auth, admin.deleteTag);
+
 app.post('/api/tag/save', auth, admin.saveTag);
 
 app.get('/api/content', auth, admin.content);
