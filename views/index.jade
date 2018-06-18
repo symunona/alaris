@@ -133,15 +133,18 @@ html
 				input#tag-start(placeholder='era start date')
 				input#tag-end(placeholder='era end date')
 				button(onclick="saveTag()") ✔			
-				button.discard-tag(onclick="discardTag()") ×
+				button.discard-tag(onclick="discardTag()") ×				
 				button.delete-tag(onclick="deleteTag()") DELETE
 			#file-list.modal
 				.modal-dialog
 					.modal-content
 						.modal-header Pick a file to insert
-						.modal-body
-							.preview
+							br
+							input#file-filter(onkeydown='filterFileList(event)')
+						.modal-body							
 							.list
+						.moda-footer
+							.preview.col-md-12(onclick="pickerCallback()")
 
 				
 				
