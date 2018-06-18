@@ -55,7 +55,7 @@ html
 		if admin
 			section#new-post.container-fluid
 				article.row
-					div.col-md-6.col-md-offset-3#new-entry
+					div.col-md-6.col-md-offset-3.entry#new-entry
 						h3
 							a.new(onclick='addPost()') +
 				article.entry-stub.row.entry-wrapper.hidden
@@ -64,21 +64,22 @@ html
 								a(href='#')
 									i.glyphicon.glyphicon-asterisk
 						.content
-							h3.title
+							h3.title.clickable(onclick="edit(this)")
 							span.peek.body
 						
 						div.grade.gradeq.noselect 0	
 
 						div.control.noselect
-							a.editButton(onclick="edit(this)")
-								span.glyphicon.glyphicon-pencil
-							a.toggleTop(onclick='toggleTop(this)')
-								span(class='glyphicon-star-empty').glyphicon
-							div.topic T: 0
-							
-							a(onclick="rate(this, 1)") ▲
-							span.grade 0
-							a(onclick="rate(this, -1)") ▼
+							div.topq.noselect
+								a.ctrl.top-toggler(onclick='toggleTop(this)')
+									span.top.glyphicon.glyphicon-star-empty
+							span.topicq T 
+								span.topic 
+							span.grade-wrapper
+								a.ctrl(onclick="rate(this, 1)") ▲
+								span.grade
+								span.min-to-visible
+								a.ctrl(onclick="rate(this, -1)") ▼
 					div.col-md-1.tags
 						div.tagscontainer
 
@@ -133,6 +134,7 @@ html
 			input#tag-end(placeholder='era end date')
 			button(onclick="saveTag()") ✔			
 			button.discard-tag(onclick="discardTag()") ×
+			button.delete-tag(onclick="deleteTag()") DELETE
 		#file-list.modal
 			.modal-dialog
 				.modal-content

@@ -1,6 +1,6 @@
 - for (var x = 0; x < entries.length; x++)
 	article.row.entry-wrapper
-		div.col-md-6.col-md-offset-3.entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'public':'', onclick='setActual($(this),false)')
+		div.col-md-6.col-md-offset-3.entry.real-entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'public':'', onclick='setActual($(this),false)')
 			div.isactual
 				a(href='#'+entries[x].id)
 					i.glyphicon.glyphicon-asterisk

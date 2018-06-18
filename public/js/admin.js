@@ -1,45 +1,51 @@
-$(function () {
-	placeFirstPostMarker()
-});
-
 var currentEntry;
+var editorDropZoneElement;
+
+// Init.
+$(function () {
+	placeFirstPostMarker();
+	$('.bgfader').on('click', function () {
+		if (currentEntry) {
+			stopEditing(currentEntry.id)
+		}
+	})
+});
 
 function discardEntry() {
 	stopEditing(currentEntry.id)
 }
 
-var editorDropZoneElement;
 
-function initTrumbowygOnElement(element){	
-		
-	if (editorDropZoneElement && editorDropZoneElement[0].dropzone){
+function initTrumbowygOnElement(element) {
+
+	if (editorDropZoneElement && editorDropZoneElement[0].dropzone) {
 		editorDropZoneElement[0].dropzone.destroy();
 	}
 
 	$(element).trumbowyg();
 
 	editorDropZoneElement = element.closest('.entry')
-	
-	if (!editorDropZoneElement.data().dropzone){
+
+	if (!editorDropZoneElement.data().dropzone) {
 		editorDropZoneElement.dropzone({
-			url: '/api/upload',		
+			url: '/api/upload',
 			success: function (file) {
 				var html = $(element).trumbowyg('html')
-				html += '<img src="content/'+file.name+'">';
-				$('#body').trumbowyg('html', html);			
-			}		
+				html += '<img src="content/' + file.name + '">';
+				$('#body').trumbowyg('html', html);
+			}
 		})
 	}
-	$('#add-file').on('click', function(){
-		listOfFiles(function(context){
+	$('#add-file').on('click', function () {
+		listOfFiles(function (context) {
 			var html = $(element).trumbowyg('html')
-				html += '<img src="content/'+context.innerHTML+'">';
-				$('#body').trumbowyg('html', html);		
-				$('#file-list').modal('hide')
+			html += '<img src="content/' + context.innerHTML + '">';
+			$('#body').trumbowyg('html', html);
+			$('#file-list').modal('hide')
 		})
 	})
-	
-	
+
+
 }
 
 
@@ -88,14 +94,14 @@ var editingTag;
 
 function bindTags() {
 	$('#eratags').on('click', function (event) {
-		var tag = $(event.target).closest('.tag')		
+		var tag = $(event.target).closest('.tag')
 		if (tag.data('tag')) {
 			editTag(tag.data('tag'));
 		}
 	})
 }
 
-function editTag(tag){	
+function editTag(tag) {
 	editingTag = tag;
 	$('#tag-name').val(editingTag.name);
 	$('#tag-background').val(editingTag.background);
@@ -104,10 +110,16 @@ function editTag(tag){
 	$('#tag-editor').show();
 	$('#tag-start').datepicker({ dateFormat: DATE_FORMAT_JQUERY });
 	$('#tag-end').datepicker({ dateFormat: DATE_FORMAT_JQUERY })
+	if (editingTag.id) {
+		$('.delete-tag').show();
+	}
+	else {
+		$('.delete-tag').hide();
+	}
 	initTagImageUpload();
 }
 
-function newTag(){
+function newTag() {
 	editTag({
 		name: '',
 		background: '',
@@ -118,21 +130,21 @@ function newTag(){
 
 var fileListCallback;
 
-function listOfFiles(_fileListCallback){
+function listOfFiles(_fileListCallback) {
 	fileListCallback = _fileListCallback;
 	$('#file-list').modal()
-	getJson('api/content', {}).then(function(data){
+	getJson('api/content', {}).then(function (data) {
 		var list = '';
-		for(var i = 0; i<data.length; i++){
-			list += '<a onclick="fileListCallback(this)">'+data[i].filename+'</a>'
-		}		
+		for (var i = 0; i < data.length; i++) {
+			list += '<a onclick="fileListCallback(this)">' + data[i].filename + '</a>'
+		}
 		$('#file-list .list').append(list);
 	})
-	
+
 }
 
-function tagImageFromList(){	
-	listOfFiles(function(context){
+function tagImageFromList() {
+	listOfFiles(function (context) {
 		$('#tag-background').val('content/' + context.innerHTML);
 		$('#file-list').modal('hide')
 	})
@@ -144,19 +156,28 @@ function initTagImageUpload() {
 	var e = $('#tag-image-upload')
 	var lastFile
 	$('#tag-editor').dropzone({
-		url: '/api/upload',		
+		url: '/api/upload',
 		success: function (file) {
-			if (lastFile){
+			if (lastFile) {
 				tagDropZone.removeFile(lastFile)
 			}
 			$('#tag-background').val('content/' + file.name);
 			lastFile = file;
 		},
-		init: function() {
+		init: function () {
 			tagDropZone = this;
-		}			
+		}
 	})
 
+}
+
+function deleteTag() {
+	return $.ajax({
+		url: 'api/tag/delete/' + editingTag.id,
+		method: 'delete'
+	}).then(function () {
+		discardTag();
+	});
 }
 
 function saveTag() {
@@ -177,7 +198,7 @@ function saveTag() {
 		}
 		editingTag = false;
 		setTimeout(getCurrentEntry, 100);
-		
+
 		$('#tag-editor').hide();
 		tagDropZone.destroy();
 	})
@@ -214,7 +235,7 @@ function newEntryElement(entry) {
 	var stub = $('.entry-stub')[0].outerHTML;
 	$('#entries').prepend(stub);
 	var newEntry = $('#entries .entry-stub');
-	newEntry.removeClass('.entry-stub hidden');
+	newEntry.removeClass('entry-stub hidden');	
 	newEntry.find('.entry').attr('id', entry.id).data({
 		entry: entry,
 		id: entry.id,
@@ -253,6 +274,9 @@ function saveEntry() {
 		updatePostData(data);
 		$('#editor').hide();
 		currentEntry = false;
+
+		// Place the tags.
+		setTimeout(resizer, 10)
 	});
 }
 
@@ -299,7 +323,7 @@ function updatePostData(entry) {
 	}
 	element.parent().find('.tagscontainer').html(entry.tags.map(function (tag) {
 		return `<div class='tag'>${tag}</div>`;
-	}).join());
+	}).join(''));
 
 	// check if it's public
 	if (isThisPostPublic(entry)) {

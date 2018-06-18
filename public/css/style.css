@@ -5968,6 +5968,9 @@ h2,
 h3 {
   color: #000;
 }
+#entries {
+  padding-top: 40px;
+}
 #entriesadmin li,
 #tags li {
   cursor: pointer;
@@ -5991,7 +5994,7 @@ h3 {
   padding-left: 10px;
   padding-right: 10px;
 }
-hidden {
+.hidden {
   dislay: none;
 }
 img {
@@ -6099,7 +6102,7 @@ hr#first-marker {
   margin-bottom: 0px;
 }
 #file-list .modal-body {
-  max-height: 80vh;
+  max-height: 95vh;
   overflow-y: scroll;
 }
 #file-list .list a {

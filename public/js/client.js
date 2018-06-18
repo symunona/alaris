@@ -185,7 +185,7 @@ function getCurrentEntry() {
 
 	//console.log('currententry',i)
 
-	var ents = $('.entry');
+	var ents = $('.entry.real-entry');
 	actualEntryIndex = i;
 
 	setActual($(ents[i]));
