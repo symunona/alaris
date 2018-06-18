@@ -2,8 +2,12 @@
 	article.row.entry-wrapper
 		div.col-md-6.col-md-offset-3.entry.real-entry(data-date=entries[x].date, data-id=entries[x].id, id=entries[x].id, data-entry=JSON.stringify(entries[x]), class=entries[x].isPublic?'public':'', onclick='setActual($(this),false)')
 			div.isactual
-				a(href='#'+entries[x].id)
-					i.glyphicon.glyphicon-asterisk
+				if !admin
+					a(href='#'+entries[x].id)
+						i.glyphicon.glyphicon-asterisk
+				if admin
+					a(href='#'+entries[x].id, onclick="edit(this)")
+						i.glyphicon.glyphicon-asterisk
 			.content
 				if admin
 					h3.title.clickable(onclick="edit(this)")=entries[x].title
