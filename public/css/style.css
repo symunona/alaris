@@ -6102,11 +6102,14 @@ hr#first-marker {
   margin-bottom: 0px;
 }
 #file-list .modal-body {
-  max-height: 95vh;
+  max-height: 400px;
   overflow-y: scroll;
 }
 #file-list .list a {
   display: block;
+}
+#file-list .preview {
+  border: 5px dashed grey;
 }
 .entry,
 #new-entry {

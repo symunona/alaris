@@ -38,6 +38,13 @@
 			// Port to attach to.
 			"port": 5858,
 			"sourceMaps": false
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "tmp debug",
+			"address": "207.154.200.83",
+			"port": "9229"
 		}
 	]
 }
