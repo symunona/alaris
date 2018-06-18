@@ -28,3 +28,4 @@ public/content/*
 !public/content/.gitignore
 
 config.json
+db.json
