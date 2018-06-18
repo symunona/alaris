@@ -112,35 +112,36 @@ html
 		section.footer
 			div#tmp
 				a(title=config.footerTitle, href=admin?'/':'/all')=config.footer
-		
-		section.editor-wrapper.hidden
-			#editor
-				h3
-					button.save-entry(onclick='saveEntry()') ✔
-					input#title.col-md-12(data-bind="value: title",placeholder='Title')
-				div.text-editor-wrapper
-					textarea#body.col-md-12
-				input#tags.col-md-8(placeholder='tags with comma separation...')
-				input#topic.col-md-2
-				span.col-md-1
-					button#add-file F
-				span.col-md-1
-					button.discard(onclick="discardEntry()", title="Discard") ×
-		#tag-editor
-			input#tag-name(placeholder='Tagname')
-			input#tag-background(placeholder='background image')
-			button(onclick="tagImageFromList()") F
-			input#tag-start(placeholder='era start date')
-			input#tag-end(placeholder='era end date')
-			button(onclick="saveTag()") ✔			
-			button.discard-tag(onclick="discardTag()") ×
-			button.delete-tag(onclick="deleteTag()") DELETE
-		#file-list.modal
-			.modal-dialog
-				.modal-content
-					.modal-header Pick a file to insert
-					.modal-body
-						.list
+		if admin
+			section.editor-wrapper.hidden
+				#editor
+					h3
+						button.save-entry(onclick='saveEntry()') ✔
+						input#title.col-md-12(data-bind="value: title",placeholder='Title')
+					div.text-editor-wrapper
+						textarea#body.col-md-12
+					input#tags.col-md-8(placeholder='tags with comma separation...')
+					input#topic.col-md-2
+					span.col-md-1
+						button#add-file F
+					span.col-md-1
+						button.discard(onclick="discardEntry()", title="Discard") ×
+			#tag-editor
+				input#tag-name(placeholder='Tagname')
+				input#tag-background(placeholder='background image')
+				button(onclick="tagImageFromList()") F
+				input#tag-start(placeholder='era start date')
+				input#tag-end(placeholder='era end date')
+				button(onclick="saveTag()") ✔			
+				button.discard-tag(onclick="discardTag()") ×
+				button.delete-tag(onclick="deleteTag()") DELETE
+			#file-list.modal
+				.modal-dialog
+					.modal-content
+						.modal-header Pick a file to insert
+						.modal-body
+							.preview
+							.list
 
 				
 				
