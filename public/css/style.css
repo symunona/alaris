@@ -6092,6 +6092,16 @@ a.ctrl:hover {
   outline: 6px dashed rgba(200, 200, 200, 0.3);
   background-color: rgba(230, 230, 230, 0.5);
 }
+.hidden-switch {
+  position: fixed;
+  bottom: 50px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+.hidden-switch:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 .entry.public .control .topicq {
   display: none;
 }

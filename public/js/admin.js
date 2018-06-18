@@ -175,6 +175,15 @@ function tagImageFromList() {
 	})
 }
 
+function hiddenSwitch(){
+	if ($('#hidden-switch-style').length){
+		$('#hidden-switch-style').remove()
+	} else{
+		var style = $('<style>', {id: 'hidden-switch-style'}).text('.entry:not(.public){display: none;}')
+		$('body').append(style)
+	}
+}
+
 var tagDropZone;
 
 function initTagImageUpload() {
