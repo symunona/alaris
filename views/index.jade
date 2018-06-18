@@ -113,6 +113,7 @@ html
 			div#tmp
 				a(title=config.footerTitle, href=admin?'/':'/all')=config.footer
 		if admin
+			.hidden-switch(onclick="hiddenSwitch()") Hidden
 			section.editor-wrapper.hidden
 				#editor
 					h3
