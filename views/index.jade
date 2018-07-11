@@ -101,6 +101,8 @@ html
 				if admin
 					.new
 						span.clickable(onclick="newTag()") +
+					.new
+						span.clickable(onclick="listTags()") ...
 			
 		section.searchbox
 			a.trigger(onclick="$(this).hide().parent().children('.searchboxbuttons').show(); $('.lookfor').focus()")
@@ -142,7 +144,7 @@ html
 						.modal-header Pick a file to insert
 							br
 							input#file-filter(onkeydown='filterFileList(event)')
-						.modal-body							
+						.modal-body
 							.list
 						.moda-footer
 							.preview.col-md-12(onclick="pickerCallback()")

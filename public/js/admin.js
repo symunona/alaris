@@ -73,11 +73,11 @@ var DATE_FORMAT_JQUERY = 'yy-mm-dd';
 var editingTag;
 
 function bindTags() {
-	$('#eratags').on('click', function (event) {
+	$('#eratags').on('click', function (event) {		
 		var tag = $(event.target).closest('.tag')
 		if (tag.data('tag')) {
 			editTag(tag.data('tag'));
-		}
+		}		
 	})
 }
 
@@ -106,6 +106,17 @@ function newTag() {
 		startdate: moment().format(),
 		enddate: moment().format()
 	});
+}
+
+function listTags() {
+	$('#eratags :not(.new)').hide();
+	for (var i = 0; i < tags.length; i++) {
+		$('#eratags').append($('<div>', {
+			class: 'tag',
+			'data-name': tags[i].name,
+			title: tags[i].startdate + ' - ' + tags[i].enddate
+		}).data('tag', tags[i]).html($('<span>').html(tags[i].name)))
+	}	
 }
 
 var fileListCallback;
@@ -145,26 +156,26 @@ function pickerCallback() {
 	}
 }
 
-function filterFileList(event){
-	setTimeout(function(){
+function filterFileList(event) {
+	setTimeout(function () {
 		var search = $('#file-filter').val();
-		if (search){
+		if (search) {
 			search = search.toLowerCase()
-			$('#file-list .list a').each(function(i, e){
+			$('#file-list .list a').each(function (i, e) {
 				var fileName = e.innerText.toLowerCase();
-				if (fileName.includes(search)){
+				if (fileName.includes(search)) {
 					$(e).removeClass('hidden')
-				} else{
+				} else {
 					$(e).addClass('hidden')
 				}
 			})
 		}
-		else{
+		else {
 			$('#file-list .list a').removeClass('hidden')
 		}
-		
-	},1)
-	
+
+	}, 1)
+
 }
 
 
@@ -175,11 +186,11 @@ function tagImageFromList() {
 	})
 }
 
-function hiddenSwitch(){
-	if ($('#hidden-switch-style').length){
+function hiddenSwitch() {
+	if ($('#hidden-switch-style').length) {
 		$('#hidden-switch-style').remove()
-	} else{
-		var style = $('<style>', {id: 'hidden-switch-style'}).text('.entry:not(.public){display: none;}')
+	} else {
+		var style = $('<style>', { id: 'hidden-switch-style' }).text('.entry:not(.public){display: none;}')
 		$('body').append(style)
 	}
 }
