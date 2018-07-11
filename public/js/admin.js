@@ -9,6 +9,9 @@ $(function () {
 			stopEditing(currentEntry.id)
 		}
 	})
+	
+	bindTags();
+	
 });
 
 function discardEntry() {

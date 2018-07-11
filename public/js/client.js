@@ -151,10 +151,7 @@ function setActual(jqentry, scrollthere) {
 				if (!$(e).is(":visible"))
 					$(e).show('slow');
 		});
-		
-		if (typeof(bindTags)!=='undefined'){
-			bindTags()
-		}
+
 
 		if (data[0].background) {
 			var bg = 'url("/' + data[0].background + '")';
