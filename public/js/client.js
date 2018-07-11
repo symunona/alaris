@@ -144,7 +144,7 @@ function setActual(jqentry, scrollthere) {
 		$('#eratags').children().each(function (i, e) {
 			if ($.grep(data, function (k) { return k.name == $(e).attr('data-name') }).length == 0){
 				if (!$(e).hasClass('new'))
-					$(e).hide('slow');				
+					$(e).hide('slow').remove();				
 			}
 				
 			else
