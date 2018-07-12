@@ -49,7 +49,7 @@ function search() {
 }
 
 var toYear = function (element, _offset) {
-	
+
 	console.warn('to year', element.innerText, _offset)
 
 	keyword = '';
@@ -60,13 +60,30 @@ var toYear = function (element, _offset) {
 }
 
 
+var autoChange = true;
+
+$(window).on('hashchange', function () {
+	if (!autoChange) {
+		var hash = window.location.hash;
+		console.warn('hash changed manually', hash)
+		if (hash && hash.substr(1)) {
+			loadingnextx = true;
+			$('#entries').html('');
+			getPart(parturl, { id: parseInt(hash.substr(1)) }).then(partCallback);
+		}
+	}
+});
 
 function changeHashWithoutScrolling(hash) {
 	var id = hash.replace(/^.*#/, ''),
-		elem = document.getElementById(id)
-	elem.id = id + '-tmp'
-	window.location.hash = hash
-	elem.id = id
+		elem = document.getElementById(id);
+	elem.id = id + '-tmp';
+	autoChange = true;
+	window.location.hash = hash;
+	setTimeout(function () {
+		autoChange = false;
+	}, 0);
+	elem.id = id;
 }
 
 var actualEntryIndex;
@@ -101,7 +118,7 @@ function getTagsForTime(time) {
 		if (a.length < b.length) return -1;
 		return 0;
 	})
-	
+
 	return ret;
 }
 
@@ -134,19 +151,18 @@ function setActual(jqentry, scrollthere) {
 	if (data && data.length > 0) {
 		for (var i = 0; i < data.length; i++) {
 			if ($('#eratags').children('[data-name="' + data[i].name + '"]').length == 0)
-				$('#eratags').append($('<div>', { 
+				$('#eratags').append($('<div>', {
 					class: 'tag',
-					'data-name': data[i].name,					
+					'data-name': data[i].name,
 					title: data[i].startdate + ' - ' + data[i].enddate
 				}).data('tag', data[i]).html($('<span>').html(data[i].name)));
 
 		}
 		$('#eratags').children().each(function (i, e) {
-			if ($.grep(data, function (k) { return k.name == $(e).attr('data-name') }).length == 0){
+			if ($.grep(data, function (k) { return k.name == $(e).attr('data-name') }).length == 0) {
 				if (!$(e).hasClass('new'))
-					$(e).hide('slow').remove();				
+					$(e).hide('slow').remove();
 			}
-				
 			else
 				if (!$(e).is(":visible"))
 					$(e).show('slow');
@@ -180,14 +196,14 @@ function getCurrentEntry() {
 	var i;
 	for (i = 0; offsets[i] < top; i++);
 
-	//console.log('currententry',i)
-
 	var ents = $('.entry.real-entry');
 	actualEntryIndex = i;
 
 	setActual($(ents[i]));
 
 }
+
+
 
 function loadnextl() {
 	loadingnextx = true;
@@ -201,35 +217,37 @@ function loadnextl() {
 
 	// console.log('loading items from-to: ', filter.offset, ' - ', offset + pageSize);
 
-	getPart(parturl, filter).done(function (data) {
-		loadingnextx = false;
+	getPart(parturl, filter).then(partCallback);
 
-		if (!data) {
-			if (!$('.theend').length)
-				$('#entries').append($('<div>', { class: 'theend entry center col-md-2 col-md-offset-5' }).html('for new beginnings'))
-		}
+}
 
-		$('#entries').append(data);
+function partCallback(data) {
+	loadingnextx = false;
+	if (!data) {
+		if (!$('.theend').length)
+			$('#entries').append($('<div>', { class: 'theend entry center col-md-2 col-md-offset-5' }).html('for new beginnings'))
+	}
 
-		offsets = $('.entry').map(function (i, e) {
-			//			console.log('Offset - ', $(e).attr('data-id'), $(e).position().top)
-			return $(e).position().top
+	$('#entries').append(data);
 
-		});
+	offsets = $('.entry').map(function (i, e) {
+		//			console.log('Offset - ', $(e).attr('data-id'), $(e).position().top)
+		return $(e).position().top
 
-		if (keyword) {
-			//			console.log('highlighting...',keyword);
-			$('#entries').highlight(keyword);
-		}
-
-		
-		// getCurrentEntry();
-		resizer();
-
-		if (typeof(placeFirstPostMarker)!=='undefined'){
-			placeFirstPostMarker()
-		}
 	});
+
+	if (keyword) {
+		//			console.log('highlighting...',keyword);
+		$('#entries').highlight(keyword);
+	}
+
+
+	// getCurrentEntry();
+	resizer();
+
+	if (typeof (placeFirstPostMarker) !== 'undefined') {
+		placeFirstPostMarker()
+	}
 
 }
 

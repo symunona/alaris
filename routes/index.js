@@ -7,6 +7,7 @@
 
 
 const moment = require('moment'),
+	_ = require('underscore'),
 	isThisPostPublic = require('../public/js/is-public')
 
 const config = require('./../config.json'),
@@ -26,28 +27,38 @@ exports.part = function (req, res) {
 exports.getEntriesFromReq = function (req, _filterFunction) {
 	let offset = parseInt(req.query.offset) || 0,
 		limit = parseInt(req.query.limit) || config.pageSize,
-		id = req.params.id,
+		id = req.params.id || req.query.id,
 		keyword = req.params.keyword || req.query.keyword
 
-	if (keyword){
+	if (id) {		
+		entry = _.find(db.db.blog, {id: parseInt(id)})
+		if (entry){
+			return [entry]
+		} else{
+			return []
+		}
+		
+	}
+
+	if (keyword) {
 		keyword = keyword.toLowerCase()
 	}
 	let length = db.db.blog.length - 1;
 
-	if (keyword){
-		if (_filterFunction){
-			filterFunc = function(entry){
+	if (keyword) {
+		if (_filterFunction) {
+			filterFunc = function (entry) {
 				return _filterFunction(entry) && entryContainsString(keyword, entry)
 			}
 		}
-		else{
+		else {
 			filterFunction = entryContainsString.bind(this, keyword)
 		}
-		
-	} else{
+
+	} else {
 		filterFunction = _filterFunction
 	}
-		
+
 
 	// Get the visible ones.
 	if (filterFunction) {
@@ -73,7 +84,7 @@ exports.getEntriesFromReq = function (req, _filterFunction) {
 	return entriesToShow
 }
 
-function entryContainsString(string, entry){
+function entryContainsString(string, entry) {
 	return entry.tags.join().toLowerCase().includes(string) ||
 		entry.body.toLowerCase().includes(string) ||
 		entry.title.toLowerCase().includes(string)
@@ -87,9 +98,20 @@ exports.all = function (req, res) {
 	})
 };
 
-
-
 exports.partAll = function (req, res) {
+	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
+		admin: true
+	})
+};
+
+
+exports.getById = function (req, res) {
+	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
+		admin: true
+	})
+};
+
+exports.getRandom = function (req, res) {
 	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
 		admin: true
 	})

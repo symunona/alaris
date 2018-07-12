@@ -9,9 +9,8 @@ $(function () {
 			stopEditing(currentEntry.id)
 		}
 	})
-	
+
 	bindTags();
-	
 });
 
 function discardEntry() {
@@ -19,13 +18,17 @@ function discardEntry() {
 }
 
 
-function initTrumbowygOnElement(element) {
+function initTrumbowygOnElement(element, html) {
 
 	if (editorDropZoneElement && editorDropZoneElement[0].dropzone) {
 		editorDropZoneElement[0].dropzone.destroy();
 	}
 
 	$(element).trumbowyg();
+	if (html !== undefined) {
+		$(element).trumbowyg('html', html)
+	}
+
 
 	editorDropZoneElement = element.closest('.entry')
 
@@ -67,7 +70,7 @@ function addPost(entry) {
 	$('#title').val('');
 	$('#tags').val('');
 	$('#body').val('');
-	initTrumbowygOnElement($('#body'));
+	initTrumbowygOnElement($('#body'), '');
 	$('#title').focus();
 }
 
@@ -76,11 +79,11 @@ var DATE_FORMAT_JQUERY = 'yy-mm-dd';
 var editingTag;
 
 function bindTags() {
-	$('#eratags').on('click', function (event) {		
+	$('#eratags').on('click', function (event) {
 		var tag = $(event.target).closest('.tag')
 		if (tag.data('tag')) {
 			editTag(tag.data('tag'));
-		}		
+		}
 	})
 }
 
@@ -112,14 +115,14 @@ function newTag() {
 }
 
 function listTags() {
-	$('#eratags :not(.new)').hide();
+	$('#eratags > :not(.new)').hide();
 	for (var i = 0; i < tags.length; i++) {
 		$('#eratags').append($('<div>', {
 			class: 'tag',
 			'data-name': tags[i].name,
 			title: tags[i].startdate + ' - ' + tags[i].enddate
 		}).data('tag', tags[i]).html($('<span>').html(tags[i].name)))
-	}	
+	}
 }
 
 var fileListCallback;
@@ -274,9 +277,17 @@ function edit(element) {
 	$('#body').val(entry.body);
 	$('#' + id).append($('#editor'));
 	$('#editor').show()
+	$('#editor').on('keydown', function (event) {
+		if (event.ctrlKey && event.keyCode === 13) {
+			saveEntry();
+		}
+	})
 	initTrumbowygOnElement($('#body'));
 	$('#body').trumbowyg('html', entry.body);
 	$('#' + id).children('.content').hide();
+	setTimeout(function () {
+		$('#title').focus();
+	}, 0);
 }
 
 function newEntryElement(entry) {
@@ -292,9 +303,14 @@ function newEntryElement(entry) {
 }
 
 function stopEditing(id) {
-	$('#' + id).children('.content').show();
-	$('#' + id).parent().removeClass('editing');
+	if (id) {
+		$('#' + id).children('.content').show();
+		$('#' + id).parent().removeClass('editing');
+	} else {
+		$('#new-post a.new').show();
+	}
 	$('#editor').hide();
+	$('.editor-wrapper').append($('#editor'));
 	currentEntry = false;
 }
 

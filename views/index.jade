@@ -115,7 +115,8 @@ html
 			div#tmp
 				a(title=config.footerTitle, href=admin?'/':'/all')=config.footer
 		if admin
-			.hidden-switch(onclick="hiddenSwitch()") Hidden
+			.hidden-switch(onclick="hiddenSwitch()") H
+			.rnd-button(onclick="getRnd()") RND
 			section.editor-wrapper.hidden
 				#editor
 					h3
