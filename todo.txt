@@ -1,7 +1,4 @@
-- top padding
 - grader on all button
-- move the editor when stopping editing
-- ctrl+enter
 - scroll entity where am I fix
 - css: text not visible enough on black bacgkround
 - x title

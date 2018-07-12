@@ -1,21 +1,16 @@
-
 /**
- * Module dependencies.
+ * Alaris engine v.4
  */
 
 var express = require('express')
 	, routes = require('./routes')
 	, admin = require('./routes/admin')
-	, api = require('./routes/api')	
 	, grader = require('./routes/grader')
 	, http = require('http')
-	, path = require('path')
 	, config = require('./config.json')
 	, bodyParser = require('body-parser')
 	, basicAuth = require('express-basic-auth')
 	, multer = require('multer')
-
-
 
 
 var app = express()
@@ -31,35 +26,9 @@ app.set('view engine', 'jade')
 
 if (config.debug) {
 	console.warn('[DEBUG] Less compile on.')
-	// app.use(require('less-middleware')('public'));
 }
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
-
-// auth
-// app
-// .use(express.cookieParser('mypersonalcookieparserwithahorseandabatterystaple'))
-// .use(express.session())
-// .use(everyauth.middleware(app));
-
-// development only
-// if ('development' == app.get('env')) {
-//   app.use(express.errorHandler());
-// }
-
-function wheretogoroot(req, res) {
-	console.log(req)
-	if (req.params.offset == config.admin.url)
-		admin.admin(req, res);
-	else if (req.params.offset == 'all')
-		routes.all(req, res);
-	else if (req.params.offset == 'grader')
-		routes.grader(req, res);
-	else
-		routes.index(req, res);
-}
-
-//Synchronous Function
 
 var auth = basicAuth({
 	users: config.admin.users,
@@ -71,10 +40,9 @@ app.get('/', routes.index);
 app.get('/api/part', routes.part);
 app.post('/api/top/:id', auth, admin.toggleTop);
 app.get('/api/partAll', auth, routes.partAll);
+app.get('/api/id/:id', auth, routes.getById);
 
 //app.get('/users', user.list);
-app.get('/x', auth, admin.admin);
-app.get('/m', auth, admin.mobile);
 app.get('/stat', auth, admin.stat);
 app.get('/all', auth, routes.all);
 app.get('/grader', auth, grader.grader);
@@ -88,7 +56,6 @@ app.delete('/api/tag/delete', auth, admin.deleteTag);
 app.post('/api/tag/save', auth, admin.saveTag);
 
 app.get('/api/content', auth, admin.content);
-// app.post('/api/upload', auth, upload);
 
 let storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -103,12 +70,7 @@ app.post('/api/upload', auth, multer({ dest: './public/content/tmp', storage: st
 	res.send('ok');
 });
 
-var entries;
-
-
-// app.use(express.logger('dev'));
-
 http.createServer(app).listen(app.get('port'), function () {
-	console.log('Express server listening on port ' + app.get('port'));
+	console.log('Alaris server listening on port ' + app.get('port'));
 });
 

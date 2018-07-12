@@ -2,7 +2,6 @@
  * New node file
  */
 
-var api = require('./api');
 var fs = require('fs');
 var path = require('path');
 var db = require('../lib/db');
@@ -20,24 +19,6 @@ exports.stat = function(req, res){
   
 }; 
 
-exports.admin = function(req, res){
-	
- var path = module.parent.filename.replace(/\\/g,'/');
- path = path.slice(0,path.lastIndexOf("/")) +"/public/content";
-	
-  var dirlist = fs.readdirSync(path)
-  
-  res.render('admin', { 
-	  title: 'admin screen', 
-      
-  });
-};
-
-exports.mobile = function(req, res){  
-  res.render('mobile', { 
-	  title: 'mobile screen'      
-  });
-};
 
 exports.content = function(req, res){
 	
@@ -67,21 +48,6 @@ exports.content = function(req, res){
 	    
 	});
 	
-};
-
-exports.getEntriesIntf = function(req, res) {
-
-	var ctrl = {
-		offset: parseInt(req.query.offset) || 0,
-		limit: parseInt(req.query.limit) || 10,
-		id: req.query.id,
-		callback: function(renderobj){
-//			console.log('query result',renderobj)
-			res.send(renderobj);			
-		}
-	}
-//	console.log('admin:',req.query, req.params);
-	api.getAllEntries(ctrl);
 };
 
 exports.toggleTop = function(req, res) {

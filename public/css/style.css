@@ -6092,15 +6092,22 @@ a.ctrl:hover {
   outline: 6px dashed rgba(200, 200, 200, 0.3);
   background-color: rgba(230, 230, 230, 0.5);
 }
-.hidden-switch {
+.hidden-switch,
+.rnd-button {
   position: fixed;
+  color: white;
   bottom: 50px;
   right: 0;
   background: rgba(0, 0, 0, 0.2);
 }
-.hidden-switch:hover {
+.hidden-switch:hover,
+.rnd-button:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+.hidden-switch.rnd-button,
+.rnd-button.rnd-button {
+  bottom: 70px;
 }
 .entry.public .control .topicq {
   display: none;
@@ -6305,6 +6312,7 @@ a {
 .nav #eratags div {
   margin-bottom: 10px;
   display: inline-block;
+  cursor: pointer;
 }
 .nav #actualyear span,
 .nav #actualmonth span,
