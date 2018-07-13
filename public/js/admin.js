@@ -194,10 +194,13 @@ function tagImageFromList() {
 
 function hiddenSwitch() {
 	if ($('#hidden-switch-style').length) {
-		$('#hidden-switch-style').remove()
+		$('#hidden-switch-style').remove();
+		$('.hidden-switch').text('Show Hidden')
+
 	} else {
-		var style = $('<style>', { id: 'hidden-switch-style' }).text('.entry:not(.public){display: none;}')
-		$('body').append(style)
+		var style = $('<style>', { id: 'hidden-switch-style' }).text('.entry:not(.public):not(#new-entry){display: none;}')
+		$('body').append(style);
+		$('.hidden-switch').text('Hide Hidden')
 	}
 }
 
@@ -314,6 +317,13 @@ function stopEditing(id) {
 	currentEntry = false;
 }
 
+function getRnd(){
+	loadingnextx = true;
+	$('#entries').html('');
+	getPart('/api/rnd').then(partCallback).then(function(){		
+		setActual($('#entries .entry'));
+	});
+}
 
 function saveEntry() {
 	var update = {

@@ -49,7 +49,8 @@ function getEra(url, filters){
 
 
 
-function getPart(url, filters, type){    
+function getPart(url, filters, type){
+    filters = filters || {};
 	return $.ajax({        
         type: type || 'GET',
         url : url,

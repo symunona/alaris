@@ -30,14 +30,14 @@ exports.getEntriesFromReq = function (req, _filterFunction) {
 		id = req.params.id || req.query.id,
 		keyword = req.params.keyword || req.query.keyword
 
-	if (id) {		
-		entry = _.find(db.db.blog, {id: parseInt(id)})
-		if (entry){
+	if (id) {
+		entry = _.find(db.db.blog, { id: parseInt(id) })
+		if (entry) {
 			return [entry]
-		} else{
+		} else {
 			return []
 		}
-		
+
 	}
 
 	if (keyword) {
@@ -104,17 +104,16 @@ exports.partAll = function (req, res) {
 	})
 };
 
-
 exports.getById = function (req, res) {
 	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
 		admin: true
 	})
 };
-
 exports.getRandom = function (req, res) {
-	utils.renderEntries(res, 'part', exports.getEntriesFromReq(req), {
+	var index = Math.floor(Math.random() * db.db.blog.length)
+	utils.renderEntries(res, 'part', [db.db.blog[index]], {
 		admin: true
-	})
+	});
 };
 
 exports.getErasIntf = function (req, res) {

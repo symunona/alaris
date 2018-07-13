@@ -140,7 +140,8 @@ function setActual(jqentry, scrollthere) {
 
 		changeHashWithoutScrolling(jqentry.attr('data-id'));
 		if (scrollthere) {
-			// window.location.hash = jqentry.attr('data-id');			
+			// window.location.hash = jqentry.attr('data-id');	
+			console.warn('scrolling to...', jqentry.attr('data-id'))		
 			var offset = jqentry.position().top;
 			$("html, body").animate({ scrollTop: offset + 'px' }, 150);
 		}
@@ -248,7 +249,7 @@ function partCallback(data) {
 	if (typeof (placeFirstPostMarker) !== 'undefined') {
 		placeFirstPostMarker()
 	}
-
+	return data;
 }
 
 function resizer() {
