@@ -6305,7 +6305,7 @@ a {
 .nav #eratags {
   width: 200px;
   overflow-y: auto;
-  height: 600px;
+  height: 300px;
 }
 .nav #actualyear,
 .nav #actualmonth,
@@ -6340,7 +6340,7 @@ a {
   padding-right: 10px;
 }
 .nav #actualday {
-  margin-bottom: 300px;
+  margin-bottom: 100px;
 }
 .bgfader {
   /* 	background-color: rgba(255,0,0,0.5); */
