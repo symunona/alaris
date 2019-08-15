@@ -42,6 +42,7 @@ app.post('/api/top/:id', auth, admin.toggleTop);
 app.get('/api/partAll', auth, routes.partAll);
 app.get('/api/id/:id', auth, routes.getById);
 app.get('/api/rnd', auth, routes.getRandom);
+app.get('/api/db', auth, admin.dump);
 
 //app.get('/users', user.list);
 app.get('/stat', auth, admin.stat);

@@ -5,23 +5,24 @@ html
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name="viewport", content="width=device-width, initial-scale=1")
-		link(rel="shortcut icon" href=serverRoot+"/css/favicon.png")
-		link(rel='stylesheet', href=serverRoot+'/css/style.css')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/jquery-1.11.0.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/jquery.debounce-1.0.5.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/jquery.highlight.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/knockout-3.0.0.debug.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/knockout.wrap.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/inheritance.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/moment.min.js')
-		script(type='text/javascript', src=serverRoot+'/js/lib/vendor/chartjs/Chart.js')
-		script(type='text/javascript', src=serverRoot+'/js/base.js')
-		script(type='text/javascript', src=serverRoot+'/js/stat.js')
+		link(rel="shortcut icon" href="/css/favicon.png")
+		link(rel='stylesheet', href='/css/style.css')
+		script(type='text/javascript', src='/js/lib/vendor/jquery-1.11.0.js')
+		script(type='text/javascript', src='/js/lib/vendor/jquery.debounce-1.0.5.js')
+		script(type='text/javascript', src='/js/lib/vendor/jquery.highlight.js')
+		script(type='text/javascript', src='/js/lib/vendor/knockout-3.0.0.debug.js')
+		script(type='text/javascript', src='/js/lib/vendor/knockout.wrap.js')
+		script(type='text/javascript', src='/js/lib/vendor/inheritance.js')
+		script(type='text/javascript', src='/js/lib/vendor/moment.min.js')
+		script(type='text/javascript', src='/js/lib/vendor/chartjs/Chart.js')
+		script(type='text/javascript', src='/js/base.js')
+		script(type='text/javascript', src='/js/stat.js')
 		meta(name='offsetStart',content=offset)
 		meta(name="serverRoot", content=serverRoot)
-		style=style		
+		meta(name="db", content=JSON.stringify(db))
+		style=style
 		script.
-			var datamonthly = !{JSON.stringify(statdata)};
+			var db = !{JSON.stringify(db)};
 	body
 		div.bgfader &nbsp;
 		header#index.div.col-md-3.col-md-offset-9

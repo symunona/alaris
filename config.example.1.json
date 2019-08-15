@@ -1,19 +1,18 @@
 {
-	"db":{
-		"server":"localhost",
-		"user":"root",
-		"pass":"",
-		"database":"alaris"
+	"db": {
+		"src": "db.json",
+		"prettyfy": true
 	},
 	"admin":{
-		"url":"x",
-		"user":"admin",
-		"pass":"admin"
+		"users": {
+			"admin": "admin"
+		}
 	},
 	"serverRoot":"alaris.dyndns.hu",
 	"title":"Alaris",
 	"tagline":"Láss ezer csodát!",
 	"footer":"™P",
 	"footerTitle":"alaris blog engine part of The Minimal Project by goose",
+	"pageSize": 10,
 	"debug": true
 }
