@@ -16,7 +16,8 @@ const config = require('./../config.json'),
 
 exports.index = function (req, res) {
 	utils.renderEntries(res, 'index', exports.getEntriesFromReq(req, isThisPostPublic), {
-		offsetStart: req.query.offset || 0
+		offsetStart: req.query.offset || 0,
+		title: config.title
 	})
 };
 
@@ -26,7 +27,7 @@ exports.part = function (req, res) {
 
 exports.getEntriesFromReq = function (req, _filterFunction) {
 	let offset = parseInt(req.query.offset) || 0,
-		limit = parseInt(req.query.limit) || config.pageSize,
+		limit = parseInt(req.query.limit) || config.pageSize || 10,
 		id = req.params.id || req.query.id,
 		keyword = req.params.keyword || req.query.keyword
 
@@ -94,7 +95,8 @@ function entryContainsString(string, entry) {
 exports.all = function (req, res) {
 	utils.renderEntries(res, 'index', exports.getEntriesFromReq(req), {
 		offsetStart: req.query.offset || 0,
-		admin: 'true'
+		admin: 'true',
+		title: config.title
 	})
 };
 
