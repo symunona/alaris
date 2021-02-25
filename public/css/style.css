@@ -6517,6 +6517,7 @@ a {
   width: calc(100% - 100px);
   padding: 15px;
   background: rgba(230, 230, 230, 0.8);
+  z-index: 10000;
 }
 #tag-editor #tag-image-upload {
   width: 150px;
