@@ -6283,6 +6283,7 @@ header#index a:hover {
   cursor: default;
   color: white;
   background: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 .footer a {
   color: white !important;
@@ -6301,6 +6302,7 @@ a {
   bottom: 150px;
   height: calc( 100% - 300px);
   text-align: right;
+  z-index: 1000;
 }
 .nav #eratags {
   width: 200px;
@@ -6432,6 +6434,7 @@ a {
   display: block;
   height: 32px;
   width: 95%;
+  z-index: 1000;
 }
 .searchbox a.trigger {
   display: inline-block;
