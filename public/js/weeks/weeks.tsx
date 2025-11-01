@@ -2,7 +2,9 @@
 import { render } from 'solid-js/web';
 import { For, createMemo, createSignal, onMount, createEffect } from 'solid-js';
 import TagDetailView from './tag-editor';
-import { processTags as computeProcessTags, Tag } from './utils';
+import EventDetailView from './event-editor';
+import EventHover from './event-hover';
+import { processTags as computeProcessTags, Tag, processEvents, Event, cx } from './utils';
 import '../../css/weeks.css';
 
 
@@ -163,8 +165,23 @@ function App() {
     return m ? parseInt(m[1], 10) : null;
   });
   const isNewTag = createMemo<boolean>(() => /^#tags\/new$/.test(hash() || ''));
+  const currentEventId = createMemo<number | null>(() => {
+    const h = hash() || '';
+    const m = h.match(/^#events\/(\d+)/);
+    return m ? parseInt(m[1], 10) : null;
+  });
+  const isNewEvent = createMemo<boolean>(() => /^#events\/new$/.test(hash() || ''));
   const [selectedWeek, setSelectedWeek] = createSignal<Date | null>(null);
   const [newTagPrefill, setNewTagPrefill] = createSignal<{ startdate: string; enddate: string } | null>(null);
+  const [eventsByWeek, setEventsByWeek] = createSignal<Record<string, Event[]>>({});
+  const [eventById, setEventById] = createSignal<Record<number, Event>>({});
+  const [eventsList, setEventsList] = createSignal<Event[]>([]);
+  const [newEventPrefill, setNewEventPrefill] = createSignal<{ date: string } | null>(null);
+  // Hover tooltip state (mouse-following)
+  const [hoveredEvents, setHoveredEvents] = createSignal<Event[] | null>(null);
+  const [tooltip, setTooltip] = createSignal<{ x: number; y: number; visible: boolean }>({ x: 0, y: 0, visible: false });
+  const [hoverWeekKey, setHoverWeekKey] = createSignal<string | null>(null);
+  let hideTimer: number | null = null;
 
   const data = createMemo(() => {
     const arr: { labelYear: number; firstDate: Date; pad: number; weeks: { title: string; start: Date }[] }[] = [];
@@ -254,6 +271,16 @@ function App() {
         recompute(tags);
       })
       .catch((e) => console.error(e));
+    fetch('/api/events')
+      .then((r) => r.json())
+      .then((events) => {
+        const proc = processEvents(events || []);
+        console.log('events by week:', proc.eventsByWeek)
+        setEventsByWeek(proc.eventsByWeek);
+        setEventById(proc.eventById);
+        setEventsList(proc.eventsList);
+      })
+      .catch((e) => console.error(e));
   });
 
   createEffect(() => {
@@ -320,6 +347,60 @@ function App() {
             />
           );
         })()
+      ) : currentEventId() != null || isNewEvent() ? (
+        (() => {
+          if (isNewEvent()) {
+            return (
+              <EventDetailView
+                event={null}
+                onSave={(saved) => {
+                  const merged = [...eventsList().filter((x) => x.id !== saved.id), saved];
+                  const proc = processEvents(merged);
+                  setEventsByWeek(proc.eventsByWeek);
+                  setEventById(proc.eventById);
+                  setEventsList(proc.eventsList);
+                  setNewEventPrefill(null);
+                  window.location.hash = '';
+                }}
+                onDelete={(id) => {
+                  const merged = eventsList().filter((x) => x.id !== id);
+                  const proc = processEvents(merged);
+                  setEventsByWeek(proc.eventsByWeek);
+                  setEventById(proc.eventById);
+                  setEventsList(proc.eventsList);
+                  setNewEventPrefill(null);
+                  window.location.hash = '';
+                }}
+                prefill={newEventPrefill() || undefined}
+              />
+            );
+          }
+          const id = currentEventId() as number;
+          const ev = eventById()[id];
+          return (
+            <EventDetailView
+              event={ev}
+              onSave={(saved) => {
+                const merged = [...eventsList().filter((x) => x.id !== saved.id), saved];
+                const proc = processEvents(merged);
+                setEventsByWeek(proc.eventsByWeek);
+                setEventById(proc.eventById);
+                setEventsList(proc.eventsList);
+                setNewEventPrefill(null);
+                window.location.hash = '';
+              }}
+              onDelete={(id) => {
+                const merged = eventsList().filter((x) => x.id !== id);
+                const proc = processEvents(merged);
+                setEventsByWeek(proc.eventsByWeek);
+                setEventById(proc.eventById);
+                setEventsList(proc.eventsList);
+                setNewEventPrefill(null);
+                window.location.hash = '';
+              }}
+            />
+          );
+        })()
       ) : (
         <div class="weeks-grid">
           <For each={decades()}>
@@ -349,6 +430,8 @@ function App() {
                               if (m >= 5 && m <= 7) return 'summer';
                               return 'autumn';
                             })();
+                            const weekKey = isoWeekKey(w.start);
+                            const hasEvents = () => (eventsByWeek()[weekKey] || []).length > 0;
                             const onClick = () => {
                               const prev = selectedWeek();
                               if (!prev) {
@@ -363,11 +446,50 @@ function App() {
                                 window.location.hash = '#tags/new';
                               }
                             };
+                            const onDblClick = () => {
+                              setNewEventPrefill({ date: w.start.toISOString().slice(0, 10) });
+                              window.location.hash = '#events/new';
+                            };
                             return (
                               <div
-                                class={`week-box season-${season}${isSel() ? ' selected' : ''}`}
+                                class={cx('week-box', `season-${season}`, { 
+                                  selected: isSel(), 
+                                  filled: hasEvents(), 
+                                  'before-my-time': w.start.getTime() < new Date('1987-05-10').getTime(), 
+                                  future: w.start.getTime() > new Date().getTime() 
+                                })}
                                 title={w.title}
                                 onClick={onClick}
+                                onDblClick={onDblClick}
+                                onMouseEnter={(e) => {
+                                  if (!hasEvents()) return;
+                                  if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+                                  // Guard against re-enter on the same week causing loops
+                                  if (tooltip().visible && hoverWeekKey() === weekKey) {
+                                    return;
+                                  }
+                                  setHoverWeekKey(weekKey);
+                                  const evs = eventsByWeek()[weekKey] || [];
+                                  if (hoveredEvents() !== evs) setHoveredEvents(evs);
+                                  const nx = Math.min(e.clientX + 12, (window.innerWidth || 1024) - 260);
+                                  const ny = Math.min(e.clientY + 12, (window.innerHeight || 768) - 200);
+                                  if (!tooltip() || tooltip().visible === false || tooltip().x !== nx || tooltip().y !== ny) {
+                                    setTooltip({ x: nx, y: ny, visible: true });
+                                  }
+                                }}
+                                // onMouseMove={(e) => {
+                                //   if (!hasEvents()) return;
+                                //   const nx = Math.min(e.clientX + 12, (window.innerWidth || 1024) - 260);
+                                //   const ny = Math.min(e.clientY + 12, (window.innerHeight || 768) - 200);
+                                //   setTooltip((t) => ({ ...t, x: nx, y: ny, visible: true }));
+                                // }}
+                                onMouseLeave={() => {
+                                  if (hideTimer) clearTimeout(hideTimer);
+                                  hideTimer = window.setTimeout(() => {
+                                    setTooltip((t) => ({ ...t, visible: false }));
+                                    setHoveredEvents(null);
+                                  }, 100);
+                                }}
                               />
                             );
                           }}
@@ -397,7 +519,7 @@ function App() {
                                     const widthPct = Math.max(0.5, ((Math.max(segEnd, segStart) - segStart) / denom) * 100);
                                     return (
                                       <div
-                                        class={`tag-span${lastEditedTagId() === t.id ? ' edited' : ''}`}
+                                        class={cx('tag-span', { edited: lastEditedTagId() === t.id })}
                                         style={`--x: ${start - 1}; --w: ${end - start + 1}; --left: ${leftPct}%; --width: ${widthPct}%; background:${col.bg}; border-color:${col.border}; cursor:pointer;`}
                                         title={`${t.name} (W${t.startWeek}–W${t.endWeek})`}
                                         onClick={nav}
@@ -426,6 +548,31 @@ function App() {
           </For>
         </div>
       )}
+      {(() => {
+        const tip = tooltip();
+        const evs = hoveredEvents();
+        return tip.visible && evs && evs.length > 0 ? (
+          <div
+            class="week-event-tooltip"
+            style={{ left: `${tip.x}px`, top: `${tip.y}px` }}
+            onPointerDown={(e) => { e.stopPropagation(); }}
+            onMouseEnter={() => {
+              if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+              setTooltip((t) => ({ ...t, visible: true }));
+            }}
+            onMouseLeave={() => {
+              if (hideTimer) clearTimeout(hideTimer);
+              hideTimer = window.setTimeout(() => {
+                setTooltip((t) => ({ ...t, visible: false }));
+                setHoveredEvents(null);
+                setHoverWeekKey(null);
+              }, 140);
+            }}
+          >
+            <EventHover events={evs} />
+          </div>
+        ) : null;
+      })()}
     </>
   );
 }
