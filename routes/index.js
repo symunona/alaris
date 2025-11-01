@@ -6,8 +6,7 @@
 //var blog = db.get('blog');
 
 
-const moment = require('moment'),
-	_ = require('underscore'),
+const _ = require('underscore'),
 	isThisPostPublic = require('../public/js/is-public')
 
 const config = require('./../config.json'),
