@@ -87,7 +87,7 @@ exports.weeks = function (req, res) {
 
 // Events API
 exports.events = function (req, res) {
-    res.send(db.db.events)
+    res.send(db.db.events || [])
 }
 
 exports.saveEvent = function (req, res) {

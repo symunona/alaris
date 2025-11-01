@@ -12,9 +12,11 @@
 .year-head { width: 40px; font-size: 11px; color: #4b5563; text-align: right; padding-right: 4px; }
 .week-box { width: 16px; height: 16px; background: transparent; border: 1px solid #cbd5e1; border-radius: 0; box-shadow: none; }
 .week-box:hover { border-color: #5b9bd5; outline: none; }
-.week-box.empty { background: transparent; border-color: #f8f9fb; }
-.week-box.empty:hover { outline: none; }
+.week-box.before-my-time { background: transparent; border-color: #f8f9fb !important; }
+.week-box.before-my-time:hover { outline: none; }
+.week-box.future { opacity: 0.2; }
 .week-box.selected { outline: 2px solid #2563eb; background: #dbeafe; }
+.week-box.filled { background: #76bde9; border-color: #60a5fa; position: relative; }
 
 /* Tag bars under each year */
 .week-box.season-winter { border-color: #9ca3af; }
@@ -47,6 +49,22 @@
 .tag-hover-image { margin-top: 8px; border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden; }
 .tag-hover-image img { display: block; width: 100%; height: auto; }
 
+.event-hover { display: none; position: absolute; left: 0; top: 18px; z-index: 20; max-width: 280px; width: max-content; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 6px 6px rgba(0,0,0,0.06); padding: 8px; }
+.week-box:hover .event-hover { display: block; }
+.event-hover-title { font-weight: 600; font-size: 12px; margin-bottom: 6px; color: #111827; }
+.event-hover-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.event-hover-list li { font-size: 12px; color: #374151; cursor: pointer; }
+.event-hover-list li .event-item-link { display: block; color: inherit; text-decoration: none; }
+.event-hover-list li .event-item-link:hover { text-decoration: underline; }
+.event-date { color: #6b7280; margin-right: 6px; }
+.event-name { color: #111827; font-weight: 500; }
+.event-desc { font-size: 11px; color: #4b5563; }
+.event-more { margin-top: 6px; font-size: 11px; color: #6b7280; }
+
+/* Floating week events tooltip (mouse-following) */
+.week-event-tooltip { position: fixed; z-index: 99999; transform: translateY(6px); pointer-events: auto; }
+.week-event-tooltip .event-hover { display: block !important; position: static; pointer-events: auto; }
+
 /* Tag detail page */
 .tag-detail { display: grid; gap: 12px; padding: 52px 12px 12px; position: relative; }
 .back-btn { width: max-content; padding: 6px 10px; font-size: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 4px; cursor: pointer; }
@@ -59,6 +77,7 @@
 .tag-form label { display: grid; gap: 4px; font-size: 12px; color: #374151; }
 .tag-form input { height: 34px; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #111827; }
 .tag-form input[readonly] { background: #f3f4f6; }
-.tag-actions { display: flex; gap: 8px; position: absolute; top: 12px; right: 12px; }
+.tag-actions { display: flex; gap: 8px; position: absolute; top: 12px; right: 12px; white-space: nowrap; }
+.tag-actions > * { flex: 0 0 auto; }
 .delete-btn { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
 .delete-btn:hover { background: #fecaca; }

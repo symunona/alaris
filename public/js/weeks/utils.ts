@@ -6,6 +6,21 @@ function addDays(d: Date, days: number): Date {
   return nd;
 }
 
+// Class aggregator similar to popular libraries. Usage: cx('a', { b: cond }, ['c', { d: cond2 }])
+export function cx(...args: any[]): string {
+  const out: string[] = [];
+  const add = (v: any) => {
+    if (!v) return;
+    if (typeof v === 'string') out.push(v);
+    else if (Array.isArray(v)) v.forEach(add);
+    else if (typeof v === 'object') {
+      for (const k in v) if (Object.prototype.hasOwnProperty.call(v, k) && v[k]) out.push(k);
+    }
+  };
+  args.forEach(add);
+  return out.join(' ');
+}
+
 function startOfISOWeek(d: Date): Date {
   const nd = new Date(d);
   const day = nd.getDay();
@@ -178,4 +193,27 @@ export function processTags(
   }
 
   return { yearMap, tagById: idx, tagsList: tags, yearSlotMap: getYearSlotMap(yearMap) };
+}
+
+// Events utilities
+export type Event = {
+  id?: number;
+  date: string; // ISO date (YYYY-MM-DD)
+  name: string;
+  description?: string;
+}
+
+export type EventsByWeek = Record<string, Event[]>; // key is isoWeekKey
+
+export function processEvents(events: Event[]): { eventsByWeek: EventsByWeek; eventById: Record<number, Event>; eventsList: Event[] } {
+  const eventsByWeek: EventsByWeek = {};
+  const eventById: Record<number, Event> = {};
+  for (const e of events || []) {
+    const d = e.date ? new Date(e.date) : null;
+    if (!d || isNaN(d.getTime())) continue;
+    const wk = isoWeekKey(startOfISOWeek(d));
+    (eventsByWeek[wk] = eventsByWeek[wk] || []).push(e);
+    if (e.id != null) eventById[e.id] = e as Event;
+  }
+  return { eventsByWeek, eventById, eventsList: events || [] };
 }
