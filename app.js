@@ -60,6 +60,11 @@ app.delete('/api/tag/delete/:id', auth, admin.deleteTag);
 app.post('/api/tag/save', auth, admin.saveTag);
 app.get('/api/content', auth, admin.content);
 
+// Events API
+app.get('/api/events', auth, admin.events);
+app.post('/api/event/save', auth, admin.saveEvent);
+app.delete('/api/event/delete/:id', auth, admin.deleteEvent);
+
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, 'public', 'content'))
