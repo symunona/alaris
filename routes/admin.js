@@ -84,3 +84,16 @@ exports.tagPosts = function (req, res) {
 exports.weeks = function (req, res) {
 	res.sendFile(path.join(__dirname, '..', 'public', 'weeks.html'))
 }
+
+// Events API
+exports.events = function (req, res) {
+    res.send(db.db.events)
+}
+
+exports.saveEvent = function (req, res) {
+    res.send(db.saveOrUpdate('events', req.body))
+}
+
+exports.deleteEvent = function (req, res) {
+    res.send(db.deleteItem('events', req.params.id))
+}
