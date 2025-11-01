@@ -1,0 +1,64 @@
+/* Weeks grid styles */
+#weeks { padding: 12px; }
+.weeks-grid { display: grid; grid-auto-rows: min-content; gap: 6px; }
+.decade-group { display: grid; gap: 6px; padding: 6px 0 10px; border-bottom: 1px solid #e5e7eb; }
+.decade-header { font-weight: 600; color: #374151; font-size: 12px; letter-spacing: 0.02em; }
+.weeks-header { display: grid; grid-template-columns: 40px repeat(52, 16px); gap: 4px; align-items: end; }
+.year-head-spacer { width: 40px; }
+.week-head { width: 16px; font-size: 9px; color: #6b7280; text-align: center; line-height: 1; }
+.year-row { display: grid; grid-template-columns: 40px repeat(52, 16px) 40px; gap: 4px; align-items: center; position: relative; }
+.year-edge { width: 40px; height: 16px; border-radius: 4px; }
+.year-row::before { content: none; }
+.year-head { width: 40px; font-size: 11px; color: #4b5563; text-align: right; padding-right: 4px; }
+.week-box { width: 16px; height: 16px; background: transparent; border: 1px solid #cbd5e1; border-radius: 0; box-shadow: none; }
+.week-box:hover { border-color: #5b9bd5; outline: none; }
+.week-box.empty { background: transparent; border-color: #f8f9fb; }
+.week-box.empty:hover { outline: none; }
+.week-box.selected { outline: 2px solid #2563eb; background: #dbeafe; }
+
+/* Tag bars under each year */
+.week-box.season-winter { border-color: #9ca3af; }
+.week-box.season-spring { border-color: #86efac; }
+.week-box.season-summer { border-color: #fbbf24; }
+.week-box.season-autumn { border-color: #ef4444; }
+
+/* Optional: season-specific hover emphasis */
+.week-box.season-winter:hover { border-color: #4b5563; }
+.week-box.season-spring:hover { border-color: #16a34a; }
+.week-box.season-summer:hover { border-color: #a16207; }
+.week-box.season-autumn:hover { border-color: #b91c1c; }
+
+/* Tag bars under each year */
+.tag-bars { display: grid; grid-template-columns: 40px 1fr 40px; gap: 4px; margin: 4px 0 10px; }
+.tag-edge { width: 40px; border-radius: 4px; }
+.tag-lines { display: flex; flex-direction: column; gap: 2px; position: relative; --week: 16px; --gap: 4px; background-image: none; border-radius: 4px; }
+.tag-row { position: relative; height: 16px; width: calc(52 * var(--week) + (52 - 1) * var(--gap)); }
+.tag-cell { width: 16px; height: 16px; border: 1px solid transparent; border-radius: 0; position: relative; overflow: hidden; }
+.tag-span { position: absolute; top: 0; left: var(--left, calc(var(--x) * (var(--week) + var(--gap)))); width: var(--width, calc(var(--w) * var(--week) + (var(--w) - 1) * var(--gap))); height: 16px; border: 1px solid transparent; border-radius: 2px; }
+.tag-span.edited { box-shadow: 0 0 0 2px #22c55e inset, 0 0 0 1px #16a34a; border-color: #16a34a !important; }
+.tag-label { position: absolute; left: 2px; right: 2px; top: 0; bottom: 0; font-size: 9px; line-height: 16px; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+
+.tag-hover { display: none; position: absolute; left: 0; top: 18px; z-index: 20; max-width: 300px; width: max-content; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 6px 6px rgba(0,0,0,0.06); padding: 8px; }
+.tag-span:hover .tag-hover { display: block; }
+.tag-hover-fields { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.tag-hover-fields label { display: grid; gap: 2px; font-size: 11px; color: #374151; }
+.tag-hover-fields input, .tag-hover-fields textarea { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 4px; background: #f9fafb; color: #111827; font-size: 12px; }
+.tag-hover-fields textarea { resize: vertical; }
+.tag-hover-image { margin-top: 8px; border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden; }
+.tag-hover-image img { display: block; width: 100%; height: auto; }
+
+/* Tag detail page */
+.tag-detail { display: grid; gap: 12px; padding: 52px 12px 12px; position: relative; }
+.back-btn { width: max-content; padding: 6px 10px; font-size: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 4px; cursor: pointer; }
+.back-btn:hover { background: #e5e7eb; }
+.tag-title { margin: 0; font-size: 20px; font-weight: 600; color: #111827; }
+.tag-image-wrap { width: 100%; max-height: calc(100vh - 180px); overflow: hidden; border-radius: 8px; border: 1px solid #e5e7eb; background: #f9fafb; }
+.tag-image-wrap.placeholder { display: grid; place-items: center; color: #6b7280; height: 240px; }
+.tag-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.tag-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; align-items: end; }
+.tag-form label { display: grid; gap: 4px; font-size: 12px; color: #374151; }
+.tag-form input { height: 34px; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; color: #111827; }
+.tag-form input[readonly] { background: #f3f4f6; }
+.tag-actions { display: flex; gap: 8px; position: absolute; top: 12px; right: 12px; }
+.delete-btn { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+.delete-btn:hover { background: #fecaca; }

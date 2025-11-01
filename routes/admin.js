@@ -65,3 +65,22 @@ exports.deleteTag = function (req, res) {
 exports.saveTag = function (req, res) {
 	res.send(db.saveOrUpdate('tags', req.body))
 }
+
+exports.tags = function (req, res) {
+	res.send(db.db.tags)
+}
+
+exports.tagPosts = function (req, res) {
+	const tagId = parseInt(req.params.id)
+	const tag = db.getById('tags', tagId)
+	const startDate = tag.startdate
+	const endDate = tag.enddate
+	const posts = db.db.blog.filter(p => p.date >= startDate && p.date <= endDate)
+	res.send(posts)
+}
+
+
+
+exports.weeks = function (req, res) {
+	res.sendFile(path.join(__dirname, '..', 'public', 'weeks.html'))
+}
