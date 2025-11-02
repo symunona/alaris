@@ -1,6 +1,6 @@
 /** @jsxImportSource solid-js */
 import { render } from 'solid-js/web';
-import { For, createMemo, createSignal, onMount, createEffect } from 'solid-js';
+import { For, createMemo, createSignal, onMount, createEffect, Show } from 'solid-js';
 import TagDetailView from './tag-editor';
 import EventDetailView from './event-editor';
 import EventHover from './event-hover';
@@ -31,6 +31,16 @@ function isoWeekKey(d: Date): string {
   const { isoYear, isoWeek } = isoWeekInfo(d);
   const ww = isoWeek.toString().padStart(2, '0');
   return `${isoYear}-${ww}`;
+}
+
+// Align a date to the start (Monday) of its ISO week to match events grouping
+function startOfISOWeek(d: Date): Date {
+  const nd = new Date(d);
+  const day = nd.getDay();
+  const diff = (day === 0 ? -6 : 1) - day; // Monday=1, Sunday=0
+  nd.setDate(nd.getDate() + diff);
+  nd.setHours(0, 0, 0, 0);
+  return nd;
 }
 
 // Deterministic color utilities for tags
@@ -430,7 +440,7 @@ function App() {
                               if (m >= 5 && m <= 7) return 'summer';
                               return 'autumn';
                             })();
-                            const weekKey = isoWeekKey(w.start);
+                            const weekKey = isoWeekKey(startOfISOWeek(w.start));
                             const hasEvents = () => (eventsByWeek()[weekKey] || []).length > 0;
                             const onClick = () => {
                               const prev = selectedWeek();
@@ -452,11 +462,11 @@ function App() {
                             };
                             return (
                               <div
-                                class={cx('week-box', `season-${season}`, { 
-                                  selected: isSel(), 
-                                  filled: hasEvents(), 
-                                  'before-my-time': w.start.getTime() < new Date('1987-05-10').getTime(), 
-                                  future: w.start.getTime() > new Date().getTime() 
+                                class={cx('week-box', `season-${season}`, {
+                                  selected: isSel(),
+                                  filled: hasEvents(),
+                                  'before-my-time': w.start.getTime() < new Date('1987-05-10').getTime(),
+                                  future: w.start.getTime() > new Date().getTime()
                                 })}
                                 title={w.title}
                                 onClick={onClick}
@@ -464,37 +474,48 @@ function App() {
                                 onMouseEnter={(e) => {
                                   if (!hasEvents()) return;
                                   if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-                                  // Guard against re-enter on the same week causing loops
                                   if (tooltip().visible && hoverWeekKey() === weekKey) {
                                     return;
                                   }
                                   setHoverWeekKey(weekKey);
                                   const evs = eventsByWeek()[weekKey] || [];
                                   if (hoveredEvents() !== evs) setHoveredEvents(evs);
-                                  const nx = Math.min(e.clientX + 12, (window.innerWidth || 1024) - 260);
-                                  const ny = Math.min(e.clientY + 12, (window.innerHeight || 768) - 200);
+                                  const nx = Math.min(e.clientX - 12, (window.innerWidth || 1024) - 260);
+                                  const ny = Math.min(e.clientY - 12, (window.innerHeight || 768) - 200);
                                   if (!tooltip() || tooltip().visible === false || tooltip().x !== nx || tooltip().y !== ny) {
                                     setTooltip({ x: nx, y: ny, visible: true });
                                   }
-                                }}
-                                // onMouseMove={(e) => {
-                                //   if (!hasEvents()) return;
-                                //   const nx = Math.min(e.clientX + 12, (window.innerWidth || 1024) - 260);
-                                //   const ny = Math.min(e.clientY + 12, (window.innerHeight || 768) - 200);
-                                //   setTooltip((t) => ({ ...t, x: nx, y: ny, visible: true }));
-                                // }}
-                                onMouseLeave={() => {
-                                  if (hideTimer) clearTimeout(hideTimer);
-                                  hideTimer = window.setTimeout(() => {
-                                    setTooltip((t) => ({ ...t, visible: false }));
-                                    setHoveredEvents(null);
-                                  }, 100);
                                 }}
                               />
                             );
                           }}
                         </For>
                         <div class="year-edge" style={{ background: getColorForYear(row.labelYear, baseYearLabel, years) }} />
+                      </div>
+                      {/* Events markers per week under the boxes for the year */}
+                      <div class="events-track">
+                        <div class="year-head" />
+                        <div class="events-pins">
+                          <Show when={Object.keys(eventsByWeek()).length > 0}>
+                          <For each={row.weeks}>
+                            {(w, i) => {
+                              const weekKey = isoWeekKey(startOfISOWeek(w.start));
+                              const evs = eventsByWeek()[weekKey] || [];
+                              console.log(evs, weekKey, eventsByWeek())
+                              if (!evs || evs.length === 0) return null;
+                              let label = evs.map((e) => e?.name).filter(Boolean).join(', ');
+                              if (!label) label = `${evs.length} event${evs.length > 1 ? 's' : ''}`;
+                              return (
+                                <div class="event-pin" style={`--x: ${i() + 1};`}>
+                                  <span class="stem" />
+                                  <span class="elabel" title={label}>{label}</span>
+                                </div>
+                              );
+                            }}
+                          </For>
+                          </Show>
+                        </div>
+                        <div class="year-edge" />
                       </div>
                       <div class="tag-bars">
                         <div class="year-head" />
@@ -556,19 +577,21 @@ function App() {
             class="week-event-tooltip"
             style={{ left: `${tip.x}px`, top: `${tip.y}px` }}
             onPointerDown={(e) => { e.stopPropagation(); }}
-            onMouseEnter={() => {
-              if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-              setTooltip((t) => ({ ...t, visible: true }));
-            }}
-            onMouseLeave={() => {
-              if (hideTimer) clearTimeout(hideTimer);
-              hideTimer = window.setTimeout(() => {
-                setTooltip((t) => ({ ...t, visible: false }));
-                setHoveredEvents(null);
-                setHoverWeekKey(null);
-              }, 140);
-            }}
+            // onMouseEnter={() => {
+            //   if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+            //   setTooltip((t) => ({ ...t, visible: true }));
+            // }}
+            onClick={()=>setTooltip({x:tip.x,y:tip.y,visible:false})}
           >
+            <button
+              class="week-event-tooltip-close"
+              aria-label="Close tooltip"
+              onClick={(e) => { e.stopPropagation(); setTooltip({ x: tip.x, y: tip.y, visible: false }); }}
+              style="position:absolute;top:4px;right:6px;background:transparent;border:none;color:#333;cursor:pointer;font-size:16px;line-height:1;padding:2px;"
+              title="Close"
+            >
+              ×
+            </button>
             <EventHover events={evs} />
           </div>
         ) : null;

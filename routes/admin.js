@@ -95,5 +95,5 @@ exports.saveEvent = function (req, res) {
 }
 
 exports.deleteEvent = function (req, res) {
-    res.send(db.deleteItem('events', req.params.id))
+    res.send(db.deleteItem('events', parseInt(req.params.id)))
 }

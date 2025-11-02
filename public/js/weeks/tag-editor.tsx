@@ -60,13 +60,17 @@ export default function TagDetailView(props: { tag: any; onSave: (saved: any) =>
 
   return (
     <div class="tag-detail">
-      <button
-        class="back-btn"
-        onClick={() => {
-          try { props.onBack && props.onBack(tag().id); } catch {}
-          if (history.length > 1) history.back(); else window.location.hash = '';
-        }}
-      >← Back</button>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <button
+          class="back-btn"
+          onClick={() => {
+            try { props.onBack && props.onBack(tag().id); } catch {}
+            if (history.length > 1) history.back(); else window.location.hash = '';
+          }}
+        >← Back</button>
+        <button class="save-btn" style="margin-left:auto;" onClick={doSave}>Save</button>
+        <button class="delete-btn" onClick={doDelete}>Delete</button>
+      </div>
       <h2 class="tag-title">{tag()?.name ?? 'Tag'}</h2>
       <div class="tag-form">
         <label>
@@ -106,10 +110,7 @@ export default function TagDetailView(props: { tag: any; onSave: (saved: any) =>
       ) : (
         <div class="tag-image-wrap placeholder">No image</div>
       )}
-      <div class="tag-actions">
-        <button class="save-btn" onClick={doSave}>Save</button>
-        <button class="delete-btn" onClick={doDelete}>Delete</button>
-      </div>
+      
     </div>
   );
 }

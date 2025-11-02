@@ -46,13 +46,17 @@ export default function EventDetailView(props: { event: EventModel | null; onSav
 
   return (
     <div class="tag-detail">
-      <button
-        class="back-btn"
-        onClick={() => {
-          try { props.onBack && props.onBack(ev().id); } catch {}
-          if (history.length > 1) history.back(); else window.location.hash = '';
-        }}
-      >← Back</button>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <button
+          class="back-btn"
+          onClick={() => {
+            try { props.onBack && props.onBack(ev().id); } catch {}
+            if (history.length > 1) history.back(); else window.location.hash = '';
+          }}
+        >← Back</button>
+        <button class="save-btn" style="margin-left:auto;" onClick={doSave}>Save</button>
+        <button class="delete-btn" onClick={doDelete}>Delete</button>
+      </div>
       <h2 class="tag-title">{ev()?.name ? `Event: ${ev()?.name}` : 'Event'}</h2>
       <div class="tag-form">
         <label>
@@ -72,10 +76,7 @@ export default function EventDetailView(props: { event: EventModel | null; onSav
           <textarea rows={6} value={form().description || ''} onInput={(e) => setForm({ ...form(), description: (e.currentTarget as HTMLTextAreaElement).value })} />
         </label>
       </div>
-      <div class="tag-actions">
-        <button class="save-btn" onClick={doSave}>Save</button>
-        <button class="delete-btn" onClick={doDelete}>Delete</button>
-      </div>
+      
     </div>
   );
 }
