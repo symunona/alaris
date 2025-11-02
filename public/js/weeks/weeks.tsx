@@ -3,7 +3,6 @@ import { render } from 'solid-js/web';
 import { For, createMemo, createSignal, onMount, createEffect, Show } from 'solid-js';
 import TagDetailView from './tag-editor';
 import EventDetailView from './event-editor';
-import EventHover from './event-hover';
 import { processTags as computeProcessTags, Tag, processEvents, Event, cx } from './utils';
 import '../../css/weeks.css';
 
@@ -101,6 +100,91 @@ function getColorForYear(labelYear: number, baseYear: number, totalYears: number
   return `linear-gradient(90deg, ${c1} 0%, ${c2} 100%)`;
 }
 
+function EventsLine(props: { weeks: { title: string; start: Date }[]; getEventsByWeek: () => Record<string, Event[]>; getLastEditedEventId: () => number | null }) {
+  return (
+    <div class="events-track">
+      <div class="year-head" />
+      <div class="events-pins">
+        <Show when={Object.keys(props.getEventsByWeek() || {}).length > 0}>
+          <For each={props.weeks}>
+            {(w, i) => {
+              const weekKey = isoWeekKey(startOfISOWeek(w.start));
+              const evs = (props.getEventsByWeek()[weekKey] || []);
+              if (!evs || evs.length === 0) return null;
+              return (
+                <div class="event-pin" style={`--x: ${i() + 1};`}>
+                  <For each={evs}>
+                    {(e: any) => (
+                      <a
+                        class={cx('event-entry', { edited: props.getLastEditedEventId() === e.id })}
+                        data-id={e.id}
+                        href={`#events/${e.id}`}
+                        title={e.description || e.name}
+                      >
+                        <span class="stem" />
+                        <span class="elabel">{e.name}</span>
+                      </a>
+                    )}
+                  </For>
+                </div>
+              );
+            }}
+          </For>
+        </Show>
+      </div>
+      <div class="year-edge" />
+    </div>
+  );
+}
+
+function TagBars(props: { labelYear: number; pad: number; lanes: any[]; lastEditedTagId: () => number | null; tagById: () => Record<string | number, any>; ensureTagPosts: (id: number) => void; years: number; baseYearLabel: number }) {
+  return (
+    <div class="tag-bars">
+      <div class="year-head" />
+      <div class="tag-lines">
+        <For each={props.lanes || []}>
+          {(lane: any[]) => (
+            <div class="tag-row">
+              <For each={lane}>
+                {(t: any) => {
+                  const col = colorsForTag(t);
+                  const start = props.pad + t.startWeek;
+                  const end = props.pad + t.endWeek;
+                  const nav = () => { if (t.id != null) window.location.hash = `#tags/${t.id}`; };
+                  const yearStart = new Date(props.labelYear, 0, 1).getTime();
+                  const yearEnd = new Date(props.labelYear + 1, 0, 1).getTime();
+                  const sd = t.startdate ? new Date(t.startdate).getTime() : yearStart;
+                  const ed = t.enddate ? new Date(t.enddate).getTime() : sd;
+                  const segStart = Math.max(yearStart, sd);
+                  const segEnd = Math.min(yearEnd, ed);
+                  const denom = Math.max(1, yearEnd - yearStart);
+                  const leftPct = Math.max(0, ((segStart - yearStart) / denom) * 100);
+                  const widthPct = Math.max(0.5, ((Math.max(segEnd, segStart) - segStart) / denom) * 100);
+                  return (
+                    <div
+                      class={cx('tag-span', { edited: props.lastEditedTagId() === t.id })}
+                      style={`--x: ${start - 1}; --w: ${end - start + 1}; --left: ${leftPct}%; --width: ${widthPct}%; background:${col.bg}; border-color:${col.border}; cursor:pointer;`}
+                      title={`${t.name} (W${t.startWeek}–W${t.endWeek})`}
+                      onClick={nav}
+                      onMouseEnter={() => props.ensureTagPosts(t.id)}
+                    >
+                      <span class="tag-label">{t.place? t.place + ' - ' : ''} {t.name}</span>
+                      {(() => {
+                        const full = props.tagById()[t.id] || {};
+                        return <TagHover tag={full} />;
+                      })()}
+                    </div>
+                  );
+                }}
+              </For>
+            </div>
+          )}
+        </For>
+      </div>
+      <div class="tag-edge" style={{ background: getColorForYear(props.labelYear, props.baseYearLabel, props.years) }} />
+    </div>
+  );
+}
 function TagHover(props: { tag: any }) {
   const t = props.tag || {};
   const start = t.startdate ? new Date(t.startdate) : null;
@@ -169,6 +253,7 @@ function App() {
   const [yearTagsInSlots, setYearTagsInSlots] = createSignal<Record<number, Tag[][]>>({});
   const [hash, setHash] = createSignal<string>(typeof window !== 'undefined' ? window.location.hash : '');
   const [lastEditedTagId, setLastEditedTagId] = createSignal<number | null>(null);
+  const [lastEditedEventId, setLastEditedEventId] = createSignal<number | null>(null);
   const currentTagId = createMemo<number | null>(() => {
     const h = hash() || '';
     const m = h.match(/^#tags\/(\d+)/);
@@ -187,25 +272,23 @@ function App() {
   const [eventById, setEventById] = createSignal<Record<number, Event>>({});
   const [eventsList, setEventsList] = createSignal<Event[]>([]);
   const [newEventPrefill, setNewEventPrefill] = createSignal<{ date: string } | null>(null);
-  // Hover tooltip state (mouse-following)
-  const [hoveredEvents, setHoveredEvents] = createSignal<Event[] | null>(null);
-  const [tooltip, setTooltip] = createSignal<{ x: number; y: number; visible: boolean }>({ x: 0, y: 0, visible: false });
-  const [hoverWeekKey, setHoverWeekKey] = createSignal<string | null>(null);
-  let hideTimer: number | null = null;
 
   const data = createMemo(() => {
     const arr: { labelYear: number; firstDate: Date; pad: number; weeks: { title: string; start: Date }[] }[] = [];
     for (let r = 0; r < years; r++) {
       const labelYear = baseYearLabel + r;
-      const jan1 = new Date(labelYear, 0, 1);
+      // ISO year starts on Monday of the week containing Jan 4
+      const isoYearStart = startOfISOWeek(new Date(labelYear, 0, 4));
       const weeks: { title: string; start: Date }[] = [];
-      for (let w = 0; w < 52; w++) {
-        const weekStart = addDays(jan1, w * 7);
+      const nextIsoYearStart = startOfISOWeek(new Date(labelYear + 1, 0, 4));
+      const weeksCount = Math.round((+nextIsoYearStart - +isoYearStart) / (7 * 24 * 60 * 60 * 1000));
+      for (let w = 0; w < weeksCount; w++) {
+        const weekStart = addDays(isoYearStart, w * 7);
         const month = weekStart.toLocaleString(undefined, { month: 'short' });
         const dateStr = weekStart.toISOString().slice(0, 10);
         weeks.push({ title: `${month} • W${w + 1} • ${dateStr}`, start: weekStart });
       }
-      arr.push({ labelYear, firstDate: jan1, pad: 0, weeks });
+      arr.push({ labelYear, firstDate: isoYearStart, pad: 0, weeks });
     }
     return arr;
   });
@@ -307,6 +390,22 @@ function App() {
     }
   });
 
+  // After closing event editor, scroll to last edited event and highlight
+  createEffect(() => {
+    if (currentEventId() == null && !isNewEvent()) {
+      const id = lastEditedEventId();
+      if (id != null) {
+        setTimeout(() => {
+          const el = document.querySelector(`.event-entry[data-id="${id}"]`) as HTMLElement | null;
+          if (el && typeof el.scrollIntoView === 'function') {
+            try { el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' }); } catch { el.scrollIntoView(true); }
+            try { el.classList.add('edited'); setTimeout(() => el.classList.remove('edited'), 1500); } catch {}
+          }
+        }, 0);
+      }
+    }
+  });
+
   return (
     <>
       {currentTagId() != null || isNewTag() ? (
@@ -370,6 +469,7 @@ function App() {
                   setEventById(proc.eventById);
                   setEventsList(proc.eventsList);
                   setNewEventPrefill(null);
+                  if (saved && saved.id != null) setLastEditedEventId(Number(saved.id)); else setLastEditedEventId(null);
                   window.location.hash = '';
                 }}
                 onDelete={(id) => {
@@ -397,6 +497,7 @@ function App() {
                 setEventById(proc.eventById);
                 setEventsList(proc.eventsList);
                 setNewEventPrefill(null);
+                if (saved && saved.id != null) setLastEditedEventId(Number(saved.id)); else setLastEditedEventId(null);
                 window.location.hash = '';
               }}
               onDelete={(id) => {
@@ -471,96 +572,24 @@ function App() {
                                 title={w.title}
                                 onClick={onClick}
                                 onDblClick={onDblClick}
-                                onMouseEnter={(e) => {
-                                  if (!hasEvents()) return;
-                                  if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-                                  if (tooltip().visible && hoverWeekKey() === weekKey) {
-                                    return;
-                                  }
-                                  setHoverWeekKey(weekKey);
-                                  const evs = eventsByWeek()[weekKey] || [];
-                                  if (hoveredEvents() !== evs) setHoveredEvents(evs);
-                                  const nx = Math.min(e.clientX - 12, (window.innerWidth || 1024) - 260);
-                                  const ny = Math.min(e.clientY - 12, (window.innerHeight || 768) - 200);
-                                  if (!tooltip() || tooltip().visible === false || tooltip().x !== nx || tooltip().y !== ny) {
-                                    setTooltip({ x: nx, y: ny, visible: true });
-                                  }
-                                }}
                               />
                             );
                           }}
                         </For>
                         <div class="year-edge" style={{ background: getColorForYear(row.labelYear, baseYearLabel, years) }} />
                       </div>
-                      {/* Events markers per week under the boxes for the year */}
-                      <div class="events-track">
-                        <div class="year-head" />
-                        <div class="events-pins">
-                          <Show when={Object.keys(eventsByWeek()).length > 0}>
-                          <For each={row.weeks}>
-                            {(w, i) => {
-                              const weekKey = isoWeekKey(startOfISOWeek(w.start));
-                              const evs = eventsByWeek()[weekKey] || [];
-                              console.log(evs, weekKey, eventsByWeek())
-                              if (!evs || evs.length === 0) return null;
-                              let label = evs.map((e) => e?.name).filter(Boolean).join(', ');
-                              if (!label) label = `${evs.length} event${evs.length > 1 ? 's' : ''}`;
-                              return (
-                                <div class="event-pin" style={`--x: ${i() + 1};`}>
-                                  <span class="stem" />
-                                  <span class="elabel" title={label}>{label}</span>
-                                </div>
-                              );
-                            }}
-                          </For>
-                          </Show>
-                        </div>
-                        <div class="year-edge" />
-                      </div>
-                      <div class="tag-bars">
-                        <div class="year-head" />
-                        <div class="tag-lines">
-                          <For each={yearTagsInSlots()[row.labelYear] || []}>
-                            {(lane) => (
-                              <div class="tag-row">
-                                <For each={lane}>
-                                  {(t) => {
-                                    const col = colorsForTag(t);
-                                    const start = row.pad + t.startWeek;
-                                    const end = row.pad + t.endWeek;
-                                    const nav = () => { if (t.id != null) window.location.hash = `#tags/${t.id}`; };
-                                    const yearStart = new Date(row.labelYear, 0, 1).getTime();
-                                    const yearEnd = new Date(row.labelYear + 1, 0, 1).getTime();
-                                    const sd = t.startdate ? new Date(t.startdate).getTime() : yearStart;
-                                    const ed = t.enddate ? new Date(t.enddate).getTime() : sd;
-                                    const segStart = Math.max(yearStart, sd);
-                                    const segEnd = Math.min(yearEnd, ed);
-                                    const denom = Math.max(1, yearEnd - yearStart);
-                                    const leftPct = Math.max(0, ((segStart - yearStart) / denom) * 100);
-                                    const widthPct = Math.max(0.5, ((Math.max(segEnd, segStart) - segStart) / denom) * 100);
-                                    return (
-                                      <div
-                                        class={cx('tag-span', { edited: lastEditedTagId() === t.id })}
-                                        style={`--x: ${start - 1}; --w: ${end - start + 1}; --left: ${leftPct}%; --width: ${widthPct}%; background:${col.bg}; border-color:${col.border}; cursor:pointer;`}
-                                        title={`${t.name} (W${t.startWeek}–W${t.endWeek})`}
-                                        onClick={nav}
-                                        onMouseEnter={() => ensureTagPosts(t.id)}
-                                      >
-                                        <span class="tag-label">{t.place? t.place + ' - ' : ''} {t.name}</span>
-                                        {(() => {
-                                          const full = tagById()[t.id] || {};
-                                          return <TagHover tag={full} />;
-                                        })()}
-                                      </div>
-                                    );
-                                  }}
-                                </For>
-                              </div>
-                            )}
-                          </For>
-                        </div>
-                        <div class="tag-edge" style={{ background: getColorForYear(row.labelYear, baseYearLabel, years) }} />
-                      </div>
+                      <EventsLine weeks={row.weeks} getEventsByWeek={eventsByWeek} getLastEditedEventId={lastEditedEventId} />
+                      <TagBars
+                        labelYear={row.labelYear}
+                        pad={row.pad}
+                        lanes={yearTagsInSlots()[row.labelYear] || []}
+                        lastEditedTagId={lastEditedTagId}
+                        tagById={tagById}
+                        ensureTagPosts={ensureTagPosts}
+                        years={years}
+                        baseYearLabel={baseYearLabel}
+                      />
+                      
                     </>
                   )}
                 </For>
@@ -569,33 +598,7 @@ function App() {
           </For>
         </div>
       )}
-      {(() => {
-        const tip = tooltip();
-        const evs = hoveredEvents();
-        return tip.visible && evs && evs.length > 0 ? (
-          <div
-            class="week-event-tooltip"
-            style={{ left: `${tip.x}px`, top: `${tip.y}px` }}
-            onPointerDown={(e) => { e.stopPropagation(); }}
-            // onMouseEnter={() => {
-            //   if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-            //   setTooltip((t) => ({ ...t, visible: true }));
-            // }}
-            onClick={()=>setTooltip({x:tip.x,y:tip.y,visible:false})}
-          >
-            <button
-              class="week-event-tooltip-close"
-              aria-label="Close tooltip"
-              onClick={(e) => { e.stopPropagation(); setTooltip({ x: tip.x, y: tip.y, visible: false }); }}
-              style="position:absolute;top:4px;right:6px;background:transparent;border:none;color:#333;cursor:pointer;font-size:16px;line-height:1;padding:2px;"
-              title="Close"
-            >
-              ×
-            </button>
-            <EventHover events={evs} />
-          </div>
-        ) : null;
-      })()}
+      {/* Event hover UI intentionally removed */}
     </>
   );
 }
