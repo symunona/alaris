@@ -3,9 +3,10 @@
 .weeks-grid { display: grid; grid-auto-rows: min-content; gap: 6px; }
 .decade-group { display: grid; gap: 6px; padding: 6px 0 10px; border-bottom: 1px solid #e5e7eb; }
 .decade-header { font-weight: 600; color: #374151; font-size: 12px; letter-spacing: 0.02em; }
-.weeks-header { display: grid; grid-template-columns: 40px repeat(52, 16px); gap: 4px; align-items: end; }
+.weeks-header { display: grid; grid-template-columns: 40px repeat(52, 16px); gap: 4px; align-items: end; margin-bottom: 10px; }
 .year-head-spacer { width: 40px; }
 .week-head { width: 16px; font-size: 9px; color: #6b7280; text-align: center; line-height: 1; }
+.year-row { display: grid; grid-template-columns: 40px repeat(52, 16px) 40px; gap: 4px; align-items: center; position: relative; margin-top: 50px; }
 .year-row { display: grid; grid-template-columns: 40px repeat(52, 16px) 40px; gap: 4px; align-items: center; position: relative; }
 .year-edge { width: 40px; height: 16px; border-radius: 4px; }
 .year-row::before { content: none; }
@@ -16,7 +17,7 @@
 .week-box.before-my-time:hover { outline: none; }
 .week-box.future { opacity: 0.2; }
 .week-box.selected { outline: 2px solid #2563eb; background: #dbeafe; }
-.week-box.filled { background: #76bde9; border-color: #60a5fa; position: relative; }
+.week-box.filled { background: #ededed; border-color: #60a5fa; position: relative; }
 
 /* Tag bars under each year */
 .week-box.season-winter { border-color: #9ca3af; }
@@ -66,12 +67,19 @@
 .week-event-tooltip .event-hover { display: block !important; position: static; pointer-events: auto; }
 
 /* Per-week vertical event markers under each year */
-.events-track { display: grid; grid-template-columns: 40px 1fr 40px; gap: 4px; margin: 2px 0 8px; }
+.events-track { display: grid; grid-template-columns: 40px 1fr 40px; gap: 4px; margin: 0 0 8px; }
 .events-pins { position: relative; --week: 16px; --gap: 4px; height: 18px; width: calc(52 * var(--week) + (52 - 1) * var(--gap)); }
-.event-pin { position: absolute; left: calc((var(--x) - 1) * (var(--week) + var(--gap))); top: 0; display: flex; align-items: flex-end; }
+.event-pin { position: absolute; left: calc((var(--x) - 0.65) * (var(--week) + (var(--gap)))); top: 0; display: flex; align-items: flex-end; color: inherit; text-decoration: none; }
 .event-pin .stem { display: inline-block; width: 2px; height: 12px; background: #9ca3af; position: relative; }
 .event-pin .stem::after { content: ""; position: absolute; left: 50%; bottom: -2px; width: 6px; height: 6px; background: #374151; border-radius: 9999px; transform: translateX(-50%); }
 .event-pin .elabel { margin-left: 6px; font-size: 12px; color: #111827; white-space: nowrap; line-height: 1; }
+
+/* Sequential events list per year, aligned to week grid width */
+.events-list { --week: 16px; --gap: 4px; display: grid; grid-template-columns: 40px calc(52 * var(--week) + (52 - 1) * var(--gap)) 40px; gap: 4px; margin: 2px 0 8px; }
+.events-line { width: 100%; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.event-item { display: inline-flex; align-items: center; color: inherit; text-decoration: none; font-size: 12px; }
+.event-item .dot { width: 6px; height: 6px; background: #374151; border-radius: 9999px; margin-right: 6px; }
+.event-item .text { line-height: 1; white-space: nowrap; }
 
 /* Tag detail page */
 .tag-detail { display: grid; gap: 12px; padding: 0px 12px 12px; position: relative; }
