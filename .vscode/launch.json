@@ -1,5 +1,5 @@
 {
-	"version": "0.1.0",
+	"version": "0.2.0",
 	// List of configurations. Add new configurations or edit existing ones.
 	"configurations": [
 		{
@@ -27,7 +27,6 @@
 			// Use JavaScript source maps (if they exist).
 			"sourceMaps": false,
 			// If JavaScript source maps are enabled, the generated code is expected in this directory.
-			"outDir": null,
 			"request": "launch"
 		},
 		{
@@ -37,6 +36,7 @@
 			"address": "localhost",
 			// Port to attach to.
 			"port": 5858,
+			"request": "attach",
 			"sourceMaps": false
 		},
 		{
@@ -44,7 +44,35 @@
 			"request": "attach",
 			"name": "tmp debug",
 			"address": "207.154.200.83",
-			"port": "9229"
+			"port": 9229
+		},
+		{
+			"type": "node-terminal",
+			"request": "launch",
+			"name": "Dev: npm run dev (terminal)",
+			"command": "npm run dev",
+			"cwd": "${workspaceFolder}",
+			"env": {
+				"NODE_OPTIONS": "--inspect=9229"
+			}
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach: Node 9229",
+			"port": 9229,
+			"restart": true,
+			"address": "localhost",
+			"timeout": 20000
+		}
+	],
+	"compounds": [
+		{
+			"name": "Dev: start and attach",
+			"configurations": [
+				"Dev: npm run dev (terminal)",
+				"Attach: Node 9229"
+			]
 		}
 	]
 }

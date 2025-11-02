@@ -1,6 +1,13 @@
 /** @jsxImportSource solid-js */
 
-export default function EventHover(props: { events: { id?: number; date: string; name: string; description?: string }[] }) {
+export type LifeEvent = {
+  id?: number;
+  date: string;
+  name: string;
+  description?: string;
+}
+
+export default function EventHover(props: { events: LifeEvent[] }) {
   const evs = () => props.events || [];
   return (
     <div class="event-hover">
@@ -11,6 +18,7 @@ export default function EventHover(props: { events: { id?: number; date: string;
             {e.id != null ? (
               <a
                 href={`#events/${e.id}`}
+
                 class="event-item-link"
               >
                 <span class="event-date">{e.date}</span>
