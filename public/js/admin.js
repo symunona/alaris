@@ -1,6 +1,9 @@
 var currentEntry;
 var editorDropZoneElement;
 
+// Configure Trumbowyg SVG icons path
+$.trumbowyg.svgPath = '/dist/icons.svg';
+
 // Init.
 $(function () {
 	placeFirstPostMarker();

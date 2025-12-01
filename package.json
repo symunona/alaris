@@ -13,8 +13,10 @@
   "main": "./app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "bash -lc 'set -euo pipefail; node app.js & SERVER=$!; vite build --watch & BUILD=$!; trap \"kill $SERVER $BUILD\" EXIT INT TERM; wait -n $SERVER $BUILD'",
-    "build:weeks": "vite build"
+    "dev": "bash -lc 'set -euo pipefail; node bundle-vendor.js; node app.js & SERVER=$!; vite build --watch & BUILD=$!; trap \"kill $SERVER $BUILD\" EXIT INT TERM; wait -n $SERVER $BUILD'",
+    "build:weeks": "vite build",
+    "build:vendor": "node bundle-vendor.js",
+    "build": "npm run build:vendor && npm run build:weeks"
   },
   "dependencies": {
     "@fengyuanchen/datepicker": "^0.6.5",
@@ -37,6 +39,7 @@
     "when": "3.7.8"
   },
   "devDependencies": {
+    "terser": "^5.44.1",
     "vite-plugin-solid": "^2.7.0"
   },
   "readmeFilename": "README.md"
