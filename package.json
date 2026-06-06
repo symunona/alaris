@@ -11,32 +11,32 @@
     "url": "git://github.com/symunona/alaris"
   },
   "main": "./app.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "bash -lc 'set -euo pipefail; node bundle-vendor.js; node app.js & SERVER=$!; vite build --watch & BUILD=$!; trap \"kill $SERVER $BUILD\" EXIT INT TERM; wait -n $SERVER $BUILD'",
     "build:weeks": "vite build",
     "build:vendor": "node bundle-vendor.js",
-    "build": "npm run build:vendor && npm run build:weeks"
+    "build": "pnpm run build:vendor && pnpm run build:weeks"
   },
   "dependencies": {
     "@fengyuanchen/datepicker": "^0.6.5",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.1",
-    "deferred": "0.7.9",
     "dropzone": "^5.4.0",
     "express": "^4.16.3",
     "express-basic-auth": "^1.1.5",
-    "jade": "1.11.0",
     "less-middleware": "3.0.0",
     "moment": "2.22.2",
-    "multer": "^1.3.0",
-    "mysql-activerecord": "0.8.6",
+    "multer": "1.4.4-lts.1",
+    "pug": "^3.0.3",
     "solid-js": "^1.8.0",
     "trumbowyg": "^2.10.0",
     "underscore": "^1.8.3",
     "uuid": "^3.2.1",
-    "vite": "^4.5.0",
-    "when": "3.7.8"
+    "vite": "^4.5.0"
   },
   "devDependencies": {
     "terser": "^5.44.1",

@@ -1,0 +1,18 @@
+{
+	"db": {
+		"src": "db.json",
+		"prettyfy": false
+	},
+	"admin":{
+		"users": {
+			"yourname": "yourpassword"
+		}
+	},
+	"serverRoot":"https://yourdomain.com",
+	"title":"Alaris",
+	"tagline":"",
+	"footer":"",
+	"footerTitle":"alaris blog engine",
+	"pageSize": 10,
+	"debug": false
+}

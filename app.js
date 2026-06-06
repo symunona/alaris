@@ -22,7 +22,7 @@ app.use(express.json())
 
 app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 
 if (config.debug) {
     console.warn('[DEBUG] Less compile on.')
@@ -65,6 +65,8 @@ app.get('/api/events', auth, admin.events);
 app.post('/api/event/save', auth, admin.saveEvent);
 app.delete('/api/event/delete/:id', auth, admin.deleteEvent);
 
+const ALLOWED_IMAGE_TYPES = /^image\/(jpeg|png|gif|webp|svg\+xml|avif)$/
+
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, 'public', 'content'))
@@ -74,7 +76,15 @@ let storage = multer.diskStorage({
     }
 })
 
-app.post('/api/upload', auth, multer({ dest: path.join(__dirname, 'public', 'content', 'tmp'), storage: storage }).single('file'), function(req, res){
+function imageOnlyFilter(req, file, cb) {
+    if (ALLOWED_IMAGE_TYPES.test(file.mimetype)) {
+        cb(null, true)
+    } else {
+        cb(Object.assign(new Error('Images only'), { status: 415 }), false)
+    }
+}
+
+app.post('/api/upload', auth, multer({ storage: storage, fileFilter: imageOnlyFilter }).single('file'), function(req, res){
     res.send('ok');
 });
 

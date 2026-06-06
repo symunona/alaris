@@ -1,14 +1,11 @@
 var db = require('../lib/db');
-var api = require('./api');
+var utils = require('../lib/utils');
 
 exports.grader = function(req, res){
-	db.getRandom('blog').done(function(data){		
-		res.render('indexall', api.processentries({entries: [data]}));
-	})
+	const data = db.getRandom('blog');
+	utils.renderEntries(res, 'index', [data], { admin: true });
 }
 
-exports.rate = function(req, res){	
-	db.saveOrUpdate('blog', req.body).done(function(){
-		res.send({success: true})
-	});
+exports.rate = function(req, res){
+	res.send(db.saveOrUpdate('blog', req.body));
 }

@@ -1,0 +1,16 @@
+[Unit]
+Description=Alaris Blog Engine
+After=network.target
+
+[Service]
+Type=simple
+User=symunona
+WorkingDirectory=/home/symunona/wwwroot/alaris
+ExecStart=/home/symunona/.nvm/versions/node/v22.22.0/bin/node app.js
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target
