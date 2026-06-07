@@ -1,0 +1,34 @@
+{{define "stat.html"}}
+<!doctype html>
+<html>
+<head>
+	<title>{{.Title}}</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="/css/favicon.png">
+	<link rel="stylesheet" href="/css/style.css">
+	<script type="text/javascript" src="/dist/vendor-stats.js"></script>
+	<script type="text/javascript" src="/js/base.js"></script>
+	<script type="text/javascript" src="/js/stat.js"></script>
+	<meta name="offsetStart" content="{{.Offset}}">
+	<meta name="serverRoot" content="{{.ServerRoot}}">
+	<meta name="db" content="{{.DBJson}}">
+	<script>var db = {{.DBJson}};</script>
+</head>
+<body>
+	<div class="bgfader">&nbsp;</div>
+	<header id="index" class="div col-md-3 col-md-offset-9">
+		<div><a href="/">{{.Title}}</a></div>
+		<div class="tagline">{{.Tagline}}</div>
+	</header>
+	<section id="stats" class="container-fluid">
+		<canvas id="graph" width="1350" height="400"></canvas>
+		<canvas id="graph2" width="1350" height="400"></canvas>
+	</section>
+	<section class="footer">
+		<div id="tmp" title="{{.FooterTitle}}">{{.Footer}}</div>
+	</section>
+</body>
+</html>
+{{end}}

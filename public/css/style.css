@@ -5995,7 +5995,7 @@ h3 {
   padding-right: 10px;
 }
 .hidden {
-  dislay: none;
+  display: none;
 }
 img {
   display: block;
@@ -6155,7 +6155,7 @@ hr#first-marker {
   text-align: center;
   font-style: italic;
   padding-top: 10px;
-  margin-bottom: 700px;
+  margin-bottom: 200vh;
 }
 span.highlight {
   background: black;
@@ -6246,6 +6246,23 @@ span.highlight {
   background: #F7F7F7;
   color: black;
   font-size: small;
+}
+@media (max-width: 975px) {
+  .tags {
+    width: 100%;
+    padding: 0 15px 10px;
+  }
+  .tags .tagscontainer {
+    position: static;
+    transform: none;
+    -ms-transform: none;
+    -webkit-transform: none;
+    text-align: left;
+  }
+  .tags .tagscontainer .tag {
+    margin-left: 0;
+    margin-right: 8px;
+  }
 }
 span.peek p img {
   margin: 0 auto;
@@ -6432,7 +6449,6 @@ a {
   bottom: 0px;
   left: 0px;
   display: block;
-  height: 32px;
   width: 95%;
   z-index: 1000;
 }
@@ -6458,11 +6474,12 @@ a {
   outline: #777 3px solid;
 }
 .searchbox .searchboxbuttons {
-  display: inline-block;
-  width: 95%;
+  display: block;
+  width: 100%;
 }
 .searchbox .yearpicker {
-  display: inline-block;
+  display: block;
+  padding-bottom: 4px;
 }
 .yearpicker a {
   background: #efefef;
@@ -6544,4 +6561,23 @@ a {
 #tag-editor.dz-drag-hover {
   background: rgba(180, 180, 180, 0.4);
   outline: 5px dashed white;
+}
+.entry.status-update {
+  background-color: rgba(200, 220, 240, 0.5);
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-left: 3px solid rgba(100, 150, 200, 0.6);
+}
+.entry.status-update .title {
+  font-size: 1em;
+  font-weight: normal;
+  font-style: italic;
+  margin: 0;
+  padding: 4px 0;
+}
+.entry.status-update .peek.body {
+  display: none;
+}
+.entry.status-update .isactual {
+  display: inline-block;
 }

@@ -331,6 +331,9 @@ function getRnd(){
 function saveEntry() {
 	var update = {
 		id: currentEntry.id,
+		date: currentEntry.date,
+		grade: currentEntry.grade,
+		top: currentEntry.top,
 		title: $('#title').val(),
 		tags: $('#tags').val().split(',').map(function (s) { return s.trim() }),
 		topic: parseInt($('#topic').val()),
@@ -370,7 +373,7 @@ function toggleTop(element) {
 function rate(element, plusminus) {
 	var id = getId(element);
 	var grade = (parseInt($(element).parent().children('span').html()) || 0) + plusminus;
-	postJson('/api/entry/save', { id: parseInt(id), grade: grade })
+	postJson('/api/entry/rate/' + id, { delta: plusminus })
 		.done(updatePostData);
 }
 

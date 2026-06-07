@@ -1,41 +1,31 @@
-alaris
-======
+# alaris
 
-Disclaimer from 2015
---------------------
-```
-Spending a couple of years in the industry: this is not good code. 
-It is more of a personal experiment of early development, without any kind of plan, throwing stuff together, trying to get things work.
-Do not use this code. For your own sake. It is also my very first experiment with nodeJS.
-```
+Lightweight single-user blog engine. Started in 2015 as a Node.js experiment, rewritten in Go.
 
+## Setup
 
-About
------
-
-This is a very simple and lightweight single user blog engine created in nodejs, using express and mysql.
-
-I wanted to create something really lightweight.
-
-Installation
-------------
-
-Once you checked out, pull the dependencies.
+Copy and edit config:
 
 ```
-npm install
+cp config.example.json config.json
 ```
 
-Then you add the database stub I created, and set your blog properties in the config.json.
+Build and run:
 
+```
+go build -o alaris && ./alaris
+```
 
-Tag system
-----------
+## Era system
 
-I use a unique tag system. Since human perception of time is a subjective thing, I decided I create "era's" out of tags. Each era has a start date and an end date. Between them the era shows, where you are in time. 
+Tags can be defined as eras with a start and end date. While inside an era, the UI reflects your position within it — custom backgrounds, visual context. Overlapping eras resolve to the shortest one.
 
-You can set custom backgrounds for eras. When they're overlapping, always the shorter will be applied.
+## Backup
 
-In the future I would like to develop custom styles for eras. 
+Weekly backup script at `scripts/backup.sh` — archives the SQLite DB and `public/content`. Keeps 4 versions, skips if content unchanged (hash check).
 
+Enable the systemd timer:
 
+```
+systemctl --user enable --now alaris-backup.timer
+```
