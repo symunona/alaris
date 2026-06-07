@@ -6044,10 +6044,8 @@ button.discard {
   padding-left: 15px;
 }
 .topq {
-  position: absolute;
-  right: 120px;
-  bottom: 0px;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }
 .topq a {
   width: 32px;
@@ -6072,7 +6070,8 @@ a.ctrl:hover {
 }
 .entry-wrapper .control .grade-wrapper {
   padding: 3px;
-  display: block;
+  display: flex;
+  align-items: center;
   position: absolute;
   right: 0;
   bottom: 0;
