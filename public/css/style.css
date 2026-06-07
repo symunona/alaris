@@ -6081,8 +6081,11 @@ a.ctrl:hover {
   padding: 7px 10px 0px 10px;
   visibility: hidden;
 }
-.entry-wrapper .control .glyphicon-star-empty {
-  visibility: hidden;
+.entry-wrapper .control .glyphicon-star-empty,
+.entry-wrapper .control .glyphicon-star {
+  visibility: visible;
+  color: red;
+  font-size: 20px;
 }
 .entry-wrapper .control .min-to-visible {
   font-size: 10px;
