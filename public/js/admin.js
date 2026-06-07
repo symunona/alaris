@@ -370,7 +370,7 @@ function toggleTop(element) {
 function rate(element, plusminus) {
 	var id = getId(element);
 	var grade = (parseInt($(element).parent().children('span').html()) || 0) + plusminus;
-	postJson('/api/entry/save', { id: parseInt(id), grade: grade })
+	postJson('/api/entry/rate/' + id, { delta: plusminus })
 		.done(updatePostData);
 }
 

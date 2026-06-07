@@ -54,8 +54,10 @@ var toYear = function (element, _offset) {
 
 	keyword = '';
 	offset = _offset - pageSize;
+	offsets = [];
 
 	$('#entries').html('');
+	window.scrollTo(0, 0);
 	loadnextl();
 }
 
@@ -264,10 +266,11 @@ function resizer() {
 				.css('left', -entryheight + w + 'px')
 				.width(entryheight);
 
-
 		}).show();
 	else
-		$('.tags').hide()
+		$('.tags').each(function (i, e) {
+			$(e).children('.tagscontainer').css({ height: '', top: '', left: '', width: '' });
+		}).show();
 }
 
 
@@ -275,7 +278,7 @@ $(function () {
 
 	offsetStart = offset = parseInt($('meta[name="offsetStart"]').attr('content'));
 
-	parturl = $('meta[name="admin"]').attr('content') ? "/api/partAll" : "/api/part";
+	parturl = $('meta[name="admin"]').attr('content') === 'true' ? "/api/partAll" : "/api/part";
 
 	offsets = $('.entry').map(function (i, e) { return $(e).position().top })
 
