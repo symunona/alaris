@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/symunona/alaris/db"
+	"github.com/symunona/alaris/src/db"
 )
 
 type rawPost struct {

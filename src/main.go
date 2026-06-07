@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/symunona/alaris/db"
-	"github.com/symunona/alaris/handlers"
-	"github.com/symunona/alaris/middleware"
+	"github.com/symunona/alaris/src/db"
+	"github.com/symunona/alaris/src/handlers"
+	"github.com/symunona/alaris/src/middleware"
 )
 
 func main() {

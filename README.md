@@ -13,7 +13,7 @@ cp config.example.json config.json
 Build and run:
 
 ```
-go build -o alaris && ./alaris
+go build -o alaris ./src && ./alaris
 ```
 
 ## Era system

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/symunona/alaris/db"
+	"github.com/symunona/alaris/src/db"
 )
 
 type App struct {

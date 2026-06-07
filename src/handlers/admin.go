@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/symunona/alaris/db"
+	"github.com/symunona/alaris/src/db"
 )
 
 func (a *App) ToggleTop(w http.ResponseWriter, r *http.Request) {
