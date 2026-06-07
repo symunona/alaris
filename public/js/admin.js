@@ -331,6 +331,9 @@ function getRnd(){
 function saveEntry() {
 	var update = {
 		id: currentEntry.id,
+		date: currentEntry.date,
+		grade: currentEntry.grade,
+		top: currentEntry.top,
 		title: $('#title').val(),
 		tags: $('#tags').val().split(',').map(function (s) { return s.trim() }),
 		topic: parseInt($('#topic').val()),

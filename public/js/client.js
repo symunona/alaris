@@ -285,7 +285,7 @@ $(function () {
 	// trigger when almost reached the bottom
 	$(document).on('scroll', $.debounce(function () {
 		getCurrentEntry();
-		if ($(document).scrollTop() + $(window).height() >= document.body.offsetHeight - 500) {
+		if ($(document).scrollTop() + $(window).height() >= document.body.offsetHeight - $(window).height()) {
 			if (!loadingnextx)
 				loadnextl();
 		}

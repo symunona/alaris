@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/symunona/alaris/db"
 )
@@ -39,6 +40,9 @@ func (a *App) SaveEntry(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
 		http.Error(w, "bad request", 400)
 		return
+	}
+	if p.Tag == "" && len(p.Tags) > 0 {
+		p.Tag = strings.Join(p.Tags, ", ")
 	}
 	saved, err := a.DB.SavePost(&p)
 	if err != nil {
