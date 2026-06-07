@@ -6594,6 +6594,12 @@ a {
     padding-right: 50px;
   }
 
+  /* Stars: no hover on mobile, show all admin controls */
+  .entry-wrapper .control .glyphicon-star-empty,
+  .entry-wrapper .control .grade-wrapper a {
+    visibility: visible;
+  }
+
   /* Tags: flush to bottom of post, no gap */
   .entry-wrapper {
     display: flex;
