@@ -52,6 +52,7 @@ func main() {
 	// Static files
 	mux.Handle("GET /public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	mux.Handle("GET /css/", http.StripPrefix("/css/", http.FileServer(http.Dir("public/css"))))
+	mux.Handle("GET /fonts/", http.StripPrefix("/fonts/", http.FileServer(http.Dir("public/fonts"))))
 	mux.Handle("GET /js/", http.StripPrefix("/js/", http.FileServer(http.Dir("public/js"))))
 	mux.Handle("GET /dist/", http.StripPrefix("/dist/", http.FileServer(http.Dir("public/dist"))))
 	mux.Handle("GET /content/", http.StripPrefix("/content/", http.FileServer(http.Dir("public/content"))))
