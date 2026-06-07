@@ -6045,8 +6045,8 @@ button.discard {
 }
 .topq {
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 120px;
+  bottom: 0px;
   text-align: center;
 }
 .topq a {
@@ -6246,23 +6246,6 @@ span.highlight {
   background: #F7F7F7;
   color: black;
   font-size: small;
-}
-@media (max-width: 975px) {
-  .tags {
-    width: 100%;
-    padding: 0 15px 10px;
-  }
-  .tags .tagscontainer {
-    position: static;
-    transform: none;
-    -ms-transform: none;
-    -webkit-transform: none;
-    text-align: left;
-  }
-  .tags .tagscontainer .tag {
-    margin-left: 0;
-    margin-right: 8px;
-  }
 }
 span.peek p img {
   margin: 0 auto;
@@ -6600,7 +6583,17 @@ a {
     visibility: visible;
   }
 
-  /* Tags: flush to bottom of post, no gap */
+  /* Tags: flush to bottom of post, unrotate, flow inline */
+  .tags .tagscontainer {
+    position: static;
+    transform: none;
+    -webkit-transform: none;
+    text-align: left;
+  }
+  .tags .tagscontainer .tag {
+    margin-left: 0;
+    margin-right: 8px;
+  }
   .entry-wrapper {
     display: flex;
     flex-direction: column;
