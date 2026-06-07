@@ -6081,6 +6081,9 @@ a.ctrl:hover {
   padding: 7px 10px 0px 10px;
   visibility: hidden;
 }
+.entry-wrapper .control .grade-wrapper .topq a {
+  visibility: visible;
+}
 .entry-wrapper .control .glyphicon-star-empty,
 .entry-wrapper .control .glyphicon-star {
   visibility: visible;
