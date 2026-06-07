@@ -6654,7 +6654,8 @@ a {
   .nav #eratags div span {
     writing-mode: vertical-lr;
     white-space: nowrap;
-    padding: 4px 2px;
+    padding: 6px 4px;
     display: inline-block;
+    font-size: medium;
   }
 }
