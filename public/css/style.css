@@ -6604,7 +6604,10 @@ a {
     margin-bottom: 0;
   }
   .tags {
-    padding: 4px 15px !important;
+    padding: 0 15px !important;
+  }
+  .entry-wrapper {
+    gap: 0;
   }
 
   /* Nav: vertical strip pinned to right, top→bottom */
@@ -6651,11 +6654,14 @@ a {
     writing-mode: vertical-lr;
     display: block;
     margin-bottom: 0;
+    white-space: nowrap;
   }
   .nav #eratags div span {
     writing-mode: vertical-lr;
     white-space: nowrap;
     padding: 4px 2px;
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
