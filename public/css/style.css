@@ -6222,30 +6222,32 @@ span.highlight {
   cursor: default;
   position: relative;
 }
-.tags .tagscontainer {
-  /* 		outline: 1px solid white; */
-  position: absolute;
-  text-align: right;
-  transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  /* IE 9 */
-  -webkit-transform: rotate(-90deg);
-  /* Opera, Chrome, and Safari */
-  transform-origin: right bottom;
-  -ms-transform-origin: right bottom;
-  /* IE 9 */
-  -webkit-transform-origin: right bottom;
-  /* Chrome, Safari, Opera */
-}
 .tags .tagscontainer .tag {
   display: inline-block;
   width: auto;
-  margin-left: 10px;
+  margin-left: 0;
+  margin-right: 8px;
   margin-bottom: 10px;
   padding: 3px;
   background: #F7F7F7;
   color: black;
   font-size: small;
+}
+@media (min-width: 992px) {
+  .tags .tagscontainer {
+    position: absolute;
+    text-align: right;
+    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform-origin: right bottom;
+    -ms-transform-origin: right bottom;
+    -webkit-transform-origin: right bottom;
+  }
+  .tags .tagscontainer .tag {
+    margin-left: 10px;
+    margin-right: 0;
+  }
 }
 span.peek p img {
   margin: 0 auto;
