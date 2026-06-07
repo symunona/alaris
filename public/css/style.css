@@ -6044,13 +6044,15 @@ button.discard {
   padding-left: 15px;
 }
 .topq {
-  display: flex;
-  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .topq a {
   width: 32px;
   line-height: 32px;
   display: block;
+  text-align: center;
 }
 a.ctrl {
   color: #444444;
@@ -6081,14 +6083,18 @@ a.ctrl:hover {
   padding: 7px 10px 0px 10px;
   visibility: hidden;
 }
-.entry-wrapper .control .grade-wrapper .topq a {
-  visibility: visible;
+.entry-wrapper .control .topq a {
+  visibility: hidden;
 }
 .entry-wrapper .control .glyphicon-star-empty,
 .entry-wrapper .control .glyphicon-star {
+  visibility: hidden;
+  font-size: 12px;
+}
+.entry-wrapper:hover .control .topq a,
+.entry-wrapper:hover .control .glyphicon-star-empty,
+.entry-wrapper:hover .control .glyphicon-star {
   visibility: visible;
-  color: red;
-  font-size: 20px;
 }
 .entry-wrapper .control .min-to-visible {
   font-size: 10px;
@@ -6586,6 +6592,8 @@ a {
 
   /* Stars: no hover on mobile, show all admin controls */
   .entry-wrapper .control .glyphicon-star-empty,
+  .entry-wrapper .control .glyphicon-star,
+  .entry-wrapper .control .topq a,
   .entry-wrapper .control .grade-wrapper a {
     visibility: visible;
   }

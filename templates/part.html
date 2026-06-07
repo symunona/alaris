@@ -26,12 +26,12 @@
 		{{if $.Admin}}
 		<span class="control noselect">
 			<span class="topicq{{if eq .Topic 0}} hidden{{end}}">T <span class="topic">{{.Topic}}</span></span>
+			<div class="topq noselect">
+				<a class="ctrl top-toggler" onclick="toggleTop(this)">
+					<span class="top glyphicon {{if .Top}}glyphicon-star{{else}}glyphicon-star-empty{{end}}"></span>
+				</a>
+			</div>
 			<span class="grade-wrapper">
-				<div class="topq noselect">
-					<a class="ctrl top-toggler" onclick="toggleTop(this)">
-						<span class="top glyphicon {{if .Top}}glyphicon-star{{else}}glyphicon-star-empty{{end}}"></span>
-					</a>
-				</div>
 				<a class="ctrl" onclick="rate(this, 1)">▲</a>
 				<span class="grade">{{printf "%.0f" .Grade}}</span>
 				<span class="min-to-visible">{{if not .IsWithinHalfYear}}&gt;{{printf "%.1f" .MinimumGradeToBeVisible}}{{end}}</span>
