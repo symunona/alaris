@@ -6581,3 +6581,81 @@ a {
 .entry.status-update .isactual {
   display: inline-block;
 }
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Header: smaller */
+  header#index {
+    font-size: 32px;
+  }
+
+  /* Posts: leave room for right-side nav strip */
+  section#entries {
+    padding-right: 50px;
+  }
+
+  /* Tags: flush to bottom of post, no gap */
+  .entry-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+  .entry-wrapper .entry {
+    margin-bottom: 0;
+  }
+  .tags {
+    padding: 4px 15px !important;
+  }
+
+  /* Nav: vertical strip pinned to right, top→bottom */
+  .nav {
+    width: auto;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 0;
+  }
+  .nav .clear {
+    display: none;
+  }
+  .nav #actualyear,
+  .nav #actualmonth,
+  .nav #actualday {
+    writing-mode: vertical-lr;
+    padding: 6px 4px;
+    margin-bottom: 0;
+    font-size: medium;
+    background: white;
+    color: black;
+    white-space: nowrap;
+  }
+  .nav #actualday {
+    margin-bottom: 0;
+  }
+  .nav #eratags {
+    writing-mode: vertical-lr;
+    height: auto;
+    width: auto;
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav #eratags div {
+    writing-mode: vertical-lr;
+    display: block;
+    margin-bottom: 0;
+  }
+  .nav #eratags div span {
+    writing-mode: vertical-lr;
+    white-space: nowrap;
+    padding: 4px 2px;
+    display: block;
+  }
+}
